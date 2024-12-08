@@ -55,4 +55,7 @@ dependencies {
     androidTestImplementation(libs.uiTests.junitExt)
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
+
+    //DI implementation
+    implementation(libs.koin.android)
 }
