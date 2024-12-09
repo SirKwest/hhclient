@@ -67,7 +67,7 @@ dependencies {
 
     // Database
     implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
+    kapt(libs.room.compiler)
     implementation(libs.room.ktx)
 
     // Network
