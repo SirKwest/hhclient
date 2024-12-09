@@ -55,7 +55,7 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 # Network
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
-glide = { group = "com.github.bumptech", name = "glide", version.ref = "glide" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 
 # Threading
 kotlinx-coroutines = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines"}
