@@ -6,19 +6,19 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/team_textView_style"
-        android:paddingVertical="19dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="8dp"
+        android:paddingVertical="@dimen/dim_19dp"
+        android:paddingStart="@dimen/dim_16dp"
+        android:paddingEnd="@dimen/dim_8dp"
         android:text="Команда"
-        android:textSize="22sp" />
+        android:textSize="@dimen/text_size_22" />
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/team_textView_style"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dim_16dp"
         android:fontFamily="@font/ys_bold"
-        android:paddingVertical="8dp"
+        android:paddingVertical="@dimen/dim_8dp"
         android:text="Над приложением работали"
-        android:textSize="32sp" />
+        android:textSize="@dimen/text_size_32" />
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/team_textView_style"
