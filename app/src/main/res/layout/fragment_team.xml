@@ -15,4 +15,14 @@
         android:textColor="@color/black"
         android:textSize="22sp" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="Над приложением работали"
+        android:textColor="@color/black"
+        android:textSize="32sp" />
+
 </LinearLayout>
