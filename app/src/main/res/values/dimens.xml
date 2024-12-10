@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dim_1dp">1dp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="dim_19dp">19dp</dimen>
+    <dimen name="dim_16dp">16dp</dimen>
+    <dimen name="line_height_size_26sp">26sp</dimen>
+    <dimen name="line_height_size_19sp">19sp</dimen>
+    <dimen name="line_height_size_38sp">38sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_32">32sp</dimen>
+
 </resources>
