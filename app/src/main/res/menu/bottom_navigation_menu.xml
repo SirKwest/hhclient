@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/icon_main_inactive"
+        android:title="@string/main_text" />
+
+    <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/icon_favorite_inactive"
+        android:title="@string/favorite_text" />
+
+    <item
+        android:id="@+id/teamFragment"
+        android:icon="@drawable/icon_team"
+        android:title="@string/team_text" />
+
+</menu>

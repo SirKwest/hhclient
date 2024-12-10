@@ -120,5 +120,14 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="NavigationTheme" parent="Widget.Design.BottomNavigationView" >
+        <item name="itemTextAppearanceActive">@style/MenuTextActiveStyle</item>
+        <item name="itemTextAppearanceInactive">@style/MenuTextInactiveStyle</item>
+        <item name="itemIconTint">@color/blue</item>
+        <item name="itemTextColor">@color/gray</item>
+        <item name="itemBackground">?attr/colorPrimary</item>
+
+    </style>
+
 
 </resources>
