@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="team_textView_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/dim_24dp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:paddingHorizontal">@dimen/dim_16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="TopBarNameTextStyle">
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/text_size_22</item>
