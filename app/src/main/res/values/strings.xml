@@ -3,4 +3,11 @@
     <string name="main">Главная</string>
     <string name="favorites">Избранное</string>
     <string name="team">Команда</string>
+
+    <string name="team_title">Команда</string>
+    <string name="team_subtitle">Над приложением работали</string>
+    <string name="maksim">Максим Дорогов</string>
+    <string name="yaroslav">Ярослав Федоров</string>
+    <string name="constantine">Константин Ким</string>
+    <string name="artem">Артем Григорьев</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@id/searchFragment"
+        android:id="@id/search_fragment"
         android:title="@string/main"
         android:icon="@drawable/ic_main" />
 
@@ -11,7 +11,7 @@
         android:icon="@drawable/ic_favorites" />
 
     <item
-        android:id="@id/teamFragment"
+        android:id="@id/team_fragment"
         android:title="@string/team"
         android:icon="@drawable/ic_team" />
 </menu>

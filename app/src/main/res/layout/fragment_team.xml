@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Team fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/team_textView_style"
+        android:paddingVertical="@dimen/dim_19dp"
+        android:paddingStart="@dimen/dim_16dp"
+        android:paddingEnd="@dimen/dim_8dp"
+        android:text="@string/team_title"
+        android:textSize="@dimen/text_size_22" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/team_textView_style"
+        android:layout_marginTop="@dimen/dim_16dp"
+        android:fontFamily="@font/ys_bold"
+        android:paddingVertical="@dimen/dim_8dp"
+        android:text="@string/team_subtitle"
+        android:textSize="@dimen/text_size_32" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/team_textView_style"
+        android:text="@string/maksim" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/team_textView_style"
+        android:text="@string/yaroslav" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/team_textView_style"
+        android:text="@string/constantine" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/team_textView_style"
+        android:text="@string/artem" />
+
+</LinearLayout>

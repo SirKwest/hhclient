@@ -2,22 +2,22 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_navigation_graph"
-    app:startDestination="@id/searchFragment">
+    app:startDestination="@id/search_fragment">
 
     <fragment
-        android:id="@+id/searchFragment"
+        android:id="@+id/search_fragment"
         android:name="ru.practicum.android.diploma.ui.search.SearchFragment"
         android:label="SearchFragment"
     />
 
     <fragment
-        android:id="@+id/favoritesFragment"
+        android:id="@+id/favorites_fragment"
         android:name="ru.practicum.android.diploma.ui.favorites.FavoritesFragment"
         android:label="FavoritesFragment"
     />
 
     <fragment
-        android:id="@+id/teamFragment"
+        android:id="@+id/team_fragment"
         android:name="ru.practicum.android.diploma.ui.team.TeamFragment"
         android:label="TeamFragment"
     />
