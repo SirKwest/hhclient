@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.util
 
 import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES.TIRAMISU
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +14,7 @@ import java.io.Serializable
  * Функция для получения сериализуемых объектов
  */
 inline fun <reified T : Serializable> Bundle.getSerializableData(key: String): T? = when {
-    SDK_INT >= 33 ->
+    SDK_INT >= TIRAMISU ->
         getSerializable(key, T::class.java)
     else ->
         @Suppress("DEPRECATION")
