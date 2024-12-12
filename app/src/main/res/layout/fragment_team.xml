@@ -18,18 +18,27 @@
         android:text="@string/team_subtitle" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/VacancyFragmentMediumTextStyle"
         android:text="@string/maksim" />
 
     <androidx.appcompat.widget.AppCompatTextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/VacancyFragmentMediumTextStyle"
         android:text="@string/yaroslav" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/VacancyFragmentMediumTextStyle"
         android:text="@string/constantine" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/VacancyFragmentMediumTextStyle"
         android:text="@string/artem" />
 
