@@ -1,11 +1,10 @@
 package ru.practicum.android.diploma.util
 
-import android.content.Context
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
-import android.util.TypedValue
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -14,37 +13,33 @@ import java.io.Serializable
  * Функция для получения сериализуемых объектов
  */
 inline fun <reified T : Serializable> Bundle.getSerializableData(key: String): T? = when {
-    SDK_INT >= 33 -> getSerializable(key, T::class.java)
-    else -> @Suppress("DEPRECATION") getSerializable(key) as? T
+    SDK_INT >= 33 ->
+        getSerializable(key, T::class.java)
+    else ->
+        @Suppress("DEPRECATION")
+        getSerializable(key) as? T
 }
 
 /**
- * Функция для конвертации dp в пиксели
- */
-fun Float.dpToPx(context: Context): Int {
-    return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, this, context.resources.displayMetrics
-    ).toInt()
-}
-
-/**
- * Функция-расширение для реализации debounce в Fragment.
+ * Функция-расширение для защиты от повторного запуска обработчика клика в фрагменте
  *
- * @param isClickAllowedProvider Функция, возвращающая текущее состояние возможности клика.
- * @param onUpdateClickAllowed Функция-обработчик, обновляющая состояние клика (доступен/недоступен).
- * @return `true`, если клик был разрешён в момент вызова, иначе `false`.
+ * @param requiredDelay  Время необходимой задержки между событиями клика
+ * @param coroutineScope Контекст в котором вызывается
+ * @param action         Обработчик клика
  */
-fun Fragment.clickDebounce(
-    isClickAllowedProvider: () -> Boolean,
-    onUpdateClickAllowed: (Boolean) -> Unit
-): Boolean {
-    val current = isClickAllowedProvider()
-    if (current) {
-        onUpdateClickAllowed(false)
-        lifecycleScope.launch {
-            delay(300L) // задержка
-            onUpdateClickAllowed(true)
+fun <T> Fragment.debouncedAction(
+    requiredDelay: Long,
+    coroutineScope: CoroutineScope,
+    action: (T) -> Unit
+): (T) -> Unit {
+    var job: Job? = null
+    return { param: T ->
+        job?.cancel()
+        if (job?.isCompleted != false) {
+            job = coroutineScope.launch {
+                delay(requiredDelay)
+                action(param)
+            }
         }
     }
-    return current
 }
