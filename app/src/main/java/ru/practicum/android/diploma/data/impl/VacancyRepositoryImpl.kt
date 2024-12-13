@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyRepository
 import ru.practicum.android.diploma.domain.models.VacancyShort
 
-class VacancyRepositoryImpl(private val headhunterClient: NetworkClient): VacancyRepository {
+class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : VacancyRepository {
     override fun searchVacancies(text: String, page: Int): Flow<Resource> = flow {
         val response = headhunterClient.doRequest(VacanciesSearchRequest(text, page))
         if (response is VacanciesSearchResponse) {

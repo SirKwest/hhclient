@@ -41,7 +41,6 @@ class SearchFragment : Fragment() {
         val searchFieldTextWatcher = object : TextWatcher {
             @Suppress("detekt.EmptyFunctionBlock")
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -93,7 +92,7 @@ class SearchFragment : Fragment() {
                         R.plurals.vacancies_found,
                         newState.total,
                         newState.total,
-                        ),
+                    ),
                     Toast.LENGTH_LONG
                 ).show()
             }
