@@ -13,7 +13,7 @@ import java.net.HttpURLConnection
 
 class SearchFragmentViewModel(
     private val vacancyInteractor: VacancyInteractor
-): ViewModel() {
+) : ViewModel() {
     private val data = MutableLiveData<SearchFragmentState>()
     fun observeData(): LiveData<SearchFragmentState> = data
 
@@ -22,11 +22,10 @@ class SearchFragmentViewModel(
             processNewSearch(searchText)
         }
 
-
     private fun processNewSearch(text: String) {
         val page = 1
         viewModelScope.launch {
-            vacancyInteractor.searchVacancies(text, page).collect {result ->
+            vacancyInteractor.searchVacancies(text, page).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.items.isNotEmpty()) {
@@ -38,10 +37,10 @@ class SearchFragmentViewModel(
 
                     is Resource.Error -> {
                         when (result.code) {
-                            HttpURLConnection.HTTP_BAD_REQUEST -> {data.postValue(SearchFragmentState.ServerError)}
-                            HttpURLConnection.HTTP_FORBIDDEN -> {data.postValue(SearchFragmentState.ServerError)}
-                            HttpURLConnection.HTTP_NOT_FOUND -> {data.postValue(SearchFragmentState.ServerError)}
-                            else -> {data.postValue(SearchFragmentState.NoInternetAccess)}
+                            HttpURLConnection.HTTP_BAD_REQUEST -> { data.postValue(SearchFragmentState.ServerError) }
+                            HttpURLConnection.HTTP_FORBIDDEN -> { data.postValue(SearchFragmentState.ServerError) }
+                            HttpURLConnection.HTTP_NOT_FOUND -> { data.postValue(SearchFragmentState.ServerError) }
+                            else -> { data.postValue(SearchFragmentState.NoInternetAccess) }
                         }
                     }
                 }

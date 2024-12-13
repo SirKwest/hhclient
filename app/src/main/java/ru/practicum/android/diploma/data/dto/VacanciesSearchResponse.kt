@@ -5,4 +5,4 @@ class VacanciesSearchResponse(
     val page: Int,
     val pages: Int,
     val found: Int,
-): Response()
+) : Response()

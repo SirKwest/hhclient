@@ -8,7 +8,6 @@ import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyRepository
 import ru.practicum.android.diploma.domain.models.VacancyShort
-import java.net.HttpURLConnection
 
 class VacancyRepositoryImpl(private val headhunterClient: NetworkClient): VacancyRepository {
     override fun searchVacancies(text: String, page: Int): Flow<Resource> = flow {
