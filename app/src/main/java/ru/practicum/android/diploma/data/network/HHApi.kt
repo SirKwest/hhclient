@@ -1,3 +1,17 @@
 package ru.practicum.android.diploma.data.network
 
-interface HHApi
+import retrofit2.Response
+import retrofit2.http.Query
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
+
+interface HHApi {
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: ${BuildConfig.USER_AGENT}"
+    )
+    @GET("/vacancies")
+    suspend fun getVacancies(@Query("text") text: String): Response<VacanciesSearchResponse>
+}

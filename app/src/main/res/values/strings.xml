@@ -10,4 +10,6 @@
     <string name="yaroslav">Ярослав Федоров</string>
     <string name="constantine">Константин Ким</string>
     <string name="artem">Артем Григорьев</string>
+
+    <string name="no_such_vacancies">Таких вакансий нет</string>
 </resources>
