@@ -38,20 +38,11 @@ class SearchFragment : Fragment() {
 
         binding.searchField.requestFocus()
 
-        val searchFieldTextWatcher = object : TextWatcher {
-            @Suppress("detekt.EmptyFunctionBlock")
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+       binding.searchField.doOnTextChanged { text, _, _, _ ->
+            text?.let {
+                viewModel.search(text.toString())
             }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.search(p0.toString())
-            }
-            @Suppress("detekt.EmptyFunctionBlock")
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
         }
-        binding.searchField.addTextChangedListener(searchFieldTextWatcher)
     }
 
     override fun onDestroyView() {

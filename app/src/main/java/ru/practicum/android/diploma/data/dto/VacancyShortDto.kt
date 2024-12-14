@@ -19,7 +19,7 @@ data class Area(
 data class Employer(
     val id: String,
     val name: String,
-    val logo: Logo? = Logo()
+    @SerializedName("logo_urls") val logo: Logo? = Logo()
 )
 
 data class Logo(
