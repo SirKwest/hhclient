@@ -44,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/vacancyCountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
@@ -59,6 +60,7 @@
         tools:text="Таких вакансий нет" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vacancyRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/searchEditText" />
@@ -92,6 +94,7 @@
         tools:text="Вакансии" />
 
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:visibility="gone"
