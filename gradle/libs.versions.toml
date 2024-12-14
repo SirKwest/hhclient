@@ -1,10 +1,16 @@
 [versions]
 
 java = "VERSION_1_8"
+koinAndroid = "4.0.0"
+room = "2.6.1"
+retrofit = "2.9.0"
+glide = "4.16.0"
+navigation = "2.8.4"
+coroutines = "1.7.3"
 
 # Build constants
 minSdk = "26"
-compileSdk = "34"
+compileSdk = "35"
 targetSdk = "33"
 
 # Detekt
@@ -23,18 +29,39 @@ staticAnalysis-detektLibraries = { module = "io.gitlab.arturbosch.detekt:detekt-
 staticAnalysis-detektTwitterComposeRules = { module = "com.twitter.compose.rules:detekt", version.ref = "detektTwitterComposeRules" }
 
 # AndroidX
-androidX-core = "androidx.core:core-ktx:1.12.0"
-androidX-appCompat = "androidx.appcompat:appcompat:1.6.1"
+androidX-core = "androidx.core:core-ktx:1.15.0"
+androidX-appCompat = "androidx.appcompat:appcompat:1.7.0"
+androidX-fragment-ktx = "androidx.fragment:fragment-ktx:1.8.5"
 
 # UI layer libraries
-ui-material = "com.google.android.material:material:1.10.0"
-ui-constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
+ui-material = "com.google.android.material:material:1.12.0"
+ui-constraintLayout = "androidx.constraintlayout:constraintlayout:2.2.0"
 
 # Unit tests
 unitTests-junit = "junit:junit:4.13.2"
 
 # UI tests
-uiTests-junitExt = "androidx.test.ext:junit:1.1.5"
-uiTests-espressoCore = "androidx.test.espresso:espresso-core:3.5.1"
+uiTests-junitExt = "androidx.test.ext:junit:1.2.1"
+uiTests-espressoCore = "androidx.test.espresso:espresso-core:3.6.1"
+
+# DI
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+
+# Database
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
+# Network
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+
+# Threading
+kotlinx-coroutines = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines"}
+
+# Navigation
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 
 [bundles]
