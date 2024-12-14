@@ -10,4 +10,7 @@
     <string name="yaroslav">Ярослав Федоров</string>
     <string name="constantine">Константин Ким</string>
     <string name="artem">Артем Григорьев</string>
+    <string name="inputHint">Введите запрос</string>
+    <string name="noInternet">Нет интернета</string>
+    <string name="noVacancy">Не удалось получить список вакансий</string>
 </resources>
