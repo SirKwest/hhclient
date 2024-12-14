@@ -12,5 +12,6 @@
     <string name="artem">Артем Григорьев</string>
     <string name="inputHint">Введите запрос</string>
     <string name="noInternet">Нет интернета</string>
-    <string name="noVacancy">Не удалось получить список вакансий</string>
+    <string name="cantGetVacancy">Не удалось получить список вакансий</string>
+    <string name="noVacancy">Таких вакансий нет</string>
 </resources>
