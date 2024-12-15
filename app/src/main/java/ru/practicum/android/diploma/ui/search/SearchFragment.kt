@@ -1,10 +1,12 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,6 +27,8 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        processingChangedScreenState(SearchFragmentState.Default)
+
         viewModel.observeData().observe(viewLifecycleOwner) { state ->
             processingChangedScreenState(state)
         }
@@ -38,7 +42,7 @@ class SearchFragment : Fragment() {
         binding.searchEditText.requestFocus()
 
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
-            text?.let {
+            if (text?.isNotBlank() == true) {
                 viewModel.search(text.toString())
             }
         }
@@ -49,42 +53,77 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
-    /**
-     * Created only for prototype testing purposes.
-     * Should be refactored in issue #21
-     */
     private fun processingChangedScreenState(newState: SearchFragmentState) {
         when (newState) {
-            SearchFragmentState.Default -> { Toast.makeText(context, "Default", Toast.LENGTH_LONG).show() }
+            SearchFragmentState.Default -> {
+                binding.infoImageView.setImageResource(R.mipmap.start_info_image)
+                binding.infoImageView.isVisible = true
+
+                binding.infoTextView.isVisible = false
+                binding.vacancyRecyclerView.isVisible = false
+                binding.vacancyCountTextView.isVisible = false
+                binding.progressBar.isVisible = false
+            }
             SearchFragmentState.EmptyResults -> {
-                Toast.makeText(
-                    context,
-                    context?.getString(R.string.noSuchVacancy),
-                    Toast.LENGTH_LONG
-                ).show()
+                binding.infoImageView.setImageResource(R.mipmap.no_vacancy_image)
+                binding.infoImageView.isVisible = true
+                binding.infoTextView.setText(R.string.cantGetVacancy)
+                binding.infoTextView.isVisible = true
+                binding.vacancyCountTextView.isVisible = true
+                binding.vacancyCountTextView.setText(R.string.noSuchVacancy)
+
+                binding.vacancyRecyclerView.isVisible = false
+                binding.progressBar.isVisible = false
             }
             SearchFragmentState.LoadingNewPageOfResults -> {
-                Toast.makeText(context, "LoadingNewPage", Toast.LENGTH_LONG).show()
+                binding.progressBar.isVisible = true
+                binding.vacancyRecyclerView.isVisible = true
+
+                binding.infoImageView.isVisible = false
+                binding.infoTextView.isVisible = false
+
+                binding.vacancyCountTextView.isVisible = false
             }
             SearchFragmentState.NoInternetAccess -> {
-                Toast.makeText(context, "NoInternet", Toast.LENGTH_LONG).show()
+                binding.infoImageView.setImageResource(R.mipmap.no_internet_info_image)
+                binding.infoImageView.isVisible = true
+                binding.infoTextView.setText(R.string.noInternet)
+                binding.infoTextView.isVisible = true
+
+                binding.vacancyRecyclerView.isVisible = false
+                binding.vacancyCountTextView.isVisible = false
+                binding.progressBar.isVisible = false
             }
             SearchFragmentState.RequestInProgress -> {
-                Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()
+                binding.progressBar.isVisible = true
+
+                binding.infoImageView.isVisible = false
+                binding.infoTextView.isVisible = false
+                binding.vacancyRecyclerView.isVisible = false
+                binding.vacancyCountTextView.isVisible = false
             }
             SearchFragmentState.ServerError -> {
-                Toast.makeText(context, "ServerError", Toast.LENGTH_LONG).show()
+                binding.infoImageView.setImageResource(R.mipmap.no_internet_info_image)
+                binding.infoImageView.isVisible = true
+                binding.infoTextView.setText(R.string.noInternet)
+                binding.infoTextView.isVisible = true
+
+                binding.vacancyRecyclerView.isVisible = false
+                binding.vacancyCountTextView.isVisible = false
+                binding.progressBar.isVisible = false
             }
             is SearchFragmentState.ShowingResults -> {
-                Toast.makeText(
-                    context,
-                    context?.resources?.getQuantityString(
-                        R.plurals.vacancies_found,
-                        newState.total,
-                        newState.total,
-                    ),
-                    Toast.LENGTH_LONG
-                ).show()
+                binding.vacancyCountTextView.text = context?.resources?.getQuantityString(
+                    R.plurals.vacancies_found,
+                    newState.total,
+                    newState.total,
+                )
+                binding.vacancyCountTextView.isVisible = true
+                binding.vacancyRecyclerView.isVisible = true
+
+                binding.infoTextView.isVisible = false
+                binding.infoImageView.isVisible = false
+                binding.progressBar.isVisible = false
             }
         }
     }
