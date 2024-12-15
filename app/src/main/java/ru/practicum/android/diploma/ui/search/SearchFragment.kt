@@ -63,7 +63,7 @@ class SearchFragment : Fragment() {
             SearchFragmentState.EmptyResults -> {
                 Toast.makeText(
                     context,
-                    context?.getString(R.string.noSuchVacancy),
+                    context?.getString(R.string.no_such_vacancy),
                     Toast.LENGTH_LONG
                 ).show()
             }
