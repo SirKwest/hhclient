@@ -29,15 +29,15 @@ class SearchFragment : Fragment() {
             processingChangedScreenState(state)
         }
 
-        binding.searchField.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused && binding.searchField.text!!.isNotEmpty()) {
-                viewModel.search(binding.searchField.text.toString())
+        binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
+            if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
+                viewModel.search(binding.searchEditText.text.toString())
             }
         }
 
-        binding.searchField.requestFocus()
+        binding.searchEditText.requestFocus()
 
-        binding.searchField.doOnTextChanged { text, _, _, _ ->
+        binding.searchEditText.doOnTextChanged { text, _, _, _ ->
             text?.let {
                 viewModel.search(text.toString())
             }
@@ -59,7 +59,7 @@ class SearchFragment : Fragment() {
             SearchFragmentState.EmptyResults -> {
                 Toast.makeText(
                     context,
-                    context?.getString(R.string.no_such_vacancies),
+                    context?.getString(R.string.noSuchVacancy),
                     Toast.LENGTH_LONG
                 ).show()
             }
