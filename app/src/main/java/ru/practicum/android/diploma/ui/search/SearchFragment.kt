@@ -1,22 +1,24 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.presentation.SearchFragmentState
 import ru.practicum.android.diploma.presentation.SearchFragmentViewModel
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val viewModel: SearchFragmentViewModel by viewModel()
+
+    private var vacanciesAdapter = VacancyListAdapter(mutableListOf())
 
     private val binding get() = _binding!!
 
@@ -60,7 +62,7 @@ class SearchFragment : Fragment() {
                 binding.infoImageView.isVisible = true
 
                 binding.infoTextView.isVisible = false
-                binding.vacancyRecyclerView.isVisible = false
+                //binding.vacancyRecyclerView.isVisible = false
                 binding.vacancyCountTextView.isVisible = false
                 binding.progressBar.isVisible = false
             }
@@ -99,7 +101,7 @@ class SearchFragment : Fragment() {
 
                 binding.infoImageView.isVisible = false
                 binding.infoTextView.isVisible = false
-                binding.vacancyRecyclerView.isVisible = false
+                //binding.vacancyRecyclerView.isVisible = false
                 binding.vacancyCountTextView.isVisible = false
             }
             SearchFragmentState.ServerError -> {
@@ -120,6 +122,17 @@ class SearchFragment : Fragment() {
                 )
                 binding.vacancyCountTextView.isVisible = true
                 binding.vacancyRecyclerView.isVisible = true
+                vacanciesAdapter = VacancyListAdapter(newState.vacancies)
+                vacanciesAdapter.setOnItemClickListener(object : VacancyListAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        val item = vacanciesAdapter.getItemByPosition(position)
+                        /*findNavController().navigate(R.id.playlistDetailsFragment, Bundle().apply { putInt(
+                            BUNDLE_PLAYLIST_ID_KEY, item.id) }) */
+                    }
+                })
+                binding.vacancyRecyclerView.adapter = vacanciesAdapter
+                vacanciesAdapter.notifyDataSetChanged()
+
 
                 binding.infoTextView.isVisible = false
                 binding.infoImageView.isVisible = false

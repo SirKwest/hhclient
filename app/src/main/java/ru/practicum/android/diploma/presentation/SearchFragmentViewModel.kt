@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.ui.search.SearchFragmentState
 import ru.practicum.android.diploma.util.debouncedAction
 import java.net.HttpURLConnection
 

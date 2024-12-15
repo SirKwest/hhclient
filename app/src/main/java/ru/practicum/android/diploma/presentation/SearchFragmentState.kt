@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.search
+package ru.practicum.android.diploma.presentation
 
 import ru.practicum.android.diploma.domain.models.VacancyShort
 
