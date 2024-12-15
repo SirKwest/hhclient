@@ -12,4 +12,14 @@
     <string name="artem">Артем Григорьев</string>
 
     <string name="no_such_vacancies">Таких вакансий нет</string>
+
+    <string name="vacancy">Вакансия</string>
+    <string name="share">Поделиться</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="vacancy_not_found_or_deleted">Вакансия не найдена или удалена</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="contacts">Контакты</string>
 </resources>
