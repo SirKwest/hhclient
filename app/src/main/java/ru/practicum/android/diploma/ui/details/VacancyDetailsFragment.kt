@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -35,6 +36,9 @@ class VacancyDetailsFragment : Fragment() {
                     }
 
                     R.id.favorite -> {
+                        it.icon =
+                            ResourcesCompat.getDrawable(resources, R.drawable.ic_favorites, requireContext().theme)
+                        it.icon?.setTint(resources.getColor(R.color.red, requireContext().theme))
                         true
                     }
 
