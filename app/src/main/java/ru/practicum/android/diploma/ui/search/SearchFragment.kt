@@ -43,7 +43,7 @@ class SearchFragment : Fragment() {
             }
         }
 
-        binding.filterIcon.setOnClickListener{
+        binding.filterIcon.setOnClickListener {
             viewModel.addFilter()
         }
     }
