@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchEditText"
-        tools:text="Таких вакансий нет" />
+        tools:text="@string/noSuchVacancy" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vacancyRecyclerView"
@@ -91,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoImageView"
-        tools:text="Вакансии" />
+        tools:text="@string/noInternet" />
 
     <ProgressBar
         android:id="@+id/progressBar"
