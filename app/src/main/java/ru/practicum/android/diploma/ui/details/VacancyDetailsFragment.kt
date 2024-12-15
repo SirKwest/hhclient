@@ -45,9 +45,6 @@ class VacancyDetailsFragment : Fragment() {
                     else -> false
                 }
             }
-
-            email.setOnClickListener { viewModel.openEmail() }
-            phoneNumber.setOnClickListener { viewModel.dial() }
         }
     }
 

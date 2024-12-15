@@ -182,51 +182,6 @@
                 app:layout_constraintTop_toBottomOf="@id/key_skills_header"
                 tools:text="Знание классических алгоритмов и структуры данных\nПрограммирование для Android больше одного года\nЗнание WebRTC" />
 
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/contacts_header"
-                style="@style/VacancyFragmentSubheaderTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/contacts"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/key_skills" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/phone_number"
-                style="@style/VacancyFragmentDefaultTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawablePadding="4dp"
-                android:gravity="center_vertical"
-                android:textSize="20sp"
-                app:drawableLeftCompat="@drawable/dot"
-                app:layout_constraintStart_toStartOf="@id/contacts_header"
-                app:layout_constraintTop_toBottomOf="@id/contacts_header"
-                tools:text="88005553535" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/email"
-                style="@style/VacancyFragmentDefaultTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical"
-                android:textSize="20sp"
-                app:drawableLeftCompat="@drawable/dot"
-                app:layout_constraintStart_toStartOf="@id/contacts_header"
-                app:layout_constraintTop_toBottomOf="@id/phone_number"
-                tools:text="qwerty@yandex.ru" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/contacts_group"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:constraint_referenced_ids="contacts_header, phone_number, email" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

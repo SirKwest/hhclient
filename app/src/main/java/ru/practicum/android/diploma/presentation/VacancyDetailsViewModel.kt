@@ -10,12 +10,4 @@ class VacancyDetailsViewModel(
     fun shareVacancy() {
         sharingInteractor.shareText("stub")
     }
-
-    fun openEmail() {
-        sharingInteractor.openEmail("stub")
-    }
-
-    fun dial() {
-        sharingInteractor.dial("stub")
-    }
 }
