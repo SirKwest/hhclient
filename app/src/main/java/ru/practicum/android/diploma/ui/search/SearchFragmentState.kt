@@ -10,4 +10,5 @@ sealed interface SearchFragmentState {
     data class ShowingResults(val vacancies: List<VacancyShort>, val total: Int) : SearchFragmentState
     data object LoadingNewPageOfResults : SearchFragmentState
     data object Default : SearchFragmentState
+    data class FilterState(val isActive: Boolean) : SearchFragmentState
 }

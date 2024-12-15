@@ -16,6 +16,7 @@ class SearchFragmentViewModel(
 ) : ViewModel() {
     private val data = MutableLiveData<SearchFragmentState>()
     fun observeData(): LiveData<SearchFragmentState> = data
+    private var isActiveFilter = false
 
     val search: (String) -> Unit =
         debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
@@ -45,6 +46,16 @@ class SearchFragmentViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun addFilter() {
+        if (isActiveFilter) {
+            isActiveFilter = false
+            data.postValue(SearchFragmentState.FilterState(isActiveFilter))
+        } else {
+            isActiveFilter = true
+            data.postValue(SearchFragmentState.FilterState(isActiveFilter))
         }
     }
 

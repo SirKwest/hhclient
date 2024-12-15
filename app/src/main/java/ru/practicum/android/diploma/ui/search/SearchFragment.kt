@@ -42,6 +42,10 @@ class SearchFragment : Fragment() {
                 viewModel.search(text.toString())
             }
         }
+
+        binding.filterIcon.setOnClickListener{
+            viewModel.addFilter()
+        }
     }
 
     override fun onDestroyView() {
@@ -85,6 +89,12 @@ class SearchFragment : Fragment() {
                     ),
                     Toast.LENGTH_LONG
                 ).show()
+            }
+
+            is SearchFragmentState.FilterState -> if (newState.isActive) {
+                binding.filterIcon.setImageResource(R.drawable.icon_filter_inactive)
+            } else {
+                binding.filterIcon.setImageResource(R.drawable.icon_filter_active)
             }
         }
     }
