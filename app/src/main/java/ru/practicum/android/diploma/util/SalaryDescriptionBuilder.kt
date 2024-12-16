@@ -10,10 +10,10 @@ class SalaryDescriptionBuilder(private val context: Context) {
         min: Int?,
         max: Int?,
         code: String?,
-    ) : String {
+    ): String {
         val result: String
         if (min == null && max == null) {
-             result = context.getString(R.string.no_salary)
+            result = context.getString(R.string.no_salary)
         } else if (min == null) {
             result = context.getString(
                 R.string.max_salary,

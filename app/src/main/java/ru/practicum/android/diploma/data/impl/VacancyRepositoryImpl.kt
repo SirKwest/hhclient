@@ -18,21 +18,21 @@ class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : Vacan
             || response !is VacanciesSearchResponse
         ) {
             emit(Resource.Error(response.responseCode))
-            return@flow
+        } else {
+            val data = response.items.map {
+                val logo = it.employer.logo?.original ?: (it.employer.logo?.big ?: it.employer.logo?.small)
+                VacancyShort(
+                    it.id,
+                    it.name,
+                    it.area.name,
+                    it.employer.name,
+                    logo.orEmpty(),
+                    it.salary?.low,
+                    it.salary?.high,
+                    it.salary?.currency,
+                )
+            }
+            emit(Resource.Success(data, response.page, response.pages, response.found))
         }
-        val data = response.items.map {
-            val logo = it.employer.logo?.original ?: (it.employer.logo?.big ?: it.employer.logo?.small)
-            VacancyShort(
-                it.id,
-                it.name,
-                it.area.name,
-                it.employer.name,
-                logo.orEmpty(),
-                it.salary?.low,
-                it.salary?.high,
-                it.salary?.currency,
-            )
-        }
-        emit(Resource.Success(data, response.page, response.pages, response.found))
     }
 }

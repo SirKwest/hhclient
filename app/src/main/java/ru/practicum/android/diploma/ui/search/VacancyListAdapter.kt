@@ -8,7 +8,9 @@ import ru.practicum.android.diploma.domain.models.VacancyShort
 
 class VacancyListAdapter(private val vacancies: List<VacancyShort>) : RecyclerView.Adapter<VacancyListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyListViewHolder {
-        return VacancyListViewHolder(VacancyListItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return VacancyListViewHolder(
+            VacancyListItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -20,7 +22,7 @@ class VacancyListAdapter(private val vacancies: List<VacancyShort>) : RecyclerVi
         holder.itemView.setOnClickListener { itemClickListener?.onItemClick(position) }
     }
 
-    fun getItemByPosition(position: Int) : VacancyShort {
+    fun getItemByPosition(position: Int): VacancyShort {
         return vacancies[position]
     }
 

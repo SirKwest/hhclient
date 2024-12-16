@@ -49,9 +49,15 @@ class SearchFragmentViewModel(
 
                     is Resource.Error -> {
                         when (result.code) {
-                            HttpURLConnection.HTTP_BAD_REQUEST -> { screenState.postValue(SearchFragmentState.ServerError) }
-                            HttpURLConnection.HTTP_FORBIDDEN -> { screenState.postValue(SearchFragmentState.ServerError) }
-                            HttpURLConnection.HTTP_NOT_FOUND -> { screenState.postValue(SearchFragmentState.ServerError) }
+                            HttpURLConnection.HTTP_BAD_REQUEST -> {
+                                screenState.postValue(SearchFragmentState.ServerError)
+                            }
+                            HttpURLConnection.HTTP_FORBIDDEN -> {
+                                screenState.postValue(SearchFragmentState.ServerError)
+                            }
+                            HttpURLConnection.HTTP_NOT_FOUND -> {
+                                screenState.postValue(SearchFragmentState.ServerError)
+                            }
                             else -> { screenState.postValue(SearchFragmentState.NoInternetAccess) }
                         }
                     }

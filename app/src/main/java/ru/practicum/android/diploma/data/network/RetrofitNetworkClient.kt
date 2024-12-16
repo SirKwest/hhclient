@@ -1,9 +1,8 @@
 package ru.practicum.android.diploma.data.network
 
+import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
-import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
-import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(val api: HHApi) : NetworkClient {
     override suspend fun doRequest(dto: Any): Response {
@@ -26,9 +25,9 @@ class RetrofitNetworkClient(val api: HHApi) : NetworkClient {
             val response = result.body() ?: Response()
             response.responseCode = result.code()
             response
-        } catch (error: Exception) {
+        } catch (error: HttpException) {
             val response = Response()
-            response.responseCode = HttpURLConnection.HTTP_UNAVAILABLE
+            response.responseCode = error.code()
             response
         }
     }
