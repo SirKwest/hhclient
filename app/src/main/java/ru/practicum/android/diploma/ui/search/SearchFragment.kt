@@ -71,9 +71,10 @@ class SearchFragment : Fragment() {
                 binding.infoImageView.isVisible = true
 
                 binding.infoTextView.isVisible = false
-                //binding.vacancyRecyclerView.isVisible = false
+                binding.vacancyRecyclerView.isVisible = false
                 binding.vacancyCountTextView.isVisible = false
                 binding.progressBar.isVisible = false
+                binding.progressBarForPageLoading.isVisible = false
             }
             SearchFragmentState.EmptyResults -> {
                 binding.infoImageView.setImageResource(R.drawable.no_vacancy_image)
@@ -85,14 +86,15 @@ class SearchFragment : Fragment() {
 
                 binding.vacancyRecyclerView.isVisible = false
                 binding.progressBar.isVisible = false
+                binding.progressBarForPageLoading.isVisible = false
             }
             SearchFragmentState.LoadingNewPageOfResults -> {
-                binding.progressBar.isVisible = true
+                binding.progressBarForPageLoading.isVisible = true
                 binding.vacancyRecyclerView.isVisible = true
 
                 binding.infoImageView.isVisible = false
                 binding.infoTextView.isVisible = false
-
+                binding.progressBar.isVisible = false
                 binding.vacancyCountTextView.isVisible = false
             }
             SearchFragmentState.NoInternetAccess -> {
@@ -104,14 +106,16 @@ class SearchFragment : Fragment() {
                 binding.vacancyRecyclerView.isVisible = false
                 binding.vacancyCountTextView.isVisible = false
                 binding.progressBar.isVisible = false
+                binding.progressBarForPageLoading.isVisible = false
             }
             SearchFragmentState.RequestInProgress -> {
                 binding.progressBar.isVisible = true
 
                 binding.infoImageView.isVisible = false
                 binding.infoTextView.isVisible = false
-                //binding.vacancyRecyclerView.isVisible = false
+                binding.vacancyRecyclerView.isVisible = false
                 binding.vacancyCountTextView.isVisible = false
+                binding.progressBarForPageLoading.isVisible = false
             }
             SearchFragmentState.ServerError -> {
                 binding.infoImageView.setImageResource(R.drawable.server_error)
@@ -122,6 +126,7 @@ class SearchFragment : Fragment() {
                 binding.vacancyRecyclerView.isVisible = false
                 binding.vacancyCountTextView.isVisible = false
                 binding.progressBar.isVisible = false
+                binding.progressBarForPageLoading.isVisible = false
             }
             is SearchFragmentState.ShowingResults -> {
                 binding.vacancyCountTextView.text = context?.resources?.getQuantityString(
@@ -146,6 +151,7 @@ class SearchFragment : Fragment() {
                 binding.infoTextView.isVisible = false
                 binding.infoImageView.isVisible = false
                 binding.progressBar.isVisible = false
+                binding.progressBarForPageLoading.isVisible = false
             }
         }
     }

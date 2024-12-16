@@ -6,6 +6,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyListItemLayoutBinding
 import ru.practicum.android.diploma.domain.models.VacancyShort
+import ru.practicum.android.diploma.util.SalaryDescriptionBuilder
 
 class VacancyListViewHolder(private val binding: VacancyListItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(vacancy: VacancyShort) {
@@ -17,6 +18,7 @@ class VacancyListViewHolder(private val binding: VacancyListItemLayoutBinding) :
             .into(binding.vacancyLogoIv)
         binding.vacancyNameTv.text = vacancy.name
         binding.vacancyEmployerTv.text = vacancy.employer
-        binding.vacancySalaryTv.text = vacancy.salaryHigh.toString()
+        binding.vacancySalaryTv.text = SalaryDescriptionBuilder(binding.root.context)
+            .build(vacancy.salaryLow, vacancy.salaryHigh, vacancy.currency)
     }
 }

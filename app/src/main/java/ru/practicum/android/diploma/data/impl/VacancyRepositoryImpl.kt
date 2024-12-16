@@ -21,12 +21,13 @@ class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : Vacan
             return@flow
         }
         val data = response.items.map {
+            val logo = it.employer.logo?.original ?: (it.employer.logo?.big ?: it.employer.logo?.small)
             VacancyShort(
                 it.id,
                 it.name,
                 it.area.name,
                 it.employer.name,
-                it.employer.logo?.small.orEmpty(),
+                logo.orEmpty(),
                 it.salary?.low,
                 it.salary?.high,
                 it.salary?.currency,
