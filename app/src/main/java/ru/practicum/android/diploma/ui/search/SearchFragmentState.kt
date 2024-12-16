@@ -11,4 +11,5 @@ sealed interface SearchFragmentState {
     data object LoadingNewPageOfResults : SearchFragmentState
     data object Default : SearchFragmentState
     data class FilterState(val isActive: Boolean) : SearchFragmentState
+    data class ClearEditTextState(val isEmpty: Boolean) :SearchFragmentState
 }

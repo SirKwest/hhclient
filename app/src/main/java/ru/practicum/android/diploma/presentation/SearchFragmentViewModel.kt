@@ -59,6 +59,10 @@ class SearchFragmentViewModel(
         }
     }
 
+    fun checkTextIsEmpty(text: String) {
+        data.postValue(SearchFragmentState.ClearEditTextState(text.isEmpty()))
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }

@@ -1,10 +1,12 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,6 +41,7 @@ class SearchFragment : Fragment() {
 
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
             text?.let {
+                viewModel.checkTextIsEmpty(text.toString())
                 viewModel.search(text.toString())
             }
         }
@@ -95,6 +98,20 @@ class SearchFragment : Fragment() {
                 binding.filterIcon.setImageResource(R.drawable.icon_filter_inactive)
             } else {
                 binding.filterIcon.setImageResource(R.drawable.icon_filter_active)
+            }
+
+            is SearchFragmentState.ClearEditTextState -> {
+                val drawableEnd: Drawable? = if (newState.isEmpty) {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
+                } else {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
+                }
+                binding.searchEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    null,
+                    null,
+                    drawableEnd,
+                    null
+                )
             }
         }
     }
