@@ -31,7 +31,6 @@
         android:id="@+id/main_navigation_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/backgroundColor"
         app:itemIconTint="@color/navigation_tab_color"
         app:itemTextColor="@color/navigation_tab_color"
         app:menu="@menu/main_nav_menu"

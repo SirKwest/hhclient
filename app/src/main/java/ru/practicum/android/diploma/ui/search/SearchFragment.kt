@@ -1,10 +1,14 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,23 +27,45 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.observeData().observe(viewLifecycleOwner) { state ->
             processingChangedScreenState(state)
         }
 
-        binding.searchField.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused && binding.searchField.text!!.isNotEmpty()) {
-                viewModel.search(binding.searchField.text.toString())
+        binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
+            if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
+                viewModel.search(binding.searchEditText.text.toString())
             }
         }
 
-        binding.searchField.requestFocus()
+        binding.searchEditText.requestFocus()
 
-        binding.searchField.doOnTextChanged { text, _, _, _ ->
+        binding.searchEditText.doOnTextChanged { text, _, _, _ ->
             text?.let {
+                viewModel.checkTextIsEmpty(text.toString())
                 viewModel.search(text.toString())
+            }
+        }
+
+        binding.filterIcon.setOnClickListener {
+            viewModel.addFilter()
+        }
+
+        binding.searchEditText.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2]
+                val position = binding.searchEditText.width -
+                    binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
+                if (drawableEnd != null && event.rawX >= position) {
+                    binding.searchEditText.text?.clear()
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
             }
         }
     }
@@ -59,7 +85,7 @@ class SearchFragment : Fragment() {
             SearchFragmentState.EmptyResults -> {
                 Toast.makeText(
                     context,
-                    context?.getString(R.string.no_such_vacancies),
+                    context?.getString(R.string.no_such_vacancy),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -85,6 +111,26 @@ class SearchFragment : Fragment() {
                     ),
                     Toast.LENGTH_LONG
                 ).show()
+            }
+
+            is SearchFragmentState.FilterState -> if (newState.isActive) {
+                binding.filterIcon.setImageResource(R.drawable.icon_filter_inactive)
+            } else {
+                binding.filterIcon.setImageResource(R.drawable.icon_filter_active)
+            }
+
+            is SearchFragmentState.ClearEditTextState -> {
+                val drawableEnd: Drawable? = if (newState.isEmpty) {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
+                } else {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
+                }
+                binding.searchEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    null,
+                    null,
+                    drawableEnd,
+                    null
+                )
             }
         }
     }
