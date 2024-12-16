@@ -174,8 +174,10 @@ class SearchFragment : Fragment() {
                 vacanciesAdapter.setOnItemClickListener(object : VacancyListAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {
                         val item = vacanciesAdapter.getItemByPosition(position)
-                        findNavController().navigate(R.id.vacancy_details_fragment, Bundle().apply { putString(
-                            VACANCY_ID_KEY, item.id) })
+                        findNavController().navigate(
+                            R.id.vacancy_details_fragment,
+                            Bundle().apply { putString(VACANCY_ID_KEY, item.id) }
+                        )
                     }
                 })
                 binding.vacancyRecyclerView.adapter = vacanciesAdapter
