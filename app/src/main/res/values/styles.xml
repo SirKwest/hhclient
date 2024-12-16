@@ -96,7 +96,6 @@
         <item name="android:textSize">@dimen/text_size_32</item>
         <item name="fontWeight">700</item>
         <item name="lineHeight">@dimen/line_height_size_38sp</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
     <style name="VacancyFragmentDefaultTextStyle">
@@ -104,7 +103,6 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:textSize">@dimen/text_size_16</item>
         <item name="fontWeight">400</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
         <item name="lineHeight">@dimen/line_height_size_19sp</item>
     </style>
 
@@ -114,7 +112,6 @@
         <item name="android:textSize">@dimen/text_size_22</item>
         <item name="fontWeight">500</item>
         <item name="lineHeight">@dimen/line_height_size_26sp</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
     <style name="VacancyFragmentSubheaderTextStyle">
@@ -123,7 +120,6 @@
         <item name="android:textSize">@dimen/text_size_22</item>
         <item name="fontWeight">500</item>
         <item name="lineHeight">@dimen/line_height_size_26sp</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
     <style name="VacancyFragmentSubheader2TextStyle" parent="VacancyFragmentSubheaderTextStyle">
