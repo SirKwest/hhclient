@@ -7,5 +7,7 @@
         <item name="colorOnSecondary">@color/red</item>
         <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorSecondaryVariant">@color/white</item>
+        <item name="android:colorBackground">?backgroundColor</item>
+        <item name="backgroundColor">@color/black</item>
     </style>
 </resources>
