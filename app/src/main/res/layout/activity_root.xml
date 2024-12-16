@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         app:itemIconTint="@color/navigation_tab_color"
         app:itemTextColor="@color/navigation_tab_color"
+        app:backgroundTint="?backgroundColor"
         app:menu="@menu/main_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
