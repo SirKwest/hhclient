@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/searchTitle"
+        app:title="@string/search_title"
         app:titleTextColor="?attr/colorPrimary">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -41,7 +41,10 @@
         android:textColor="@color/black"
         android:textColorHint="?attr/colorSecondaryVariant"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintBottom_toTopOf="@+id/vacancyCountTextView"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/vacancyCountTextView"
@@ -55,10 +58,11 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchEditText"
-        tools:text="@string/noSuchVacancy" />
+        tools:text="@string/no_such_vacancy" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vacancyRecyclerView"
@@ -72,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:src="@mipmap/start_info_image"
+        android:src="@drawable/start_info_image"
         app:layout_constraintBottom_toTopOf="@+id/infoTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +97,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoImageView"
-        tools:text="@string/noInternet" />
+        tools:text="@string/no_internet" />
 
     <ProgressBar
         android:id="@+id/progressBar"

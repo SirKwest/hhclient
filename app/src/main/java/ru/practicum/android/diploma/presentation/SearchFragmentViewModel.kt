@@ -15,7 +15,10 @@ class SearchFragmentViewModel(
 ) : ViewModel() {
     private var lastSearchedValue: String = ""
     private val screenState = MutableLiveData<SearchFragmentState>()
+    private val filtersButtonState = MutableLiveData<Boolean>()
     fun observeData(): LiveData<SearchFragmentState> = screenState
+    fun observeFilter(): LiveData<Boolean> = filtersButtonState
+
 
     val search: (String) -> Unit =
         debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
