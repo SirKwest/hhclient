@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -173,8 +174,8 @@ class SearchFragment : Fragment() {
                 vacanciesAdapter.setOnItemClickListener(object : VacancyListAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {
                         val item = vacanciesAdapter.getItemByPosition(position)
-                        /*findNavController().navigate(R.id.playlistDetailsFragment, Bundle().apply { putInt(
-                            BUNDLE_PLAYLIST_ID_KEY, item.id) }) */
+                        findNavController().navigate(R.id.vacancy_details_fragment, Bundle().apply { putString(
+                            VACANCY_ID_KEY, item.id) })
                     }
                 })
                 binding.vacancyRecyclerView.adapter = vacanciesAdapter
@@ -186,5 +187,9 @@ class SearchFragment : Fragment() {
                 binding.progressBarForPageLoading.isVisible = false
             }
         }
+    }
+
+    companion object {
+        const val VACANCY_ID_KEY = "VACANCY_ID_KEY"
     }
 }
