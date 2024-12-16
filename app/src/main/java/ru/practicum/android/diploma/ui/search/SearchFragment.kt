@@ -55,13 +55,18 @@ class SearchFragment : Fragment() {
 
         binding.searchEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2] ?: return@setOnTouchListener false
-                if (event.rawX >= (binding.searchEditText.width - binding.searchEditText.paddingEnd - drawableEnd.bounds.width())) {
+                val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2]
+                val position = binding.searchEditText.width -
+                    binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
+                if (drawableEnd != null && event.rawX >= (position)) {
                     binding.searchEditText.text?.clear()
-                    return@setOnTouchListener true
+                    true
+                } else {
+                    false
                 }
+            } else {
+                false
             }
-            false
         }
     }
 
