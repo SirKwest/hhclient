@@ -11,7 +11,11 @@
     <string name="constantine">Константин Ким</string>
     <string name="artem">Артем Григорьев</string>
 
-    <string name="no_such_vacancies">Таких вакансий нет</string>
+    <string name="inputHint">Введите запрос</string>
+    <string name="no_internet">Нет интернета</string>
+    <string name="cant_get_vacancy">Не удалось получить список вакансий</string>
+    <string name="no_such_vacancy">Таких вакансий нет</string>
+    <string name="search_title">Поиск вакансий</string>
 
     <string name="vacancy">Вакансия</string>
     <string name="share">Поделиться</string>
