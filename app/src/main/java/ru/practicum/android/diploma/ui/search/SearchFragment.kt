@@ -58,7 +58,7 @@ class SearchFragment : Fragment() {
                 val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2]
                 val position = binding.searchEditText.width -
                     binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
-                if (drawableEnd != null && event.rawX >= (position)) {
+                if (drawableEnd != null && event.rawX >= position) {
                     binding.searchEditText.text?.clear()
                     true
                 } else {
