@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.details.VacancyDetailsFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:minHeight="@dimen/toolbar_height"
+        app:contentInsetStartWithNavigation="0dp"
+        app:menu="@menu/vacancy_details_toolbar_menu"
+        app:navigationIcon="@drawable/icon_arrow_back_24px"
+        app:title="Вакансия"
+        app:titleTextAppearance="@style/ToolbarTitleTextStyle" />
+
+    <ScrollView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/vacancy_name"
+                style="@style/VacancyFragmentHeaderTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Android-разработчик" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/salary"
+                style="@style/VacancyFragmentSalaryTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vacancy_name"
+                tools:text="от 100 000 ₽" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/employer_card"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_gray"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:contentPadding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/salary">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/employer_logo"
+                        android:layout_width="@dimen/logo_size"
+                        android:layout_height="@dimen/logo_size"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearance="@style/LogoRadius"
+                        tools:src="@drawable/ic_main" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/employer_name"
+                        style="@style/VacancyFragmentSubheaderTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@id/employer_logo"
+                        app:layout_constraintTop_toTopOf="@id/employer_logo"
+                        tools:text="Еда" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/employer_area"
+                        style="@style/VacancyFragmentDefaultTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="@id/employer_name"
+                        app:layout_constraintTop_toBottomOf="@id/employer_name"
+                        tools:text="Москва" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/experience_header"
+                style="@style/VacancyFragmentSubheader2TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/required_experience"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/employer_card" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/experience"
+                style="@style/VacancyFragmentDefaultTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="@id/experience_header"
+                app:layout_constraintTop_toBottomOf="@id/experience_header"
+                tools:text="От 1 года до 3 лет" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/experience_group"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="experience_header, experience" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/subinfo"
+                style="@style/VacancyFragmentDefaultTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/experience"
+                tools:text="Полная занятость, Удаленная работа" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/description_header"
+                style="@style/VacancyFragmentSubheaderTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/vacancy_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subinfo" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/description"
+                style="@style/VacancyFragmentDefaultTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="@id/description_header"
+                app:layout_constraintTop_toBottomOf="@id/description_header"
+                tools:text="Разрабатывать новую функциональность приложения\nПомогать с интеграцией нашего SDK в другие приложения\nПроектировать большие новые модули\nПисать UI- и unit-тесты\nСледить за работоспособностью сервиса и устранять технический долг" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/description_group"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="description_header, description" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/key_skills_header"
+                style="@style/VacancyFragmentSubheaderTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/key_skills"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/key_skills"
+                style="@style/VacancyFragmentDefaultTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="@id/key_skills_header"
+                app:layout_constraintTop_toBottomOf="@id/key_skills_header"
+                tools:text="Знание классических алгоритмов и структуры данных\nПрограммирование для Android больше одного года\nЗнание WebRTC" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ViewStub
+        android:id="@+id/not_found_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/vacancy_details_not_found_placeholder" />
+
+    <ViewStub
+        android:id="@+id/server_error_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/vacancy_details_error_placeholder" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone" />
+
+</LinearLayout>

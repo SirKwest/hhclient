@@ -6,8 +6,8 @@ import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.domain.models.VacancyRepository
 import ru.practicum.android.diploma.domain.models.VacancyShort
+import ru.practicum.android.diploma.domain.repository.VacancyRepository
 import java.net.HttpURLConnection
 
 class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : VacancyRepository {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation_graph"
     app:startDestination="@id/search_fragment">
 
@@ -8,18 +9,24 @@
         android:id="@+id/search_fragment"
         android:name="ru.practicum.android.diploma.ui.search.SearchFragment"
         android:label="SearchFragment"
-    />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/favorites_fragment"
         android:name="ru.practicum.android.diploma.ui.favorites.FavoritesFragment"
         android:label="FavoritesFragment"
-    />
+        tools:layout="@layout/fragment_favorites" />
 
     <fragment
         android:id="@+id/team_fragment"
         android:name="ru.practicum.android.diploma.ui.team.TeamFragment"
         android:label="TeamFragment"
-    />
+        tools:layout="@layout/fragment_team" />
+
+    <fragment
+        android:id="@+id/vacancy_details_fragment"
+        android:name="ru.practicum.android.diploma.ui.details.VacancyDetailsFragment"
+        android:label="fragment_vacancy_details"
+        tools:layout="@layout/fragment_vacancy_details" />
 
 </navigation>
