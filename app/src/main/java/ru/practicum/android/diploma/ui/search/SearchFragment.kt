@@ -1,8 +1,10 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -25,6 +27,7 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.observeData().observe(viewLifecycleOwner) { state ->
@@ -48,6 +51,17 @@ class SearchFragment : Fragment() {
 
         binding.filterIcon.setOnClickListener {
             viewModel.addFilter()
+        }
+
+        binding.searchEditText.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2] ?: return@setOnTouchListener false
+                if (event.rawX >= (binding.searchEditText.width - binding.searchEditText.paddingEnd - drawableEnd.bounds.width())) {
+                    binding.searchEditText.text?.clear()
+                    return@setOnTouchListener true
+                }
+            }
+            false
         }
     }
 
