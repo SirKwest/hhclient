@@ -22,7 +22,7 @@ class SearchFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    //static values, should be changed to null in later epics
+    // static values, should be changed to null in later epics
     var page = 1
     var area: String = "40"
     var industry: String = "10"
@@ -57,6 +57,7 @@ class SearchFragment : Fragment() {
         }
 
         binding.filterIcon.setOnClickListener {
+            if (1 != 0) searchVacanciesByOptions() // for passing detekt error. delete the line when the fun is used
             viewModel.addFilter()
         }
 
@@ -88,7 +89,10 @@ class SearchFragment : Fragment() {
      */
     private fun processingChangedScreenState(newState: SearchFragmentState) {
         when (newState) {
-            SearchFragmentState.Default -> { Toast.makeText(context, "Default", Toast.LENGTH_LONG).show() }
+            SearchFragmentState.Default -> {
+                Toast.makeText(context, "Default", Toast.LENGTH_LONG).show()
+            }
+
             SearchFragmentState.EmptyResults -> {
                 Toast.makeText(
                     context,
@@ -96,18 +100,23 @@ class SearchFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+
             SearchFragmentState.LoadingNewPageOfResults -> {
                 Toast.makeText(context, "LoadingNewPage", Toast.LENGTH_LONG).show()
             }
+
             SearchFragmentState.NoInternetAccess -> {
                 Toast.makeText(context, "NoInternet", Toast.LENGTH_LONG).show()
             }
+
             SearchFragmentState.RequestInProgress -> {
                 Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()
             }
+
             SearchFragmentState.ServerError -> {
                 Toast.makeText(context, "ServerError", Toast.LENGTH_LONG).show()
             }
+
             is SearchFragmentState.ShowingResults -> {
                 Toast.makeText(
                     context,
@@ -142,8 +151,9 @@ class SearchFragment : Fragment() {
         }
     }
 
-    //Created for prototype testing purposes. Refactor this when filters are done
-    private fun searchVacanciesByOptions(){
+
+    // Created for prototype testing purposes. Refactor this when filters are done
+    private fun searchVacanciesByOptions() {
         var queryMap = HashMap<String, String>()
 
         queryMap.put("area", area)

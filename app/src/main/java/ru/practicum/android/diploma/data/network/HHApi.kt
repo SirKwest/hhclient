@@ -33,6 +33,4 @@ interface HHApi {
 
     @GET("/industries")
     suspend fun getIndustries(): Response<IndustriesResponse>
-
-
 }

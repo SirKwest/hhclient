@@ -36,7 +36,7 @@ data class Salary(
 
 data class RegionDto(
     val id: String,
-    val parent_id: String,
+    val parentId: String,
     val name: String,
     val areas: String
 )

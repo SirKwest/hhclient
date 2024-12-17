@@ -32,15 +32,15 @@ class SearchFragmentViewModel(
         }
     }
 
-    fun searchByOptions(page: Int, options: Map<String, String>){
-viewModelScope.launch {
-    vacancyInteractor.searchVacanciesByOptions(page, options).collect { result ->
-        processResults(result)
-    }
-}
+    fun searchByOptions(page: Int, options: Map<String, String>) {
+        viewModelScope.launch {
+            vacancyInteractor.searchVacanciesByOptions(page, options).collect { result ->
+                processResults(result)
+            }
+        }
     }
 
-    private fun processResults(result: Resource){
+    private fun processResults(result: Resource) {
         when (result) {
             is Resource.Success -> {
                 if (result.items.isNotEmpty()) {
@@ -52,10 +52,21 @@ viewModelScope.launch {
 
             is Resource.Error -> {
                 when (result.code) {
-                    HttpURLConnection.HTTP_BAD_REQUEST -> { data.postValue(SearchFragmentState.ServerError) }
-                    HttpURLConnection.HTTP_FORBIDDEN -> { data.postValue(SearchFragmentState.ServerError) }
-                    HttpURLConnection.HTTP_NOT_FOUND -> { data.postValue(SearchFragmentState.ServerError) }
-                    else -> { data.postValue(SearchFragmentState.NoInternetAccess) }
+                    HttpURLConnection.HTTP_BAD_REQUEST -> {
+                        data.postValue(SearchFragmentState.ServerError)
+                    }
+
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        data.postValue(SearchFragmentState.ServerError)
+                    }
+
+                    HttpURLConnection.HTTP_NOT_FOUND -> {
+                        data.postValue(SearchFragmentState.ServerError)
+                    }
+
+                    else -> {
+                        data.postValue(SearchFragmentState.NoInternetAccess)
+                    }
                 }
             }
         }
