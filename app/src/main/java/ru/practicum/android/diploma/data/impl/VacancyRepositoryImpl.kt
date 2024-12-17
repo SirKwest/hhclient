@@ -2,6 +2,8 @@ package ru.practicum.android.diploma.data.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.dto.Response
+import ru.practicum.android.diploma.data.dto.VacanciesSearchOptionsRequest
 import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.network.NetworkClient
@@ -11,7 +13,16 @@ import ru.practicum.android.diploma.domain.models.VacancyShort
 
 class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : VacancyRepository {
     override fun searchVacancies(text: String, page: Int): Flow<Resource> = flow {
-        val response = headhunterClient.doRequest(VacanciesSearchRequest(text, page))
+        val response = proceedRequest(headhunterClient.doRequest(VacanciesSearchRequest(text, page)))
+        emit(response)
+    }
+
+    override fun searchVacanciesByOptions(page: Int, options: Map<String, String>): Flow<Resource> = flow {
+        val response = proceedRequest(headhunterClient.doRequest(VacanciesSearchOptionsRequest(page, options)))
+        emit(response)
+    }
+
+    private fun proceedRequest(response: Response): Resource {
         if (response is VacanciesSearchResponse) {
             val data = response.items.map {
                 VacancyShort(
@@ -25,9 +36,10 @@ class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : Vacan
                     it.salary?.currency,
                 )
             }
-            emit(Resource.Success(data, response.page, response.pages, response.found))
+            return Resource.Success(data, response.page, response.pages, response.found)
         } else {
-            emit(Resource.Error(response.responseCode))
+            return Resource.Error(response.responseCode)
         }
     }
+
 }

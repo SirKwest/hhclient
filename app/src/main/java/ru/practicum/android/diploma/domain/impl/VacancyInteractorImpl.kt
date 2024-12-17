@@ -9,4 +9,8 @@ class VacancyInteractorImpl(private val repository: VacancyRepository) : Vacancy
     override fun searchVacancies(text: String, page: Int): Flow<Resource> {
         return repository.searchVacancies(text, page)
     }
+
+    override fun searchVacanciesByOptions(page: Int, options: Map<String, String>): Flow<Resource> {
+        return repository.searchVacanciesByOptions(page, options)
+    }
 }
