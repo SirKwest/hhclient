@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
-import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.VacanciesSearchResource
 import ru.practicum.android.diploma.util.debouncedAction
 import java.net.HttpURLConnection
 
@@ -39,7 +39,7 @@ class SearchFragmentViewModel(
             lastSearchedValue = text
             vacancyInteractor.searchVacancies(text, page).collect { result ->
                 when (result) {
-                    is Resource.Success -> {
+                    is VacanciesSearchResource.Success -> {
                         if (result.items.isNotEmpty()) {
                             screenState.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
                         } else {
@@ -47,14 +47,16 @@ class SearchFragmentViewModel(
                         }
                     }
 
-                    is Resource.Error -> {
+                    is VacanciesSearchResource.Error -> {
                         when (result.code) {
                             HttpURLConnection.HTTP_BAD_REQUEST -> {
                                 screenState.postValue(SearchFragmentState.ServerError)
                             }
+
                             HttpURLConnection.HTTP_FORBIDDEN -> {
                                 screenState.postValue(SearchFragmentState.ServerError)
                             }
+
                             HttpURLConnection.HTTP_NOT_FOUND -> {
                                 screenState.postValue(SearchFragmentState.ServerError)
                             }
