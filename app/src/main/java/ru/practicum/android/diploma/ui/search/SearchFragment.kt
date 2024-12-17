@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -91,6 +93,31 @@ class SearchFragment : Fragment() {
                 false
             }
         }
+
+        binding.vacancyRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val lastVisibleItemPosition =
+                        (binding.vacancyRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    if (lastVisibleItemPosition >= vacanciesAdapter.itemCount - 1) {
+                        viewModel.loadNextPage()
+                    }
+                }
+            }
+        })
+        vacanciesAdapter = VacancyListAdapter(mutableListOf())
+        vacanciesAdapter.setOnItemClickListener(object : VacancyListAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val item = vacanciesAdapter.getItemByPosition(position)
+                findNavController().navigate(
+                    R.id.vacancy_details_fragment,
+                    Bundle().apply { putString(VACANCY_ID_KEY, item.id) }
+                )
+            }
+        })
+        binding.vacancyRecyclerView.adapter = vacanciesAdapter
     }
 
     override fun onDestroyView() {
@@ -125,11 +152,12 @@ class SearchFragment : Fragment() {
             SearchFragmentState.LoadingNewPageOfResults -> {
                 binding.progressBarForPageLoading.isVisible = true
                 binding.vacancyRecyclerView.isVisible = true
+                binding.vacancyCountTextView.isVisible = true
+                binding.vacancyRecyclerView.scrollToPosition(vacanciesAdapter.itemCount - 1)
 
                 binding.infoImageView.isVisible = false
                 binding.infoTextView.isVisible = false
                 binding.progressBar.isVisible = false
-                binding.vacancyCountTextView.isVisible = false
             }
             SearchFragmentState.NoInternetAccess -> {
                 binding.infoImageView.setImageResource(R.drawable.no_internet_info_image)
@@ -163,25 +191,15 @@ class SearchFragment : Fragment() {
                 binding.progressBarForPageLoading.isVisible = false
             }
             is SearchFragmentState.ShowingResults -> {
+                binding.vacancyCountTextView.isVisible = true
+                binding.vacancyRecyclerView.isVisible = true
+                vacanciesAdapter.resetData(newState.vacancies)
+                vacanciesAdapter.notifyDataSetChanged()
                 binding.vacancyCountTextView.text = context?.resources?.getQuantityString(
                     R.plurals.vacancies_found,
                     newState.total,
                     newState.total,
                 )
-                binding.vacancyCountTextView.isVisible = true
-                binding.vacancyRecyclerView.isVisible = true
-                vacanciesAdapter = VacancyListAdapter(newState.vacancies)
-                vacanciesAdapter.setOnItemClickListener(object : VacancyListAdapter.OnItemClickListener {
-                    override fun onItemClick(position: Int) {
-                        val item = vacanciesAdapter.getItemByPosition(position)
-                        findNavController().navigate(
-                            R.id.vacancy_details_fragment,
-                            Bundle().apply { putString(VACANCY_ID_KEY, item.id) }
-                        )
-                    }
-                })
-                binding.vacancyRecyclerView.adapter = vacanciesAdapter
-                vacanciesAdapter.notifyDataSetChanged()
 
                 binding.infoTextView.isVisible = false
                 binding.infoImageView.isVisible = false
