@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.ui.search.SearchFragmentState
 import ru.practicum.android.diploma.util.debouncedAction
 import java.net.HttpURLConnection
 
@@ -19,33 +20,22 @@ class SearchFragmentViewModel(
     private val filtersButtonState = MutableLiveData<Boolean>()
     fun observeData(): LiveData<SearchFragmentState> = screenState
     fun observeFilter(): LiveData<Boolean> = filtersButtonState
+    private var searchDebounceJob: Job? = null
+
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
 
     fun addFilter() {
         val newValue = filtersButtonState.value ?: false
         filtersButtonState.postValue(!newValue)
     }
 
-    val search: (String) -> Unit =
-        debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
-            processNewSearch(searchText)
-        }
-
-    private fun processNewSearch(text: String) {
-        val page = 1
-        if (lastSearchedValue == text) {
-            return
-        }
-        viewModelScope.launch {
-            screenState.postValue(SearchFragmentState.RequestInProgress)
-            lastSearchedValue = text
-            vacancyInteractor.searchVacancies(text, page).collect { result ->
-                processResults(result)
-            }
-        }
-    }
-
     fun searchByOptions(page: Int, options: Map<String, String>) {
-        viewModelScope.launch {
+        searchDebounceJob?.cancel()
+        searchDebounceJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
             vacancyInteractor.searchVacanciesByOptions(page, options).collect { result ->
                 processResults(result)
             }
@@ -56,49 +46,31 @@ class SearchFragmentViewModel(
         when (result) {
             is Resource.Success -> {
                 if (result.items.isNotEmpty()) {
-                    data.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
+                    screenState.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
                 } else {
-                    data.postValue(SearchFragmentState.EmptyResults)
+                    screenState.postValue(SearchFragmentState.EmptyResults)
                 }
             }
 
             is Resource.Error -> {
                 when (result.code) {
                     HttpURLConnection.HTTP_BAD_REQUEST -> {
-                        data.postValue(SearchFragmentState.ServerError)
+                        screenState.postValue(SearchFragmentState.ServerError)
                     }
 
                     HttpURLConnection.HTTP_FORBIDDEN -> {
-                        data.postValue(SearchFragmentState.ServerError)
+                        screenState.postValue(SearchFragmentState.ServerError)
                     }
 
                     HttpURLConnection.HTTP_NOT_FOUND -> {
-                        data.postValue(SearchFragmentState.ServerError)
+                        screenState.postValue(SearchFragmentState.ServerError)
                     }
 
                     else -> {
-                        data.postValue(SearchFragmentState.NoInternetAccess)
+                        screenState.postValue(SearchFragmentState.NoInternetAccess)
                     }
                 }
             }
         }
-    }
-
-    fun addFilter() {
-        if (isActiveFilter) {
-            isActiveFilter = false
-            data.postValue(SearchFragmentState.FilterState(isActiveFilter))
-        } else {
-            isActiveFilter = true
-            data.postValue(SearchFragmentState.FilterState(isActiveFilter))
-        }
-    }
-
-    fun checkTextIsEmpty(text: String) {
-        data.postValue(SearchFragmentState.ClearEditTextState(text.isEmpty()))
-    }
-
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

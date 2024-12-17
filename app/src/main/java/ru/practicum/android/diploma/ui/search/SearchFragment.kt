@@ -59,13 +59,12 @@ class SearchFragment : Fragment() {
         }
 
         binding.filterIcon.setOnClickListener {
-            if (1 != 0) searchVacanciesByOptions() // for passing detekt error. delete the line when the fun is used
             viewModel.addFilter()
         }
 
         binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
             if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
-                viewModel.search(binding.searchEditText.text.toString())
+                searchVacanciesByOptions(binding.searchEditText.text.toString())
             }
         }
 
@@ -74,7 +73,7 @@ class SearchFragment : Fragment() {
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
             val drawableEnd: Drawable?
             if (text?.isNotBlank() == true) {
-                viewModel.search(text.toString())
+                searchVacanciesByOptions(text.toString())
                 drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             } else {
                 drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
@@ -125,6 +124,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             SearchFragmentState.EmptyResults -> {
                 binding.infoImageView.setImageResource(R.drawable.no_vacancy_image)
                 binding.infoImageView.isVisible = true
@@ -137,6 +137,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             SearchFragmentState.LoadingNewPageOfResults -> {
                 binding.progressBarForPageLoading.isVisible = true
                 binding.vacancyRecyclerView.isVisible = true
@@ -146,6 +147,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.vacancyCountTextView.isVisible = false
             }
+
             SearchFragmentState.NoInternetAccess -> {
                 binding.infoImageView.setImageResource(R.drawable.no_internet_info_image)
                 binding.infoImageView.isVisible = true
@@ -157,6 +159,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             SearchFragmentState.RequestInProgress -> {
                 binding.progressBar.isVisible = true
 
@@ -166,6 +169,7 @@ class SearchFragment : Fragment() {
                 binding.vacancyCountTextView.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             SearchFragmentState.ServerError -> {
                 binding.infoImageView.setImageResource(R.drawable.server_error)
                 binding.infoImageView.isVisible = true
@@ -177,6 +181,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             is SearchFragmentState.ShowingResults -> {
                 binding.vacancyCountTextView.text = context?.resources?.getQuantityString(
                     R.plurals.vacancies_found,
@@ -212,9 +217,10 @@ class SearchFragment : Fragment() {
 
 
     // Created for prototype testing purposes. Refactor this when filters are done
-    private fun searchVacanciesByOptions() {
+    private fun searchVacanciesByOptions(userText: String) {
         var queryMap = HashMap<String, String>()
 
+        queryMap.put("text", userText)
         queryMap.put("area", area)
         queryMap.put("industry", industry)
         queryMap.put("salary", salary.toString())
