@@ -31,7 +31,7 @@ class SearchFragmentViewModel(
         }
     }
 
-    private fun searchByOptions(page: Int, options: Map<String, String>){
+    fun searchByOptions(page: Int, options: Map<String, String>){
 viewModelScope.launch {
     vacancyInteractor.searchVacanciesByOptions(page, options).collect { result ->
         processResults(result)

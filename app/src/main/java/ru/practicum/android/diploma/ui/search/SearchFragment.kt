@@ -18,6 +18,13 @@ class SearchFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    //static values, should be changed to null in later epics
+    var page = 1
+    var area: String = "40"
+    var industry: String = "10"
+    var salary = "10 000"
+    var salaryOnly: Boolean = true
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
@@ -87,5 +94,17 @@ class SearchFragment : Fragment() {
                 ).show()
             }
         }
+    }
+
+    //Created for prototype testing purposes. Refactor this when filters are done
+    private fun searchVacanciesByOptions(){
+        var queryMap = HashMap<String, String>()
+
+        queryMap.put("area", area)
+        queryMap.put("industry", industry)
+        queryMap.put("salary", salary.toString())
+        queryMap.put("only_with_salary", salaryOnly.toString())
+
+        viewModel.searchByOptions(page, queryMap)
     }
 }
