@@ -19,5 +19,6 @@ data class VacancyByIdResponse(
     val description: String,
     val experience: ExperienceDto?,
     val employment: EmploymentDto?,
-    val schedule: ScheduleDto?
+    val schedule: ScheduleDto?,
+    @SerializedName("alternate_url") val url: String
 ) : Response()

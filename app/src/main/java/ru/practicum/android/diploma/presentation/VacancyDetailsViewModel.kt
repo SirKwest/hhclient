@@ -54,6 +54,10 @@ class VacancyDetailsViewModel(
     }
 
     fun shareVacancy() {
-        sharingInteractor.shareText("stub")
+        (screenState.value as? VacancyDetailsFragmentState.ShowingResults).let { state ->
+            state?.let {
+                sharingInteractor.shareText(it.vacancy.url)
+            }
+        }
     }
 }

@@ -58,7 +58,8 @@ class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : Vacan
                 description = response.description,
                 experience = response.experience?.name.orEmpty(),
                 employment = response.employment?.name.orEmpty(),
-                schedule = response.schedule?.name.orEmpty()
+                schedule = response.schedule?.name.orEmpty(),
+                url = response.url
             )
             emit(VacancyByIdResource.Success(vacancy))
         } else {
