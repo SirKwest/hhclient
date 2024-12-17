@@ -43,22 +43,22 @@ class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : Vacan
     override fun getVacancyById(id: String): Flow<VacancyByIdResource> = flow {
         val response = headhunterClient.doRequest(VacancyByIdRequest(id))
         if (response.responseCode == HttpURLConnection.HTTP_OK && response is VacancyByIdResponse) {
-            val dto = response.item
-            val logo = dto.employer.logo?.original ?: (dto.employer.logo?.big ?: dto.employer.logo?.small)
+            val logo =
+                response.employer.logo?.original ?: (response.employer.logo?.big ?: response.employer.logo?.small)
             val vacancy = Vacancy(
-                id = dto.id,
-                name = dto.name,
-                area = dto.area.name,
-                employer = dto.employer.name,
+                id = response.id,
+                name = response.name,
+                area = response.area.name,
+                employer = response.employer.name,
                 logo = logo.orEmpty(),
-                salaryLow = dto.salary?.low,
-                salaryHigh = dto.salary?.high,
-                currency = dto.salary?.currency,
-                keySkills = dto.keySkills,
-                description = dto.description,
-                experience = dto.experience?.name.orEmpty(),
-                employment = dto.employment?.name.orEmpty(),
-                schedule = dto.schedule?.name.orEmpty()
+                salaryLow = response.salary?.low,
+                salaryHigh = response.salary?.high,
+                currency = response.salary?.currency,
+                keySkills = response.keySkills.map { it.name },
+                description = response.description,
+                experience = response.experience?.name.orEmpty(),
+                employment = response.employment?.name.orEmpty(),
+                schedule = response.schedule?.name.orEmpty()
             )
             emit(VacancyByIdResource.Success(vacancy))
         } else {

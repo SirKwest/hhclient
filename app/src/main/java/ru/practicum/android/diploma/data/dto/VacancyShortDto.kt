@@ -33,3 +33,22 @@ data class SalaryDto(
     @SerializedName("from") val low: Int? = null,
     @SerializedName("to") val high: Int? = null,
 )
+
+data class ScheduleDto(
+    val id: String?,
+    val name: String
+)
+
+data class ExperienceDto(
+    val id: String,
+    val name: String
+)
+
+data class EmploymentDto(
+    val id: String?,
+    val name: String
+)
+
+data class KeySkill(
+    val name: String
+)

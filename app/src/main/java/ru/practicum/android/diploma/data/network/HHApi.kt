@@ -17,6 +17,10 @@ interface HHApi {
     @GET("/vacancies")
     suspend fun getVacancies(@Query("text") text: String): Response<VacanciesSearchResponse>
 
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: ${BuildConfig.USER_AGENT}"
+    )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancyById(@Path("vacancy_id") id: String): Response<VacancyByIdResponse>
 }

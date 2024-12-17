@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.presentation.SearchFragmentState
 import ru.practicum.android.diploma.presentation.SearchFragmentViewModel
+import ru.practicum.android.diploma.ui.details.VacancyDetailsFragment
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
@@ -176,7 +177,7 @@ class SearchFragment : Fragment() {
                         val item = vacanciesAdapter.getItemByPosition(position)
                         findNavController().navigate(
                             R.id.vacancy_details_fragment,
-                            Bundle().apply { putString(VACANCY_ID_KEY, item.id) }
+                            VacancyDetailsFragment.createBundleOf(item.id)
                         )
                     }
                 })
@@ -189,9 +190,5 @@ class SearchFragment : Fragment() {
                 binding.progressBarForPageLoading.isVisible = false
             }
         }
-    }
-
-    companion object {
-        const val VACANCY_ID_KEY = "VACANCY_ID_KEY"
     }
 }
