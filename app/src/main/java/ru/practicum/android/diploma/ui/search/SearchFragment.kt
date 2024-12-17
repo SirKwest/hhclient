@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -214,7 +213,6 @@ class SearchFragment : Fragment() {
     companion object {
         const val VACANCY_ID_KEY = "VACANCY_ID_KEY"
     }
-
 
     // Created for prototype testing purposes. Refactor this when filters are done
     private fun searchVacanciesByOptions(userText: String) {

@@ -22,7 +22,6 @@ class SearchFragmentViewModel(
     fun observeFilter(): LiveData<Boolean> = filtersButtonState
     private var searchDebounceJob: Job? = null
 
-
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
