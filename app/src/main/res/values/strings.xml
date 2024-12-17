@@ -16,7 +16,10 @@
     <string name="cant_get_vacancy">Не удалось получить список вакансий</string>
     <string name="no_such_vacancy">Таких вакансий нет</string>
     <string name="search_title">Поиск вакансий</string>
-
+    <string name="no_salary">Зарплата не указана</string>
+    <string name="full_salary">от %1$s %2$s до %3$s %2$s</string>
+    <string name="min_salary">от %1$s %2$s</string>
+    <string name="max_salary">до %1$s %2$s</string>
     <string name="vacancy">Вакансия</string>
     <string name="share">Поделиться</string>
     <string name="add_to_favorites">Добавить в избранное</string>

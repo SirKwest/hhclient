@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyShort
 import ru.practicum.android.diploma.domain.repository.VacancyRepository
+import java.net.HttpURLConnection
 
 class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : VacancyRepository {
     override suspend fun searchVacancies(text: String, page: Int): Flow<Resource> = flow {
@@ -25,12 +26,13 @@ class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : Vacan
     private fun proceedRequest(response: Response): Resource {
         if (response is VacanciesSearchResponse) {
             val data = response.items.map {
+                val logo = it.employer.logo?.original ?: (it.employer.logo?.big ?: it.employer.logo?.small)
                 VacancyShort(
                     it.id,
                     it.name,
                     it.area.name,
                     it.employer.name,
-                    it.employer.logo?.small.orEmpty(),
+                    logo.orEmpty(),
                     it.salary?.low,
                     it.salary?.high,
                     it.salary?.currency,
@@ -41,5 +43,4 @@ class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : Vacan
             return Resource.Error(response.responseCode)
         }
     }
-
 }

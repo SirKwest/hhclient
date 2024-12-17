@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.search
+package ru.practicum.android.diploma.presentation
 
 import ru.practicum.android.diploma.domain.models.VacancyShort
 
@@ -10,6 +10,4 @@ sealed interface SearchFragmentState {
     data class ShowingResults(val vacancies: List<VacancyShort>, val total: Int) : SearchFragmentState
     data object LoadingNewPageOfResults : SearchFragmentState
     data object Default : SearchFragmentState
-    data class FilterState(val isActive: Boolean) : SearchFragmentState
-    data class ClearEditTextState(val isEmpty: Boolean) : SearchFragmentState
 }

@@ -14,9 +14,16 @@ import java.net.HttpURLConnection
 class SearchFragmentViewModel(
     private val vacancyInteractor: VacancyInteractor
 ) : ViewModel() {
-    private val data = MutableLiveData<SearchFragmentState>()
-    fun observeData(): LiveData<SearchFragmentState> = data
-    private var isActiveFilter = false
+    private var lastSearchedValue: String = ""
+    private val screenState = MutableLiveData<SearchFragmentState>()
+    private val filtersButtonState = MutableLiveData<Boolean>()
+    fun observeData(): LiveData<SearchFragmentState> = screenState
+    fun observeFilter(): LiveData<Boolean> = filtersButtonState
+
+    fun addFilter() {
+        val newValue = filtersButtonState.value ?: false
+        filtersButtonState.postValue(!newValue)
+    }
 
     val search: (String) -> Unit =
         debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
@@ -25,7 +32,12 @@ class SearchFragmentViewModel(
 
     private fun processNewSearch(text: String) {
         val page = 1
+        if (lastSearchedValue == text) {
+            return
+        }
         viewModelScope.launch {
+            screenState.postValue(SearchFragmentState.RequestInProgress)
+            lastSearchedValue = text
             vacancyInteractor.searchVacancies(text, page).collect { result ->
                 processResults(result)
             }
