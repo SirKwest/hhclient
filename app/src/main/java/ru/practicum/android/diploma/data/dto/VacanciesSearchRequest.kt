@@ -4,3 +4,5 @@ data class VacanciesSearchRequest(
     val text: String,
     val page: Int,
 )
+
+

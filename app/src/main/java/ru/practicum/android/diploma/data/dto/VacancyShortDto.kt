@@ -5,12 +5,12 @@ import com.google.gson.annotations.SerializedName
 data class VacancyShortDto(
     val id: String,
     val name: String,
-    val area: Area,
+    val area: RegionDto,
     val employer: Employer,
     val salary: Salary? = Salary(),
 )
 
-data class Area(
+data class AreaDto(
     val id: String,
     val name: String,
     val url: String
@@ -32,4 +32,22 @@ data class Salary(
     val currency: String? = null,
     @SerializedName("from") val low: Int? = null,
     @SerializedName("to") val high: Int? = null,
+)
+
+data class RegionDto(
+    val id: String,
+    val parent_id: String,
+    val name: String,
+    val areas: String
+)
+
+data class IndustryDto(
+    val id: String,
+    val industries: List<IndustriesDto>,
+    val name: String
+)
+
+data class IndustriesDto(
+    val id: String,
+    val name: String
 )
