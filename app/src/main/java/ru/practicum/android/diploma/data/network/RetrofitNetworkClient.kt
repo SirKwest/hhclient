@@ -20,7 +20,7 @@ class RetrofitNetworkClient(val api: HHApi) : NetworkClient {
     private suspend fun getVacanciesSearchResponse(
         request: VacanciesSearchRequest
     ): VacanciesSearchResponse {
-        val result = api.getVacancies(request.options)
+        val result = api.getVacancies(request.text)
         val response = result.body() ?: VacanciesSearchResponse(listOf(), 0, 0, 0)
         response.responseCode = result.code()
         return response
