@@ -26,23 +26,35 @@ class SearchFragmentViewModel(
         val page = 1
         viewModelScope.launch {
             vacancyInteractor.searchVacancies(text, page).collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        if (result.items.isNotEmpty()) {
-                            data.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
-                        } else {
-                            data.postValue(SearchFragmentState.EmptyResults)
-                        }
-                    }
+                processResults(result)
+            }
+        }
+    }
 
-                    is Resource.Error -> {
-                        when (result.code) {
-                            HttpURLConnection.HTTP_BAD_REQUEST -> { data.postValue(SearchFragmentState.ServerError) }
-                            HttpURLConnection.HTTP_FORBIDDEN -> { data.postValue(SearchFragmentState.ServerError) }
-                            HttpURLConnection.HTTP_NOT_FOUND -> { data.postValue(SearchFragmentState.ServerError) }
-                            else -> { data.postValue(SearchFragmentState.NoInternetAccess) }
-                        }
-                    }
+    private fun searchByOptions(page: Int, options: Map<String, String>){
+viewModelScope.launch {
+    vacancyInteractor.searchVacanciesByOptions(page, options).collect { result ->
+        processResults(result)
+    }
+}
+    }
+
+    private fun processResults(result: Resource){
+        when (result) {
+            is Resource.Success -> {
+                if (result.items.isNotEmpty()) {
+                    data.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
+                } else {
+                    data.postValue(SearchFragmentState.EmptyResults)
+                }
+            }
+
+            is Resource.Error -> {
+                when (result.code) {
+                    HttpURLConnection.HTTP_BAD_REQUEST -> { data.postValue(SearchFragmentState.ServerError) }
+                    HttpURLConnection.HTTP_FORBIDDEN -> { data.postValue(SearchFragmentState.ServerError) }
+                    HttpURLConnection.HTTP_NOT_FOUND -> { data.postValue(SearchFragmentState.ServerError) }
+                    else -> { data.postValue(SearchFragmentState.NoInternetAccess) }
                 }
             }
         }
