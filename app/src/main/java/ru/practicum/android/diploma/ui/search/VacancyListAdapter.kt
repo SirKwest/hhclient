@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.VacancyListItemLayoutBinding
 import ru.practicum.android.diploma.domain.models.VacancyShort
 
-class VacancyListAdapter(private val vacancies: List<VacancyShort>) : RecyclerView.Adapter<VacancyListViewHolder>() {
+class VacancyListAdapter(
+    private val vacancies: MutableList<VacancyShort>
+) : RecyclerView.Adapter<VacancyListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyListViewHolder {
         return VacancyListViewHolder(
             VacancyListItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,6 +26,11 @@ class VacancyListAdapter(private val vacancies: List<VacancyShort>) : RecyclerVi
 
     fun getItemByPosition(position: Int): VacancyShort {
         return vacancies[position]
+    }
+
+    fun resetData(data: List<VacancyShort>) {
+        vacancies.clear()
+        vacancies.addAll(data)
     }
 
     interface OnItemClickListener {
