@@ -22,4 +22,23 @@ class VacancyDbConverter {
             vacancy.url
         )
     }
+
+    fun mapToVacancy(entity: VacancyEntityDB): Vacancy {
+        return Vacancy(
+            entity.id,
+            entity.name,
+            entity.area,
+            entity.employer,
+            entity.logo,
+            entity.salaryLow,
+            entity.salaryHigh,
+            entity.currency,
+            entity.keySkills,
+            entity.description,
+            entity.experience,
+            entity.employment,
+            entity.schedule,
+            entity.url
+        )
+    }
 }
