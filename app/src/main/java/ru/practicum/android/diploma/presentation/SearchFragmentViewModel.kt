@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
-import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.VacanciesSearchResource
 import ru.practicum.android.diploma.domain.models.VacancyShort
 import ru.practicum.android.diploma.util.debouncedAction
 import java.net.HttpURLConnection
@@ -48,14 +48,14 @@ class SearchFragmentViewModel(
             screenState.postValue(SearchFragmentState.LoadingNewPageOfResults)
             vacancyInteractor.searchVacancies(lastSearchedValue, ++lastLoadedPage).collect { result ->
                 when (result) {
-                    is Resource.Success -> {
+                    is VacanciesSearchResource.Success -> {
                         if (result.items.isNotEmpty()) {
                             vacancyList.addAll(result.items)
                         }
                         screenState.postValue(SearchFragmentState.ShowingResults(vacancyList, result.total))
                     }
 
-                    is Resource.Error -> {
+                    is VacanciesSearchResource.Error -> {
                         screenState.postValue(SearchFragmentState.ShowingResults(vacancyList))
                         errorMessage.postValue(result.code)
                     }
@@ -76,7 +76,7 @@ class SearchFragmentViewModel(
             lastSearchedValue = text
             vacancyInteractor.searchVacancies(text, lastLoadedPage).collect { result ->
                 when (result) {
-                    is Resource.Success -> {
+                    is VacanciesSearchResource.Success -> {
                         if (result.items.isNotEmpty()) {
                             totalPagesInLastRequest = result.pages
                             vacancyList.addAll(result.items)
@@ -86,18 +86,23 @@ class SearchFragmentViewModel(
                         }
                     }
 
-                    is Resource.Error -> {
+                    is VacanciesSearchResource.Error -> {
                         when (result.code) {
                             HttpURLConnection.HTTP_BAD_REQUEST -> {
                                 screenState.postValue(SearchFragmentState.ServerError)
                             }
+
                             HttpURLConnection.HTTP_FORBIDDEN -> {
                                 screenState.postValue(SearchFragmentState.ServerError)
                             }
+
                             HttpURLConnection.HTTP_NOT_FOUND -> {
                                 screenState.postValue(SearchFragmentState.ServerError)
                             }
-                            else -> { screenState.postValue(SearchFragmentState.NoInternetAccess) }
+
+                            else -> {
+                                screenState.postValue(SearchFragmentState.NoInternetAccess)
+                            }
                         }
                     }
                 }

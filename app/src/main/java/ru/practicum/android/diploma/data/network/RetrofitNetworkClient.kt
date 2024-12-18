@@ -5,8 +5,9 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import retrofit2.HttpException
-import ru.practicum.android.diploma.data.dto.Response
-import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
+import ru.practicum.android.diploma.data.dto.request.VacanciesSearchRequest
+import ru.practicum.android.diploma.data.dto.request.VacancyByIdRequest
+import ru.practicum.android.diploma.data.dto.response.Response
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(
@@ -14,6 +15,7 @@ class RetrofitNetworkClient(
     private val connectivityManager: ConnectivityManager
 ) : NetworkClient {
     private var isConnected: Boolean = false
+
     init {
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
@@ -46,6 +48,7 @@ class RetrofitNetworkClient(
 
         connectivityManager.requestNetwork(networkRequest, networkCallback)
     }
+
     override suspend fun doRequest(dto: Any): Response {
         if (!isConnected) {
             return Response().apply { responseCode = HttpURLConnection.HTTP_UNAVAILABLE }
@@ -53,6 +56,10 @@ class RetrofitNetworkClient(
         return when (dto) {
             is VacanciesSearchRequest -> {
                 getVacanciesSearchResponse(dto)
+            }
+
+            is VacancyByIdRequest -> {
+                getVacancyByIdResponse(dto)
             }
 
             else -> {
@@ -66,6 +73,21 @@ class RetrofitNetworkClient(
     ): Response {
         return try {
             val result = api.getVacancies(request.text, request.page)
+            val response = result.body() ?: Response()
+            response.responseCode = result.code()
+            response
+        } catch (error: HttpException) {
+            val response = Response()
+            response.responseCode = error.code()
+            response
+        }
+    }
+
+    private suspend fun getVacancyByIdResponse(
+        request: VacancyByIdRequest
+    ): Response {
+        return try {
+            val result = api.getVacancyById(request.id)
             val response = result.body() ?: Response()
             response.responseCode = result.code()
             response

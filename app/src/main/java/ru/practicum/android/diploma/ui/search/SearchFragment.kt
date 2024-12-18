@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.presentation.SearchFragmentState
 import ru.practicum.android.diploma.presentation.SearchFragmentViewModel
+import ru.practicum.android.diploma.ui.details.VacancyDetailsFragment
 import java.net.HttpURLConnection
 
 class SearchFragment : Fragment() {
@@ -125,7 +126,7 @@ class SearchFragment : Fragment() {
                 val item = vacanciesAdapter.getItemByPosition(position)
                 findNavController().navigate(
                     R.id.vacancy_details_fragment,
-                    Bundle().apply { putString(VACANCY_ID_KEY, item.id) }
+                    VacancyDetailsFragment.createBundleOf(item.id)
                 )
             }
         })
@@ -149,6 +150,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             SearchFragmentState.EmptyResults -> {
                 binding.infoImageView.setImageResource(R.drawable.no_vacancy_image)
                 binding.infoImageView.isVisible = true
@@ -161,6 +163,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             SearchFragmentState.LoadingNewPageOfResults -> {
                 binding.progressBarForPageLoading.isVisible = true
                 binding.vacancyRecyclerView.isVisible = true
@@ -171,6 +174,7 @@ class SearchFragment : Fragment() {
                 binding.infoTextView.isVisible = false
                 binding.progressBar.isVisible = false
             }
+
             SearchFragmentState.NoInternetAccess -> {
                 binding.infoImageView.setImageResource(R.drawable.no_internet_info_image)
                 binding.infoImageView.isVisible = true
@@ -182,6 +186,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             SearchFragmentState.RequestInProgress -> {
                 binding.progressBar.isVisible = true
 
@@ -191,6 +196,7 @@ class SearchFragment : Fragment() {
                 binding.vacancyCountTextView.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             SearchFragmentState.ServerError -> {
                 binding.infoImageView.setImageResource(R.drawable.server_error)
                 binding.infoImageView.isVisible = true
@@ -202,6 +208,7 @@ class SearchFragment : Fragment() {
                 binding.progressBar.isVisible = false
                 binding.progressBarForPageLoading.isVisible = false
             }
+
             is SearchFragmentState.ShowingResults -> {
                 binding.vacancyCountTextView.isVisible = true
                 binding.vacancyRecyclerView.isVisible = true
@@ -219,9 +226,5 @@ class SearchFragment : Fragment() {
                 binding.progressBarForPageLoading.isVisible = false
             }
         }
-    }
-
-    companion object {
-        const val VACANCY_ID_KEY = "VACANCY_ID_KEY"
     }
 }
