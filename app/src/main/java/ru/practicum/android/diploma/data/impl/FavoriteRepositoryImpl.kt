@@ -17,7 +17,8 @@ class FavoriteRepositoryImpl(
     }
 
     override suspend fun removeVacancyFromFavorite(vacancy: Vacancy) {
-
+        val vacancyEntityDB = converter.mapToVacancyEntity(vacancy)
+        appDatabase.vacancyDao().removeVacancy(vacancyEntityDB)
     }
 
     override suspend fun getFavoriteVacancies(): Flow<List<Vacancy>> {
