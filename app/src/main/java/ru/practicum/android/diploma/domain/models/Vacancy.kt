@@ -11,8 +11,8 @@ data class Vacancy(
     val currency: String?,
     val keySkills: List<String>,
     val description: String,
-    val experience: String,
-    val employment: String,
-    val schedule: String,
+    val experience: String?,
+    val employment: String?,
+    val schedule: String?,
     val url: String
 )

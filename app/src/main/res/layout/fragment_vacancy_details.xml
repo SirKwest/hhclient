@@ -22,6 +22,8 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         android:scrollbars="none">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,10 +81,13 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/employer_name"
                         style="@style/VacancyFragmentSubheaderTextStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/employer_logo"
                         app:layout_constraintTop_toTopOf="@id/employer_logo"
                         tools:text="Еда" />
@@ -181,6 +186,12 @@
                 app:layout_constraintStart_toStartOf="@id/key_skills_header"
                 app:layout_constraintTop_toBottomOf="@id/key_skills_header"
                 tools:text="Знание классических алгоритмов и структуры данных\nПрограммирование для Android больше одного года\nЗнание WebRTC" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/key_skills_group"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="key_skills_header, key_skills" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
