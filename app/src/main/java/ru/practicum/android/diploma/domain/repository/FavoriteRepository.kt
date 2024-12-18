@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.domain.repository
 
-interface FavoriteRepository {
+import ru.practicum.android.diploma.domain.models.Vacancy
 
+interface FavoriteRepository {
+    suspend fun insertVacancyToFavorite(vacancy: Vacancy)
 }
