@@ -19,10 +19,12 @@ class SearchFragmentViewModel(
     private var totalPagesInLastRequest: Int = 0
     private var vacancyList = mutableListOf<VacancyShort>()
 
+    private var errorMessage = MutableLiveData<Int>()
     private val screenState = MutableLiveData<SearchFragmentState>()
     private val filtersButtonState = MutableLiveData<Boolean>()
     fun observeData(): LiveData<SearchFragmentState> = screenState
     fun observeFilter(): LiveData<Boolean> = filtersButtonState
+    fun observeErrorMessage(): LiveData<Int> = errorMessage
 
     fun addFilter() {
         val newValue = filtersButtonState.value ?: false
@@ -55,6 +57,7 @@ class SearchFragmentViewModel(
 
                     is Resource.Error -> {
                         screenState.postValue(SearchFragmentState.ShowingResults(vacancyList))
+                        errorMessage.postValue(result.code)
                     }
                 }
             }
