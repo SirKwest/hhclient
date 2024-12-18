@@ -15,7 +15,7 @@ interface HHApi {
         "HH-User-Agent: ${BuildConfig.USER_AGENT}"
     )
     @GET("/vacancies")
-    suspend fun getVacancies(@Query("text") text: String): Response<VacanciesSearchResponse>
+    suspend fun getVacancies(@Query("text") text: String, @Query("page") page: Int): Response<VacanciesSearchResponse>
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",

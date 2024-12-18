@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -13,7 +15,10 @@ import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
 val dataModule = module {
 
     single<NetworkClient> {
-        RetrofitNetworkClient(api = get())
+        RetrofitNetworkClient(
+            api = get(),
+            connectivityManager = androidContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        )
     }
 
     single<HHApi> {
