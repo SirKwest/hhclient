@@ -26,12 +26,6 @@ class SearchFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    // static values, should be changed to null in later epics
-    var page = 1
-    var area: String = "40"
-    var industry: String = "10"
-    var salary = "10 000"
-    var salaryOnly: Boolean = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -63,7 +57,6 @@ class SearchFragment : Fragment() {
 
         binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
             if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
-                searchVacanciesByOptions(binding.searchEditText.text.toString())
             }
         }
 
@@ -72,7 +65,6 @@ class SearchFragment : Fragment() {
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
             val drawableEnd: Drawable?
             if (text?.isNotBlank() == true) {
-                searchVacanciesByOptions(text.toString())
                 drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             } else {
                 drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
@@ -107,10 +99,6 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
-    /**
-     * Created only for prototype testing purposes.
-     * Should be refactored in issue #21
-     */
     private fun processingChangedScreenState(newState: SearchFragmentState) {
         when (newState) {
             SearchFragmentState.Default -> {
@@ -212,18 +200,5 @@ class SearchFragment : Fragment() {
 
     companion object {
         const val VACANCY_ID_KEY = "VACANCY_ID_KEY"
-    }
-
-    // Created for prototype testing purposes. Refactor this when filters are done
-    private fun searchVacanciesByOptions(userText: String) {
-        var queryMap = HashMap<String, String>()
-
-        queryMap.put("text", userText)
-        queryMap.put("area", area)
-        queryMap.put("industry", industry)
-        queryMap.put("salary", salary.toString())
-        queryMap.put("only_with_salary", salaryOnly.toString())
-
-        viewModel.searchByOptions(page, queryMap)
     }
 }

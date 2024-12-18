@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class VacancyShortDto(
     val id: String,
     val name: String,
-    val area: RegionDto,
+    val area: AreaDto,
     val employer: Employer,
     val salary: Salary? = Salary(),
 )

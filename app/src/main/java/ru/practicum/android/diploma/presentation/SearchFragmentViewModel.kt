@@ -9,7 +9,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.util.debouncedAction
 import java.net.HttpURLConnection
 
 class SearchFragmentViewModel(
@@ -22,10 +21,6 @@ class SearchFragmentViewModel(
     fun observeFilter(): LiveData<Boolean> = filtersButtonState
     private var searchDebounceJob: Job? = null
 
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-    }
-
     fun addFilter() {
         val newValue = filtersButtonState.value ?: false
         filtersButtonState.postValue(!newValue)
@@ -35,7 +30,7 @@ class SearchFragmentViewModel(
         searchDebounceJob?.cancel()
         searchDebounceJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
-            vacancyInteractor.searchVacanciesByOptions(page, options).collect { result ->
+            vacancyInteractor.searchVacancies(page, options).collect { result ->
                 processResults(result)
             }
         }
@@ -71,5 +66,9 @@ class SearchFragmentViewModel(
                 }
             }
         }
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

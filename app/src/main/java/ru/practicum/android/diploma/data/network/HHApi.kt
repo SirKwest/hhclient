@@ -17,10 +17,7 @@ interface HHApi {
         "HH-User-Agent: ${BuildConfig.USER_AGENT}"
     )
     @GET("/vacancies")
-    suspend fun getVacancies(@Query("text") text: String): Response<VacanciesSearchResponse>
-
-    @GET("/vacancies")
-    suspend fun getVacanciesByOptions(
+    suspend fun getVacancies(
         @Query("page") page: Int,
         @QueryMap options: Map<String, String>
     ): Response<VacanciesSearchResponse>

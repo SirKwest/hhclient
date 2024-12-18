@@ -10,15 +10,10 @@ import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyShort
 import ru.practicum.android.diploma.domain.repository.VacancyRepository
-import java.net.HttpURLConnection
 
 class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : VacancyRepository {
-    override suspend fun searchVacancies(text: String, page: Int): Flow<Resource> = flow {
-        val response = proceedRequest(headhunterClient.doRequest(VacanciesSearchRequest(text, page)))
-        emit(response)
-    }
 
-    override suspend fun searchVacanciesByOptions(page: Int, options: Map<String, String>): Flow<Resource> = flow {
+    override suspend fun searchVacancies(page: Int, options: Map<String, String>): Flow<Resource> = flow {
         val response = proceedRequest(headhunterClient.doRequest(VacanciesSearchOptionsRequest(page, options)))
         emit(response)
     }
