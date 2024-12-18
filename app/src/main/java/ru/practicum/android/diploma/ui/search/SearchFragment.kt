@@ -8,8 +8,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.presentation.SearchFragmentState
 import ru.practicum.android.diploma.presentation.SearchFragmentViewModel
+import java.net.HttpURLConnection
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
@@ -54,7 +55,7 @@ class SearchFragment : Fragment() {
         }
 
         viewModel.observeErrorMessage().observe(viewLifecycleOwner) { errorMessage ->
-            if (errorMessage >= 500) {
+            if (errorMessage >= HttpURLConnection.HTTP_INTERNAL_ERROR) {
                 Toast.makeText(requireContext(), getString(R.string.check_internet_connection), Toast.LENGTH_LONG)
                     .show()
             } else {
