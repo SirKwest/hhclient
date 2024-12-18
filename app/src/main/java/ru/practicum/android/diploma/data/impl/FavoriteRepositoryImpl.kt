@@ -12,7 +12,8 @@ class FavoriteRepositoryImpl(
 ) : FavoriteRepository {
 
     override suspend fun insertVacancyToFavorite(vacancy: Vacancy) {
-
+        val vacancyEntityDB = converter.mapToVacancyEntity(vacancy)
+        appDatabase.vacancyDao().insertVacancy(vacancyEntityDB)
     }
 
     override suspend fun removeVacancyFromFavorite(vacancy: Vacancy) {
