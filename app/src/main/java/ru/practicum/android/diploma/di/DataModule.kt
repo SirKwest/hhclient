@@ -8,6 +8,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.data.db.AppDatabase
+import ru.practicum.android.diploma.data.db.converters.VacancyDbConverter
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
@@ -32,6 +33,9 @@ val dataModule = module {
     single<AppDatabase> {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
             .build()
+    }
 
+    single<VacancyDbConverter> {
+        VacancyDbConverter()
     }
 }
