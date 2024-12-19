@@ -67,7 +67,9 @@ class SearchFragmentViewModel(
         }
     }
 
-    private fun processNewSearch(options: Map<String, String>) {
+    private fun processNewSearch(
+        options: Map<String, String>
+    ) {
         val userTextRequestKey = "text"
         lastLoadedPage = 0
         totalPagesInLastRequest = 0
