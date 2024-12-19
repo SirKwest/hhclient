@@ -35,6 +35,7 @@ class SearchFragmentViewModel(
     val search: (String) -> Unit =
         debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
             userOptions.put("text", searchText)
+            userOptions.put(PAGE_SEARCH_REQUEST_KEY, lastLoadedPage.toString())
             processNewSearch(userOptions)
         }
 
@@ -48,7 +49,10 @@ class SearchFragmentViewModel(
         }
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.LoadingNewPageOfResults)
-            vacancyInteractor.searchVacancies(++lastLoadedPage, userOptions).collect { result ->
+            ++lastLoadedPage
+            userOptions.put(PAGE_SEARCH_REQUEST_KEY, lastLoadedPage.toString())
+
+            vacancyInteractor.searchVacancies(userOptions).collect { result ->
                 when (result) {
                     is VacanciesSearchResource.Success -> {
                         if (result.items.isNotEmpty()) {
@@ -67,19 +71,18 @@ class SearchFragmentViewModel(
     }
 
     private fun processNewSearch(options: Map<String, String>) {
-        val userTextRequestKey = "text"
         lastLoadedPage = 0
         totalPagesInLastRequest = 0
 
-        if (lastSearchedValue == options.get(userTextRequestKey).toString()) {
+        if (lastSearchedValue == options.get(USER_TEXT_REQUEST_KEY).toString()) {
             return
         }
 
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.RequestInProgress)
             vacancyList.clear()
-            lastSearchedValue = options.get(userTextRequestKey).toString()
-            vacancyInteractor.searchVacancies(lastLoadedPage, options).collect { result ->
+            lastSearchedValue = options.get(USER_TEXT_REQUEST_KEY).toString()
+            vacancyInteractor.searchVacancies(options).collect { result ->
                 processResults(result)
             }
         }
@@ -121,5 +124,8 @@ class SearchFragmentViewModel(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val PAGE_SEARCH_REQUEST_KEY = "page"
+        private const val USER_TEXT_REQUEST_KEY = "text"
+
     }
 }

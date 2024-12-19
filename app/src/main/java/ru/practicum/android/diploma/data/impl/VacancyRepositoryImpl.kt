@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.data.impl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.VacanciesSearchOptionsRequest
-import ru.practicum.android.diploma.data.dto.request.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.request.VacancyByIdRequest
 import ru.practicum.android.diploma.data.dto.response.Response
 import ru.practicum.android.diploma.data.dto.response.VacanciesSearchResponse
@@ -18,8 +17,8 @@ import java.net.HttpURLConnection
 
 class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : VacancyRepository {
 
-    override fun searchVacancies(page: Int, options: Map<String, String>): Flow<VacanciesSearchResource> = flow {
-        val response = proceedRequest(headhunterClient.doRequest(VacanciesSearchOptionsRequest(page, options)))
+    override fun searchVacancies(options: Map<String, String>): Flow<VacanciesSearchResource> = flow {
+        val response = proceedRequest(headhunterClient.doRequest(VacanciesSearchOptionsRequest(options)))
         emit(response)
     }
 
