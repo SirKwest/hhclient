@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
 import ru.practicum.android.diploma.domain.models.VacanciesSearchResource
@@ -67,9 +66,7 @@ class SearchFragmentViewModel(
         }
     }
 
-    private fun processNewSearch(
-        options: Map<String, String>
-    ) {
+    private fun processNewSearch(options: Map<String, String>) {
         val userTextRequestKey = "text"
         lastLoadedPage = 0
         totalPagesInLastRequest = 0
@@ -79,41 +76,43 @@ class SearchFragmentViewModel(
         }
 
         viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-
             screenState.postValue(SearchFragmentState.RequestInProgress)
             vacancyList.clear()
             lastSearchedValue = options.get(userTextRequestKey).toString()
             vacancyInteractor.searchVacancies(lastLoadedPage, options).collect { result ->
-                when (result) {
-                    is VacanciesSearchResource.Success -> {
-                        if (result.items.isNotEmpty()) {
-                            totalPagesInLastRequest = result.pages
-                            vacancyList.addAll(result.items)
-                            screenState.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
-                        } else {
-                            screenState.postValue(SearchFragmentState.EmptyResults)
-                        }
+                processResults(result)
+            }
+        }
+    }
+
+    private fun processResults(result: VacanciesSearchResource) {
+        when (result) {
+            is VacanciesSearchResource.Success -> {
+                if (result.items.isNotEmpty()) {
+                    totalPagesInLastRequest = result.pages
+                    vacancyList.addAll(result.items)
+                    screenState.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
+                } else {
+                    screenState.postValue(SearchFragmentState.EmptyResults)
+                }
+            }
+
+            is VacanciesSearchResource.Error -> {
+                when (result.code) {
+                    HttpURLConnection.HTTP_BAD_REQUEST -> {
+                        screenState.postValue(SearchFragmentState.ServerError)
                     }
 
-                    is VacanciesSearchResource.Error -> {
-                        when (result.code) {
-                            HttpURLConnection.HTTP_BAD_REQUEST -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        screenState.postValue(SearchFragmentState.ServerError)
+                    }
 
-                            HttpURLConnection.HTTP_FORBIDDEN -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
+                    HttpURLConnection.HTTP_NOT_FOUND -> {
+                        screenState.postValue(SearchFragmentState.ServerError)
+                    }
 
-                            HttpURLConnection.HTTP_NOT_FOUND -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
-
-                            else -> {
-                                screenState.postValue(SearchFragmentState.NoInternetAccess)
-                            }
-                        }
+                    else -> {
+                        screenState.postValue(SearchFragmentState.NoInternetAccess)
                     }
                 }
             }
