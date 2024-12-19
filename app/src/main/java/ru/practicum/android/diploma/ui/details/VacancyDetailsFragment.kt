@@ -103,11 +103,12 @@ class VacancyDetailsFragment : Fragment() {
                 .fitCenter()
                 .into(employerLogo)
 
-            if (vacancy.experience != null) {
+            if (vacancy.experience == null) {
+                experienceGroup.isVisible = false
+            } else {
                 experienceGroup.isVisible = true
                 experience.text = vacancy.experience
-            } else
-                experienceGroup.isVisible = false
+            }
 
             val subinfoText = buildSubinfo(vacancy.employment, vacancy.schedule)
             if (subinfoText == null) {
