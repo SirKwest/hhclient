@@ -29,4 +29,7 @@
     <string name="vacancy_description">Описание вакансии</string>
     <string name="required_experience">Требуемый опыт</string>
     <string name="contacts">Контакты</string>
+    <string name="list_is_empty">Список пуст</string>
+    <string name="error_happened">Произошла ошибка</string>
+    <string name="check_internet_connection">Проверьте подключение к интернету</string>
 </resources>
