@@ -30,4 +30,8 @@ class FavoriteRepositoryImpl(
         }
     }
 
+    override suspend fun getFavoriteVacanciesId(): Flow<List<String>> {
+        return appDatabase.vacancyDao().getVacancyIds()
+    }
+
 }

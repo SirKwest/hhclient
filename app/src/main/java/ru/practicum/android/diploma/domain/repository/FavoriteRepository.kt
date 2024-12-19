@@ -7,4 +7,5 @@ interface FavoriteRepository {
     suspend fun insertVacancyToFavorite(vacancy: Vacancy)
     suspend fun removeVacancyFromFavorite(vacancy: Vacancy)
     suspend fun getFavoriteVacancies(): Flow<List<Vacancy>>
+    suspend fun getFavoriteVacanciesId(): Flow<List<String>>
 }
