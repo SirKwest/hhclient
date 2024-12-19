@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
@@ -20,7 +19,7 @@ class SearchFragmentViewModel(
     private var lastLoadedPage: Int = 0
     private var totalPagesInLastRequest: Int = 0
     private var vacancyList = mutableListOf<VacancyShort>()
-    private var userOptions = mutableMapOf<String,String>()
+    private var userOptions = mutableMapOf<String, String>()
 
     private var errorMessage = MutableLiveData<Int>()
     private val screenState = MutableLiveData<SearchFragmentState>()
