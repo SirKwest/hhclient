@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.response.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.response.VacancyByIdResponse
@@ -15,7 +16,10 @@ interface HHApi {
         "HH-User-Agent: ${BuildConfig.USER_AGENT}"
     )
     @GET("/vacancies")
-    suspend fun getVacancies(@Query("text") text: String, @Query("page") page: Int): Response<VacanciesSearchResponse>
+    suspend fun getVacancies(
+        @Query("page") page: Int,
+        @QueryMap options: Map<String, String>
+    ): Response<VacanciesSearchResponse>
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",

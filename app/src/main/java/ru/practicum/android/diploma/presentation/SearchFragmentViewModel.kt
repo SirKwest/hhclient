@@ -18,6 +18,7 @@ class SearchFragmentViewModel(
     private var lastLoadedPage: Int = 0
     private var totalPagesInLastRequest: Int = 0
     private var vacancyList = mutableListOf<VacancyShort>()
+    private var userOptions = mutableMapOf<String, String>()
 
     private var errorMessage = MutableLiveData<Int>()
     private val screenState = MutableLiveData<SearchFragmentState>()
@@ -33,7 +34,9 @@ class SearchFragmentViewModel(
 
     val search: (String) -> Unit =
         debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
-            processNewSearch(searchText)
+            userOptions.put("text", searchText)
+            userOptions.put(PAGE_SEARCH_REQUEST_KEY, lastLoadedPage.toString())
+            processNewSearch(userOptions)
         }
 
     fun loadNextPage() {
@@ -46,7 +49,10 @@ class SearchFragmentViewModel(
         }
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.LoadingNewPageOfResults)
-            vacancyInteractor.searchVacancies(lastSearchedValue, ++lastLoadedPage).collect { result ->
+            ++lastLoadedPage
+            userOptions.put(PAGE_SEARCH_REQUEST_KEY, lastLoadedPage.toString())
+
+            vacancyInteractor.searchVacancies(userOptions).collect { result ->
                 when (result) {
                     is VacanciesSearchResource.Success -> {
                         if (result.items.isNotEmpty()) {
@@ -64,46 +70,52 @@ class SearchFragmentViewModel(
         }
     }
 
-    private fun processNewSearch(text: String) {
+    private fun processNewSearch(options: Map<String, String>) {
         lastLoadedPage = 0
         totalPagesInLastRequest = 0
-        if (lastSearchedValue == text) {
+
+        if (lastSearchedValue == options.get(USER_TEXT_REQUEST_KEY).toString()) {
             return
         }
+
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.RequestInProgress)
             vacancyList.clear()
-            lastSearchedValue = text
-            vacancyInteractor.searchVacancies(text, lastLoadedPage).collect { result ->
-                when (result) {
-                    is VacanciesSearchResource.Success -> {
-                        if (result.items.isNotEmpty()) {
-                            totalPagesInLastRequest = result.pages
-                            vacancyList.addAll(result.items)
-                            screenState.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
-                        } else {
-                            screenState.postValue(SearchFragmentState.EmptyResults)
-                        }
+            lastSearchedValue = options.get(USER_TEXT_REQUEST_KEY).toString()
+            vacancyInteractor.searchVacancies(options).collect { result ->
+                processResults(result)
+            }
+        }
+    }
+
+    private fun processResults(result: VacanciesSearchResource) {
+        when (result) {
+            is VacanciesSearchResource.Success -> {
+                if (result.items.isNotEmpty()) {
+                    totalPagesInLastRequest = result.pages
+                    vacancyList.addAll(result.items)
+                    screenState.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
+                } else {
+                    screenState.postValue(SearchFragmentState.EmptyResults)
+                }
+            }
+
+            is VacanciesSearchResource.Error -> {
+                when (result.code) {
+                    HttpURLConnection.HTTP_BAD_REQUEST -> {
+                        screenState.postValue(SearchFragmentState.ServerError)
                     }
 
-                    is VacanciesSearchResource.Error -> {
-                        when (result.code) {
-                            HttpURLConnection.HTTP_BAD_REQUEST -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        screenState.postValue(SearchFragmentState.ServerError)
+                    }
 
-                            HttpURLConnection.HTTP_FORBIDDEN -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
+                    HttpURLConnection.HTTP_NOT_FOUND -> {
+                        screenState.postValue(SearchFragmentState.ServerError)
+                    }
 
-                            HttpURLConnection.HTTP_NOT_FOUND -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
-
-                            else -> {
-                                screenState.postValue(SearchFragmentState.NoInternetAccess)
-                            }
-                        }
+                    else -> {
+                        screenState.postValue(SearchFragmentState.NoInternetAccess)
                     }
                 }
             }
@@ -112,5 +124,8 @@ class SearchFragmentViewModel(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val PAGE_SEARCH_REQUEST_KEY = "page"
+        private const val USER_TEXT_REQUEST_KEY = "text"
+
     }
 }
