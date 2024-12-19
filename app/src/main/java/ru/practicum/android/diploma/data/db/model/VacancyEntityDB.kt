@@ -14,7 +14,7 @@ data class VacancyEntityDB(
     val salaryLow: Int?,
     val salaryHigh: Int?,
     val currency: String?,
-    val keySkills: List<String>,
+    val keySkills: String,
     val description: String,
     val experience: String,
     val employment: String,
