@@ -4,23 +4,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.FavoriteInteractor
 import ru.practicum.android.diploma.domain.api.SharingInteractor
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyByIdResource
 import java.net.HttpURLConnection
 
 class VacancyDetailsViewModel(
     private val id: String,
     private val vacancyInteractor: VacancyInteractor,
-    private val sharingInteractor: SharingInteractor
+    private val sharingInteractor: SharingInteractor,
+    private val favoriteInteractor: FavoriteInteractor
 ) : ViewModel() {
 
+    private lateinit var vacancy: Vacancy
+    private var isFavorite: Boolean = false
     private val screenState = MutableLiveData<VacancyDetailsFragmentState>()
     fun observeState(): LiveData<VacancyDetailsFragmentState> = screenState
 
     init {
         loadData()
+        checkVacancyIsFavorite()
     }
 
     private fun loadData() {
@@ -29,6 +36,7 @@ class VacancyDetailsViewModel(
             vacancyInteractor.getVacancyById(id).collect { result ->
                 when (result) {
                     is VacancyByIdResource.Success -> {
+                        vacancy = result.item
                         screenState.postValue(VacancyDetailsFragmentState.ShowingResults(result.item))
                     }
 
@@ -58,6 +66,30 @@ class VacancyDetailsViewModel(
             state?.let {
                 sharingInteractor.shareText(it.vacancy.url)
             }
+        }
+    }
+
+    private fun checkVacancyIsFavorite() {
+       viewModelScope.launch {
+           delay(100L)
+           favoriteInteractor.getFavoriteVacancyIds().collect{ ids ->
+               if (ids.contains(id)) {
+                   isFavorite = true
+               }
+           }
+       }
+    }
+
+    fun updateFavorite() {
+        viewModelScope.launch {
+            if (isFavorite) {
+                favoriteInteractor.removeVacancyFromFavorite(vacancy)
+                isFavorite = false
+            } else {
+                favoriteInteractor.insertVacancyToFavorite(vacancy)
+                isFavorite = true
+            }
+            screenState.postValue(VacancyDetailsFragmentState.IsFavorite(isFavorite))
         }
     }
 }
