@@ -7,16 +7,21 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.presentation.SearchFragmentState
 import ru.practicum.android.diploma.presentation.SearchFragmentViewModel
+import ru.practicum.android.diploma.ui.details.VacancyDetailsFragment
+import java.net.HttpURLConnection
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
@@ -25,13 +30,6 @@ class SearchFragment : Fragment() {
     private var vacanciesAdapter = VacancyListAdapter(mutableListOf())
 
     private val binding get() = _binding!!
-
-    // static values, should be changed to null in later epics
-    var page = 1
-    var area: String = "40"
-    var industry: String = "10"
-    var salary = "10 000"
-    var salaryOnly: Boolean = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -57,22 +55,30 @@ class SearchFragment : Fragment() {
             )
         }
 
+        viewModel.observeErrorMessage().observe(viewLifecycleOwner) { errorMessage ->
+            if (errorMessage >= HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                Toast.makeText(requireContext(), getString(R.string.check_internet_connection), Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.error_happened), Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+
         binding.filterIcon.setOnClickListener {
             viewModel.addFilter()
         }
 
         binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
             if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
-                searchVacanciesByOptions(binding.searchEditText.text.toString())
+                viewModel.search(binding.searchEditText.text.toString())
             }
         }
-
-        binding.searchEditText.requestFocus()
 
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
             val drawableEnd: Drawable?
             if (text?.isNotBlank() == true) {
-                searchVacanciesByOptions(text.toString())
+                viewModel.search(text.toString())
                 drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             } else {
                 drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
@@ -100,6 +106,31 @@ class SearchFragment : Fragment() {
                 false
             }
         }
+
+        binding.vacancyRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val lastVisibleItemPosition =
+                        (binding.vacancyRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    if (lastVisibleItemPosition >= vacanciesAdapter.itemCount - 1) {
+                        viewModel.loadNextPage()
+                    }
+                }
+            }
+        })
+        vacanciesAdapter = VacancyListAdapter(mutableListOf())
+        vacanciesAdapter.setOnItemClickListener(object : VacancyListAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val item = vacanciesAdapter.getItemByPosition(position)
+                findNavController().navigate(
+                    R.id.vacancy_details_fragment,
+                    VacancyDetailsFragment.createBundleOf(item.id)
+                )
+            }
+        })
+        binding.vacancyRecyclerView.adapter = vacanciesAdapter
     }
 
     override fun onDestroyView() {
@@ -107,10 +138,6 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
-    /**
-     * Created only for prototype testing purposes.
-     * Should be refactored in issue #21
-     */
     private fun processingChangedScreenState(newState: SearchFragmentState) {
         when (newState) {
             SearchFragmentState.Default -> {
@@ -140,11 +167,12 @@ class SearchFragment : Fragment() {
             SearchFragmentState.LoadingNewPageOfResults -> {
                 binding.progressBarForPageLoading.isVisible = true
                 binding.vacancyRecyclerView.isVisible = true
+                binding.vacancyCountTextView.isVisible = true
+                binding.vacancyRecyclerView.scrollToPosition(vacanciesAdapter.itemCount - 1)
 
                 binding.infoImageView.isVisible = false
                 binding.infoTextView.isVisible = false
                 binding.progressBar.isVisible = false
-                binding.vacancyCountTextView.isVisible = false
             }
 
             SearchFragmentState.NoInternetAccess -> {
@@ -182,25 +210,15 @@ class SearchFragment : Fragment() {
             }
 
             is SearchFragmentState.ShowingResults -> {
+                binding.vacancyCountTextView.isVisible = true
+                binding.vacancyRecyclerView.isVisible = true
+                vacanciesAdapter.resetData(newState.vacancies)
+                vacanciesAdapter.notifyDataSetChanged()
                 binding.vacancyCountTextView.text = context?.resources?.getQuantityString(
                     R.plurals.vacancies_found,
                     newState.total,
                     newState.total,
                 )
-                binding.vacancyCountTextView.isVisible = true
-                binding.vacancyRecyclerView.isVisible = true
-                vacanciesAdapter = VacancyListAdapter(newState.vacancies)
-                vacanciesAdapter.setOnItemClickListener(object : VacancyListAdapter.OnItemClickListener {
-                    override fun onItemClick(position: Int) {
-                        val item = vacanciesAdapter.getItemByPosition(position)
-                        findNavController().navigate(
-                            R.id.vacancy_details_fragment,
-                            Bundle().apply { putString(VACANCY_ID_KEY, item.id) }
-                        )
-                    }
-                })
-                binding.vacancyRecyclerView.adapter = vacanciesAdapter
-                vacanciesAdapter.notifyDataSetChanged()
 
                 binding.infoTextView.isVisible = false
                 binding.infoImageView.isVisible = false
@@ -208,22 +226,5 @@ class SearchFragment : Fragment() {
                 binding.progressBarForPageLoading.isVisible = false
             }
         }
-    }
-
-    companion object {
-        const val VACANCY_ID_KEY = "VACANCY_ID_KEY"
-    }
-
-    // Created for prototype testing purposes. Refactor this when filters are done
-    private fun searchVacanciesByOptions(userText: String) {
-        var queryMap = HashMap<String, String>()
-
-        queryMap.put("text", userText)
-        queryMap.put("area", area)
-        queryMap.put("industry", industry)
-        queryMap.put("salary", salary.toString())
-        queryMap.put("only_with_salary", salaryOnly.toString())
-
-        viewModel.searchByOptions(page, queryMap)
     }
 }

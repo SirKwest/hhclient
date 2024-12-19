@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 data class VacancyShortDto(
     val id: String,
     val name: String,
-    val area: RegionDto,
-    val employer: Employer,
-    val salary: Salary? = Salary(),
+    val area: AreaDto,
+    val employer: EmployerDto,
+    val salary: SalaryDto? = SalaryDto(),
 )
 
 data class AreaDto(
@@ -16,38 +16,39 @@ data class AreaDto(
     val url: String
 )
 
-data class Employer(
+data class EmployerDto(
     val id: String,
     val name: String,
-    @SerializedName("logo_urls") val logo: Logo? = Logo()
+    @SerializedName("logo_urls") val logo: LogoDto? = LogoDto()
 )
 
-data class Logo(
+data class LogoDto(
     @SerializedName("90") val small: String? = null,
     @SerializedName("240") val big: String? = null,
     val original: String? = null
 )
 
-data class Salary(
+data class SalaryDto(
     val currency: String? = null,
     @SerializedName("from") val low: Int? = null,
     @SerializedName("to") val high: Int? = null,
 )
 
-data class RegionDto(
-    val id: String,
-    val parentId: String,
-    val name: String,
-    val areas: String
-)
-
-data class IndustryDto(
-    val id: String,
-    val industries: List<IndustriesDto>,
+data class ScheduleDto(
+    val id: String?,
     val name: String
 )
 
-data class IndustriesDto(
+data class ExperienceDto(
     val id: String,
+    val name: String
+)
+
+data class EmploymentDto(
+    val id: String?,
+    val name: String
+)
+
+data class KeySkill(
     val name: String
 )

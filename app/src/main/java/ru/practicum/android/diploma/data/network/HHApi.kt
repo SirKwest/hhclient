@@ -3,13 +3,12 @@ package ru.practicum.android.diploma.data.network
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.data.dto.AreasResponse
-import ru.practicum.android.diploma.data.dto.IndustriesResponse
-import ru.practicum.android.diploma.data.dto.RegionsResponse
-import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
+import ru.practicum.android.diploma.data.dto.response.VacanciesSearchResponse
+import ru.practicum.android.diploma.data.dto.response.VacancyByIdResponse
 
 interface HHApi {
     @Headers(
@@ -17,20 +16,15 @@ interface HHApi {
         "HH-User-Agent: ${BuildConfig.USER_AGENT}"
     )
     @GET("/vacancies")
-    suspend fun getVacancies(@Query("text") text: String): Response<VacanciesSearchResponse>
-
-    @GET("/vacancies")
-    suspend fun getVacanciesByOptions(
+    suspend fun getVacancies(
         @Query("page") page: Int,
         @QueryMap options: Map<String, String>
     ): Response<VacanciesSearchResponse>
 
-    @GET("/areas/countries")
-    suspend fun getAreas(): Response<AreasResponse>
-
-    @GET("/areas")
-    suspend fun getRegionsOfArea(@Query("areaId") areaId: String): Response<RegionsResponse>
-
-    @GET("/industries")
-    suspend fun getIndustries(): Response<IndustriesResponse>
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: ${BuildConfig.USER_AGENT}"
+    )
+    @GET("/vacancies/{vacancy_id}")
+    suspend fun getVacancyById(@Path("vacancy_id") id: String): Response<VacancyByIdResponse>
 }
