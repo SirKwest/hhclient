@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FavoriteInteractor
 import ru.practicum.android.diploma.domain.api.SharingInteractor
@@ -20,7 +19,7 @@ class VacancyDetailsViewModel(
     private val favoriteInteractor: FavoriteInteractor
 ) : ViewModel() {
 
-    private lateinit var vacancy: Vacancy
+    private var vacancy: Vacancy? = null
     private var isFavorite: Boolean = false
     private val screenState = MutableLiveData<VacancyDetailsFragmentState>()
     fun observeState(): LiveData<VacancyDetailsFragmentState> = screenState
@@ -70,23 +69,25 @@ class VacancyDetailsViewModel(
     }
 
     private fun checkVacancyIsFavorite() {
-       viewModelScope.launch {
-           delay(100L)
-           favoriteInteractor.getFavoriteVacancyIds().collect{ ids ->
-               if (ids.contains(id)) {
-                   isFavorite = true
-               }
-           }
-       }
+        val currentVacancy = vacancy ?: return
+        viewModelScope.launch {
+            favoriteInteractor.getFavoriteVacancyIds().collect { ids ->
+                if (ids.contains(currentVacancy.id)) {
+                    isFavorite = true
+                }
+            }
+            screenState.postValue(VacancyDetailsFragmentState.IsFavorite(isFavorite))
+        }
     }
 
     fun updateFavorite() {
+        val currentVacancy = vacancy ?: return
         viewModelScope.launch {
             if (isFavorite) {
-                favoriteInteractor.removeVacancyFromFavorite(vacancy)
+                favoriteInteractor.removeVacancyFromFavorite(currentVacancy)
                 isFavorite = false
             } else {
-                favoriteInteractor.insertVacancyToFavorite(vacancy)
+                favoriteInteractor.insertVacancyToFavorite(currentVacancy)
                 isFavorite = true
             }
             screenState.postValue(VacancyDetailsFragmentState.IsFavorite(isFavorite))
