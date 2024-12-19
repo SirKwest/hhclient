@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.data.db.converters
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import ru.practicum.android.diploma.data.db.model.VacancyEntityDB
 import ru.practicum.android.diploma.domain.models.Vacancy
 
@@ -14,7 +16,7 @@ class VacancyDbConverter {
             vacancy.salaryLow,
             vacancy.salaryHigh,
             vacancy.currency,
-            vacancy.keySkills,
+            Gson().toJson(vacancy.keySkills),
             vacancy.description,
             vacancy.experience,
             vacancy.employment,
@@ -24,6 +26,7 @@ class VacancyDbConverter {
     }
 
     fun mapToVacancy(entity: VacancyEntityDB): Vacancy {
+        val listType = object : TypeToken<List<String>>() {}.type
         return Vacancy(
             entity.id,
             entity.name,
@@ -33,7 +36,7 @@ class VacancyDbConverter {
             entity.salaryLow,
             entity.salaryHigh,
             entity.currency,
-            entity.keySkills,
+            Gson().fromJson(entity.keySkills, listType),
             entity.description,
             entity.experience,
             entity.employment,
