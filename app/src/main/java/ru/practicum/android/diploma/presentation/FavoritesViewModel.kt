@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FavoriteInteractor
-import ru.practicum.android.diploma.domain.models.VacancyFromDatabaseResource
+import ru.practicum.android.diploma.domain.models.VacancyShortFromDatabaseResource
 
 class FavoritesViewModel(private val favoriteInteractor: FavoriteInteractor) : ViewModel() {
     private val screenState = MutableLiveData<FavoritesFragmentState>()
@@ -15,16 +15,16 @@ class FavoritesViewModel(private val favoriteInteractor: FavoriteInteractor) : V
 
     fun loadFavoriteVacanciesFromDB() {
         viewModelScope.launch {
-            favoriteInteractor.getFavoriteVacancies().collect { result ->
+            favoriteInteractor.getFavoriteVacanciesShortList().collect { result ->
                 when (result) {
-                    is VacancyFromDatabaseResource.Success -> {
+                    is VacancyShortFromDatabaseResource.Success -> {
                         if (result.records.isEmpty()) {
                             screenState.postValue(FavoritesFragmentState.EmptyResults)
                         } else {
                             screenState.postValue(FavoritesFragmentState.ShowResults(result.records))
                         }
                     }
-                    is VacancyFromDatabaseResource.Error -> {
+                    is VacancyShortFromDatabaseResource.Error -> {
                         screenState.postValue(FavoritesFragmentState.Error)
                     }
                 }

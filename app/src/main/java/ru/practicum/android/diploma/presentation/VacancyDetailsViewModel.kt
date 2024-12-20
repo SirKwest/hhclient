@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.domain.api.SharingInteractor
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyByIdResource
+import ru.practicum.android.diploma.domain.models.VacancyFromDatabaseResource
 import java.net.HttpURLConnection
 
 class VacancyDetailsViewModel(
@@ -44,14 +45,26 @@ class VacancyDetailsViewModel(
                             HttpURLConnection.HTTP_BAD_REQUEST,
                             HttpURLConnection.HTTP_FORBIDDEN -> {
                                 screenState.postValue(VacancyDetailsFragmentState.ServerError)
+                                favoriteInteractor.removeVacancyFromFavorite(id)
                             }
 
                             HttpURLConnection.HTTP_NOT_FOUND -> {
                                 screenState.postValue(VacancyDetailsFragmentState.EmptyResults)
+                                favoriteInteractor.removeVacancyFromFavorite(id)
                             }
 
                             else -> {
-                                screenState.postValue(VacancyDetailsFragmentState.NoInternetAccess)
+                                favoriteInteractor.getFavoriteVacancyById(id).collect { result ->
+                                    when (result) {
+                                        is VacancyFromDatabaseResource.Success -> {
+                                            screenState.postValue(VacancyDetailsFragmentState.ShowingResults(result.records))
+                                            isFavorite.postValue(result.records.isFavorite)
+                                        }
+                                        is VacancyFromDatabaseResource.Error -> {
+                                            screenState.postValue(VacancyDetailsFragmentState.NoInternetAccess)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -74,7 +87,7 @@ class VacancyDetailsViewModel(
         }
         viewModelScope.launch {
             if (vacancy!!.isFavorite) {
-                favoriteInteractor.removeVacancyFromFavorite(vacancy!!)
+                favoriteInteractor.removeVacancyFromFavorite(id)
                 isFavorite.postValue(false)
             } else {
                 favoriteInteractor.insertVacancyToFavorite(vacancy!!)
