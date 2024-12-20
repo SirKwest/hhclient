@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.domain.repository.VacancyRepository
 
 val repositoryModule = module {
     single<VacancyRepository> {
-        VacancyRepositoryImpl(headhunterClient = get())
+        VacancyRepositoryImpl(headhunterClient = get(), get())
     }
 
     single<SharingRepository> {

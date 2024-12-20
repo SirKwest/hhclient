@@ -18,9 +18,9 @@ class VacancyDbConverter {
             vacancy.currency,
             Gson().toJson(vacancy.keySkills),
             vacancy.description,
-            vacancy.experience,
-            vacancy.employment,
-            vacancy.schedule,
+            vacancy.experience.orEmpty(),
+            vacancy.employment.orEmpty(),
+            vacancy.schedule.orEmpty(),
             vacancy.url
         )
     }
@@ -41,7 +41,8 @@ class VacancyDbConverter {
             entity.experience,
             entity.employment,
             entity.schedule,
-            entity.url
+            entity.url,
+            true
         )
     }
 }

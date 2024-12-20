@@ -8,5 +8,4 @@ sealed interface VacancyDetailsFragmentState {
     data object ServerError : VacancyDetailsFragmentState
     data object EmptyResults : VacancyDetailsFragmentState
     data class ShowingResults(val vacancy: Vacancy) : VacancyDetailsFragmentState
-    data class IsFavorite(val isFavorite: Boolean) : VacancyDetailsFragmentState
 }

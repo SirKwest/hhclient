@@ -21,4 +21,7 @@ interface VacancyDao {
 
     @Query("SELECT id FROM vacancy_table")
     fun getVacancyIds(): Flow<List<String>>
+
+    @Query("SELECT COUNT(*) > 0 FROM vacancy_table WHERE id = :id")
+    suspend fun isVacancyRecordExists(id: String): Boolean
 }

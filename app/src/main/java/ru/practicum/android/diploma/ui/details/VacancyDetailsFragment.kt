@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.VacancyDetailsFragmentState
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
 import ru.practicum.android.diploma.util.SalaryDescriptionBuilder
+
 
 class VacancyDetailsFragment : Fragment() {
     private var _binding: FragmentVacancyDetailsBinding? = null
@@ -43,6 +45,7 @@ class VacancyDetailsFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
+
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.share -> {
@@ -51,7 +54,7 @@ class VacancyDetailsFragment : Fragment() {
                     }
 
                     R.id.favorite -> {
-                        viewModel.updateFavorite()
+                        viewModel.updateFavoriteStatus()
                         true
                     }
 
@@ -60,7 +63,15 @@ class VacancyDetailsFragment : Fragment() {
             }
         }
 
-        viewModel.observeState().observe(viewLifecycleOwner, ::processState)
+        viewModel.observeScreenState().observe(viewLifecycleOwner, ::processState)
+        viewModel.observeFavoriteState().observe(viewLifecycleOwner, ::processFavoriteState)
+    }
+    private fun processFavoriteState(state: Boolean) {
+        if (state) {
+            binding.toolbar.menu[1].setIcon(R.drawable.icon_favorite_active)
+        } else {
+            binding.toolbar.menu[1].setIcon(R.drawable.icon_favorite_black_inactive)
+        }
     }
 
     private fun processState(state: VacancyDetailsFragmentState) {
