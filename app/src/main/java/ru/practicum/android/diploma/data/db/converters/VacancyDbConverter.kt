@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.practicum.android.diploma.data.db.model.VacancyEntityDB
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyShort
 
 class VacancyDbConverter {
     fun mapToVacancyEntity(vacancy: Vacancy): VacancyEntityDB {
@@ -43,6 +44,19 @@ class VacancyDbConverter {
             entity.schedule,
             entity.url,
             true
+        )
+    }
+
+    fun mapToVacancyShort(entity: VacancyEntityDB): VacancyShort {
+        return VacancyShort(
+            entity.id,
+            entity.name,
+            entity.area,
+            entity.employer,
+            entity.logo,
+            entity.salaryLow,
+            entity.salaryHigh,
+            entity.currency
         )
     }
 }

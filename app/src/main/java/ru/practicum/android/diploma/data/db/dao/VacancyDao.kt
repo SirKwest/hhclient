@@ -17,7 +17,7 @@ interface VacancyDao {
     suspend fun removeVacancy(vacancy: VacancyEntityDB)
 
     @Query("SELECT * from vacancy_table")
-    fun getVacancies(): Flow<List<VacancyEntityDB>>
+    suspend fun getVacancies(): List<VacancyEntityDB>
 
     @Query("SELECT id FROM vacancy_table")
     fun getVacancyIds(): Flow<List<String>>
