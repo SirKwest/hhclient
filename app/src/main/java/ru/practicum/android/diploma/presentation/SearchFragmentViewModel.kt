@@ -85,21 +85,13 @@ class SearchFragmentViewModel(
                             screenState.postValue(SearchFragmentState.EmptyResults)
                         }
                     }
-
                     is VacanciesSearchResource.Error -> {
                         when (result.code) {
-                            HttpURLConnection.HTTP_BAD_REQUEST -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
-
-                            HttpURLConnection.HTTP_FORBIDDEN -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
-
+                            HttpURLConnection.HTTP_BAD_REQUEST,
+                            HttpURLConnection.HTTP_FORBIDDEN,
                             HttpURLConnection.HTTP_NOT_FOUND -> {
                                 screenState.postValue(SearchFragmentState.ServerError)
                             }
-
                             else -> {
                                 screenState.postValue(SearchFragmentState.NoInternetAccess)
                             }
