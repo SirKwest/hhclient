@@ -68,15 +68,6 @@ class VacancyDetailsViewModel(
         }
     }
 
-    private fun checkVacancyIsFavorite() {
-        val currentVacancy = vacancy ?: return
-        viewModelScope.launch {
-            favoriteInteractor.getFavoriteVacancyIds().collect { ids ->
-                isFavorite.postValue(ids.contains(currentVacancy.id))
-            }
-        }
-    }
-
     fun updateFavoriteStatus() {
         if (vacancy == null) {
             return

@@ -20,7 +20,6 @@ import ru.practicum.android.diploma.presentation.VacancyDetailsFragmentState
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
 import ru.practicum.android.diploma.util.SalaryDescriptionBuilder
 
-
 class VacancyDetailsFragment : Fragment() {
     private var _binding: FragmentVacancyDetailsBinding? = null
     private val binding get() = _binding!!
