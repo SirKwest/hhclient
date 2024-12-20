@@ -35,7 +35,11 @@ class FavoriteRepositoryImpl(
 
     override suspend fun getFavoriteVacancyById(id: String): Flow<VacancyFromDatabaseResource> = flow {
         try {
-            emit(VacancyFromDatabaseResource.Success(converter.mapToVacancy(appDatabase.vacancyDao().getVacancyById(id))))
+            emit(
+                VacancyFromDatabaseResource.Success(
+                    converter.mapToVacancy(appDatabase.vacancyDao().getVacancyById(id))
+                )
+            )
         } catch (error: SQLException) {
             emit(VacancyFromDatabaseResource.Error(error.errorCode))
         }

@@ -57,7 +57,9 @@ class VacancyDetailsViewModel(
                                 favoriteInteractor.getFavoriteVacancyById(id).collect { result ->
                                     when (result) {
                                         is VacancyFromDatabaseResource.Success -> {
-                                            screenState.postValue(VacancyDetailsFragmentState.ShowingResults(result.records))
+                                            screenState.postValue(
+                                                VacancyDetailsFragmentState.ShowingResults(result.records)
+                                            )
                                             isFavorite.postValue(result.records.isFavorite)
                                         }
                                         is VacancyFromDatabaseResource.Error -> {
