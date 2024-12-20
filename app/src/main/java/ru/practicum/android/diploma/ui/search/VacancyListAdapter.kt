@@ -28,7 +28,7 @@ class VacancyListAdapter(
         return vacancies[position]
     }
 
-    fun resetData(data: List<VacancyShort>) {
+    fun resetDataTo(data: List<VacancyShort>) {
         vacancies.clear()
         vacancies.addAll(data)
     }
