@@ -12,6 +12,5 @@
         android:id="@+id/favorite"
         android:icon="@drawable/icon_favorite_black_inactive"
         android:title="@string/add_to_favorites"
-        app:iconTint="?colorOnBackground"
         app:showAsAction="ifRoom" />
 </menu>

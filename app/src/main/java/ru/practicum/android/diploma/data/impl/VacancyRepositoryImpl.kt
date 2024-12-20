@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.data.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.dto.request.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.request.VacancyByIdRequest
 import ru.practicum.android.diploma.data.dto.response.VacanciesSearchResponse
@@ -14,7 +15,10 @@ import ru.practicum.android.diploma.domain.models.VacancyShort
 import ru.practicum.android.diploma.domain.repository.VacancyRepository
 import java.net.HttpURLConnection
 
-class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : VacancyRepository {
+class VacancyRepositoryImpl(
+    private val headhunterClient: NetworkClient,
+    private val appDatabase: AppDatabase
+) : VacancyRepository {
     override fun searchVacancies(text: String, page: Int): Flow<VacanciesSearchResource> = flow {
         val response = headhunterClient.doRequest(VacanciesSearchRequest(text, page))
         if (
@@ -59,7 +63,8 @@ class VacancyRepositoryImpl(private val headhunterClient: NetworkClient) : Vacan
                 experience = response.experience?.name,
                 employment = response.employment?.name,
                 schedule = response.schedule?.name,
-                url = response.url
+                url = response.url,
+                isFavorite = appDatabase.vacancyDao().isVacancyRecordExists(response.id)
             )
             emit(VacancyByIdResource.Success(vacancy))
         } else {
