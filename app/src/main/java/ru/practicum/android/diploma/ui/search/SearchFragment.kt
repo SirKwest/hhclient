@@ -144,13 +144,13 @@ class SearchFragment : Fragment() {
 
     private fun processingChangedScreenState(newState: SearchFragmentState) {
         when (newState) {
-            SearchFragmentState.Default                 -> showDefaultScreenState()
-            SearchFragmentState.EmptyResults            -> showEmptyResultsScreen()
+            SearchFragmentState.Default -> showDefaultScreenState()
+            SearchFragmentState.EmptyResults -> showEmptyResultsScreen()
             SearchFragmentState.LoadingNewPageOfResults -> showLoadingNewPageScreen()
-            SearchFragmentState.NoInternetAccess        -> showNoInternetAccessScreen()
-            SearchFragmentState.RequestInProgress       -> showRequestInProgressScreen()
-            SearchFragmentState.ServerError             -> showServerErrorScreen()
-            is SearchFragmentState.ShowingResults       -> showResultsScreen(newState)
+            SearchFragmentState.NoInternetAccess -> showNoInternetAccessScreen()
+            SearchFragmentState.RequestInProgress -> showRequestInProgressScreen()
+            SearchFragmentState.ServerError -> showServerErrorScreen()
+            is SearchFragmentState.ShowingResults -> showResultsScreen(newState)
         }
     }
     private fun showDefaultScreenState() {

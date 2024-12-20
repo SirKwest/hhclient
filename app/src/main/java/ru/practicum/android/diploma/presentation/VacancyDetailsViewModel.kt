@@ -51,19 +51,7 @@ class VacancyDetailsViewModel(
                                 favoriteInteractor.removeVacancyFromFavorite(id)
                             }
                             else -> {
-                                favoriteInteractor.getFavoriteVacancyById(id).collect { recordResource ->
-                                    when (recordResource) {
-                                        is VacancyFromDatabaseResource.Success -> {
-                                            screenState.postValue(
-                                                VacancyDetailsFragmentState.ShowingResults(recordResource.records)
-                                            )
-                                            isFavorite.postValue(recordResource.records.isFavorite)
-                                        }
-                                        is VacancyFromDatabaseResource.Error -> {
-                                            screenState.postValue(VacancyDetailsFragmentState.NoInternetAccess)
-                                        }
-                                    }
-                                }
+                                checkDatabaseForVacancyRecord()
                             }
                         }
                     }
@@ -94,5 +82,21 @@ class VacancyDetailsViewModel(
             }
         }
         vacancy = vacancy!!.copy(isFavorite = !vacancy!!.isFavorite)
+    }
+
+    private suspend fun checkDatabaseForVacancyRecord() {
+        favoriteInteractor.getFavoriteVacancyById(id).collect { recordResource ->
+            when (recordResource) {
+                is VacancyFromDatabaseResource.Success -> {
+                    screenState.postValue(
+                        VacancyDetailsFragmentState.ShowingResults(recordResource.records)
+                    )
+                    isFavorite.postValue(recordResource.records.isFavorite)
+                }
+                is VacancyFromDatabaseResource.Error -> {
+                    screenState.postValue(VacancyDetailsFragmentState.NoInternetAccess)
+                }
+            }
+        }
     }
 }
