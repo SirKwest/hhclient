@@ -19,6 +19,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField(type = "String", name = "HH_ACCESS_TOKEN", value = "\"${developProperties.hhAccessToken}\"")
+        buildConfigField(type = "String", name = "USER_AGENT", value = "\"${developProperties.userAgent}\"")
     }
 
     buildTypes {

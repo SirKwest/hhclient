@@ -28,7 +28,7 @@ inline fun <reified T : Serializable> Bundle.getSerializableData(key: String): T
  * @param coroutineScope Контекст в котором вызывается
  * @param action         Обработчик клика
  */
-fun <T> Fragment.debouncedAction(
+fun <T> debouncedAction(
     requiredDelay: Long,
     coroutineScope: CoroutineScope,
     action: (T) -> Unit

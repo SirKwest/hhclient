@@ -22,7 +22,7 @@
         android:id="@+id/main_navigation_view_splitter"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E6E8EB"
+        android:background="@color/light_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/main_navigation_view" />
@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         app:itemIconTint="@color/navigation_tab_color"
         app:itemTextColor="@color/navigation_tab_color"
+        app:backgroundTint="?backgroundColor"
         app:menu="@menu/main_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
