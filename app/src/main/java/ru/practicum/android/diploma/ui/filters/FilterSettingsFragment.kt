@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import ru.practicum.android.diploma.R
@@ -35,5 +36,17 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
+    fun changeFilterTextViewState(isFilterChosen: Boolean, view: TextView) {
+        if (isFilterChosen) {
+            view.setTextAppearance(R.style.FilterFragmentActiveTextStyle)
+        } else {
+            view.setTextAppearance(R.style.FilterFragmentInactiveTextStyle)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }
