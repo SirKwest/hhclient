@@ -18,7 +18,7 @@ interface VacancyDao {
     suspend fun getVacancies(): List<VacancyEntityDB>
 
     @Query("SELECT * FROM vacancy_table WHERE id = :id")
-    suspend fun getVacancyById(id: String): VacancyEntityDB
+    suspend fun getVacancyById(id: String): VacancyEntityDB?
 
     @Query("SELECT COUNT(*) > 0 FROM vacancy_table WHERE id = :id")
     suspend fun isVacancyRecordExists(id: String): Boolean

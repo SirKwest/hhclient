@@ -17,6 +17,7 @@ class SearchFragmentViewModel(
     private var lastSearchedValue: String = ""
     private var lastLoadedPage: Int = 0
     private var totalPagesInLastRequest: Int = 0
+    private var totalVacanciesFound: Int = 0
     private var vacancyList = mutableListOf<VacancyShort>()
 
     private var errorMessage = MutableLiveData<Int>()
@@ -56,7 +57,7 @@ class SearchFragmentViewModel(
                     }
 
                     is VacanciesSearchResource.Error -> {
-                        screenState.postValue(SearchFragmentState.ShowingResults(vacancyList))
+                        screenState.postValue(SearchFragmentState.ShowingResults(vacancyList, totalVacanciesFound))
                         errorMessage.postValue(result.code)
                     }
                 }
@@ -80,6 +81,7 @@ class SearchFragmentViewModel(
                         if (result.items.isNotEmpty()) {
                             totalPagesInLastRequest = result.pages
                             vacancyList.addAll(result.items)
+                            totalVacanciesFound = result.total
                             screenState.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
                         } else {
                             screenState.postValue(SearchFragmentState.EmptyResults)

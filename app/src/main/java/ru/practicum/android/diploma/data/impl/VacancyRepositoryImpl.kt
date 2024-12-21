@@ -27,17 +27,18 @@ class VacancyRepositoryImpl(
         ) {
             emit(VacanciesSearchResource.Error(response.responseCode))
         } else {
-            val data = response.items.map {
-                val logo = it.employer.logo?.original ?: (it.employer.logo?.big ?: it.employer.logo?.small)
+            val data = response.items.map { vacancy ->
+                val logo =
+                    vacancy.employer.logo?.original ?: (vacancy.employer.logo?.big ?: vacancy.employer.logo?.small)
                 VacancyShort(
-                    it.id,
-                    it.name,
-                    it.area.name,
-                    it.employer.name,
-                    logo.orEmpty(),
-                    it.salary?.low,
-                    it.salary?.high,
-                    it.salary?.currency,
+                    id = vacancy.id,
+                    name = vacancy.name,
+                    location = vacancy.area.name,
+                    employer = vacancy.employer.name,
+                    logo = logo.orEmpty(),
+                    salaryLow = vacancy.salary?.low,
+                    salaryHigh = vacancy.salary?.high,
+                    currency = vacancy.salary?.currency,
                 )
             }
             emit(VacanciesSearchResource.Success(data, response.page, response.pages, response.found))
