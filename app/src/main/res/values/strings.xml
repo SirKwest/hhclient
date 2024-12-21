@@ -32,4 +32,10 @@
     <string name="list_is_empty">Список пуст</string>
     <string name="error_happened">Произошла ошибка</string>
     <string name="check_internet_connection">Проверьте подключение к интернету</string>
+    <string name="work_of_place_text">Место работы</string>
+    <string name="industry_text">Отрасль</string>
+    <string name="expected_salary_text">Ожидаемая зарплата</string>
+    <string name="enter_sum_text">Введите сумму</string>
+    <string name="salary_only_checkbox_text">Не показывать без зарплаты</string>
+    <string name="filter_settings_text">Настройки фильтрации</string>
 </resources>
