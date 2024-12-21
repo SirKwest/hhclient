@@ -62,6 +62,7 @@ class VacancyDetailsViewModel(
                                             )
                                             isFavorite.postValue(result.records.isFavorite)
                                         }
+
                                         is VacancyFromDatabaseResource.Error -> {
                                             screenState.postValue(VacancyDetailsFragmentState.NoInternetAccess)
                                         }

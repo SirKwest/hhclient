@@ -41,6 +41,7 @@ class FavoritesFragment : Fragment() {
 
                     binding.favoritesRv.isVisible = false
                 }
+
                 FavoritesFragmentState.Error -> {
                     binding.favoritesInfoLayout.isVisible = true
                     binding.favoritesInfoIv.setImageResource(R.drawable.no_vacancy_image)
@@ -48,6 +49,7 @@ class FavoritesFragment : Fragment() {
 
                     binding.favoritesRv.isVisible = false
                 }
+
                 is FavoritesFragmentState.ShowResults -> {
                     binding.favoritesRv.isVisible = true
                     vacanciesAdapter.resetDataTo(state.favorites)
