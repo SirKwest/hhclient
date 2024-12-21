@@ -32,6 +32,7 @@ fun VacancyByIdResponse.toVacancy(): Vacancy {
         experience = experience?.name,
         employment = employment?.name,
         schedule = schedule?.name,
-        url = url
+        url = url,
+        isFavorite = false
     )
 }

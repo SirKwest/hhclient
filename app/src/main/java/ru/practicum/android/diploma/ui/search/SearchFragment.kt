@@ -212,7 +212,7 @@ class SearchFragment : Fragment() {
             is SearchFragmentState.ShowingResults -> {
                 binding.vacancyCountTextView.isVisible = true
                 binding.vacancyRecyclerView.isVisible = true
-                vacanciesAdapter.resetData(newState.vacancies)
+                vacanciesAdapter.resetDataTo(newState.vacancies)
                 vacanciesAdapter.notifyDataSetChanged()
                 binding.vacancyCountTextView.text = context?.resources?.getQuantityString(
                     R.plurals.vacancies_found,

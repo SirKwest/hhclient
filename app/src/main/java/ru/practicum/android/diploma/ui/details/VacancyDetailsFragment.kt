@@ -5,8 +5,8 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -44,6 +44,7 @@ class VacancyDetailsFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
+
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.share -> {
@@ -52,9 +53,7 @@ class VacancyDetailsFragment : Fragment() {
                     }
 
                     R.id.favorite -> {
-                        it.icon =
-                            ResourcesCompat.getDrawable(resources, R.drawable.ic_favorites, requireContext().theme)
-                        it.icon?.setTint(resources.getColor(R.color.red, requireContext().theme))
+                        viewModel.updateFavoriteStatus()
                         true
                     }
 
@@ -63,7 +62,16 @@ class VacancyDetailsFragment : Fragment() {
             }
         }
 
-        viewModel.observeState().observe(viewLifecycleOwner, ::processState)
+        viewModel.observeScreenState().observe(viewLifecycleOwner, ::processState)
+        viewModel.observeFavoriteState().observe(viewLifecycleOwner, ::processFavoriteState)
+    }
+
+    private fun processFavoriteState(state: Boolean) {
+        if (state) {
+            binding.toolbar.menu[1].setIcon(R.drawable.icon_favorite_active)
+        } else {
+            binding.toolbar.menu[1].setIcon(R.drawable.icon_favorite_black_inactive)
+        }
     }
 
     private fun processState(state: VacancyDetailsFragmentState) {
