@@ -93,6 +93,7 @@
             android:layout_marginBottom="@dimen/dim_8dp"
             android:background="@android:color/transparent"
             android:hint="@string/enter_sum_text"
+            android:textColor="@color/black"
             android:lines="1"
             android:singleLine="true"
             tools:ignore="TouchTargetSizeCheck" />
