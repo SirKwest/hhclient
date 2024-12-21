@@ -76,7 +76,7 @@
         <item name="android:textSize">@dimen/text_size_12</item>
         <item name="fontWeight">400</item>
         <item name="lineHeight">@dimen/text_size_16</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorSecondaryVariant</item>
     </style>
 
     <style name="FoundResultsStateTextStyle">
