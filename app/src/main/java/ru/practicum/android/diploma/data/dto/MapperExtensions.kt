@@ -17,7 +17,7 @@ fun VacancyShortDto.toVacancyShort(): VacancyShort {
     )
 }
 
-fun VacancyByIdResponse.toVacancy(): Vacancy {
+fun VacancyByIdResponse.toVacancy(isFavorite: Boolean): Vacancy {
     return Vacancy(
         id = id,
         name = name,
@@ -33,6 +33,6 @@ fun VacancyByIdResponse.toVacancy(): Vacancy {
         employment = employment?.name,
         schedule = schedule?.name,
         url = url,
-        isFavorite = false
+        isFavorite = isFavorite
     )
 }

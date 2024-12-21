@@ -35,10 +35,8 @@ class VacancyRepositoryImpl(
     override fun getVacancyById(id: String): Flow<VacancyByIdResource> = flow {
         val response = headhunterClient.doRequest(VacancyByIdRequest(id))
         if (response.responseCode == HttpURLConnection.HTTP_OK && response is VacancyByIdResponse) {
-            emit(VacancyByIdResource.Success(response.toVacancy()))
-            val vacancy = response.toVacancy().apply {
-                isFavorite = appDatabase.vacancyDao().isVacancyRecordExists(response.id)
-            }
+            val isFavorite = appDatabase.vacancyDao().isVacancyRecordExists(response.id)
+            val vacancy = response.toVacancy(isFavorite)
             emit(VacancyByIdResource.Success(vacancy))
         } else {
             emit(VacancyByIdResource.Error(response.responseCode))
