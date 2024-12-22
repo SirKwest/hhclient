@@ -39,7 +39,6 @@ class VacancyDetailsViewModel(
                         screenState.postValue(VacancyDetailsFragmentState.ShowingResults(result.item))
                         isFavorite.postValue(result.item.isFavorite)
                     }
-
                     is VacancyByIdResource.Error -> {
                         when (result.code) {
                             HttpURLConnection.HTTP_BAD_REQUEST,
@@ -47,26 +46,12 @@ class VacancyDetailsViewModel(
                                 screenState.postValue(VacancyDetailsFragmentState.ServerError)
                                 favoriteInteractor.removeVacancyFromFavorite(id)
                             }
-
                             HttpURLConnection.HTTP_NOT_FOUND -> {
                                 screenState.postValue(VacancyDetailsFragmentState.EmptyResults)
                                 favoriteInteractor.removeVacancyFromFavorite(id)
                             }
-
                             else -> {
-                                favoriteInteractor.getFavoriteVacancyById(id).collect { result ->
-                                    when (result) {
-                                        is VacancyFromDatabaseResource.Success -> {
-                                            screenState.postValue(
-                                                VacancyDetailsFragmentState.ShowingResults(result.records)
-                                            )
-                                            isFavorite.postValue(result.records.isFavorite)
-                                        }
-                                        is VacancyFromDatabaseResource.Error -> {
-                                            screenState.postValue(VacancyDetailsFragmentState.NoInternetAccess)
-                                        }
-                                    }
-                                }
+                                checkDatabaseForVacancyRecord()
                             }
                         }
                     }
@@ -97,5 +82,21 @@ class VacancyDetailsViewModel(
             }
         }
         vacancy = vacancy!!.copy(isFavorite = !vacancy!!.isFavorite)
+    }
+
+    private suspend fun checkDatabaseForVacancyRecord() {
+        favoriteInteractor.getFavoriteVacancyById(id).collect { recordResource ->
+            when (recordResource) {
+                is VacancyFromDatabaseResource.Success -> {
+                    screenState.postValue(
+                        VacancyDetailsFragmentState.ShowingResults(recordResource.records)
+                    )
+                    isFavorite.postValue(recordResource.records.isFavorite)
+                }
+                is VacancyFromDatabaseResource.Error -> {
+                    screenState.postValue(VacancyDetailsFragmentState.NoInternetAccess)
+                }
+            }
+        }
     }
 }

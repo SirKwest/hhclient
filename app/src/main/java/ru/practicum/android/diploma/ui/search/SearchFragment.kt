@@ -36,11 +36,61 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        processingChangedScreenState(SearchFragmentState.Default)
 
+        processingChangedScreenState(SearchFragmentState.Default)
+        applyingFunctionsToLayoutItems()
+        settingListeners()
+        settingRecyclerViewAdapter()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun applyingFunctionsToLayoutItems() {
+        binding.filterIcon.setOnClickListener { viewModel.addFilter() }
+        binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
+            if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
+                viewModel.search(binding.searchEditText.text.toString())
+            }
+        }
+        binding.searchEditText.doOnTextChanged { text, _, _, _ ->
+            val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
+                viewModel.search(text.toString())
+                ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
+            } else {
+                ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
+            }
+            binding.searchEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                null,
+                null,
+                drawableEnd,
+                null
+            )
+        }
+        binding.searchEditText.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2]
+                val position = binding.searchEditText.width -
+                    binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
+                if (drawableEnd != null && event.rawX >= position) {
+                    binding.searchEditText.text?.clear()
+                    processingChangedScreenState(SearchFragmentState.Default)
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun settingListeners() {
         viewModel.observeData().observe(viewLifecycleOwner) { state ->
             processingChangedScreenState(state)
         }
@@ -64,49 +114,9 @@ class SearchFragment : Fragment() {
                     .show()
             }
         }
+    }
 
-        binding.filterIcon.setOnClickListener {
-            viewModel.addFilter()
-        }
-
-        binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
-            if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
-                viewModel.search(binding.searchEditText.text.toString())
-            }
-        }
-
-        binding.searchEditText.doOnTextChanged { text, _, _, _ ->
-            val drawableEnd: Drawable?
-            if (text?.isNotBlank() == true) {
-                viewModel.search(text.toString())
-                drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
-            } else {
-                drawableEnd = ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
-            }
-            binding.searchEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                null,
-                null,
-                drawableEnd,
-                null
-            )
-        }
-
-        binding.searchEditText.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2]
-                val position = binding.searchEditText.width -
-                    binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
-                if (drawableEnd != null && event.rawX >= position) {
-                    binding.searchEditText.text?.clear()
-                    true
-                } else {
-                    false
-                }
-            } else {
-                false
-            }
-        }
-
+    private fun settingRecyclerViewAdapter() {
         binding.vacancyRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -133,98 +143,100 @@ class SearchFragment : Fragment() {
         binding.vacancyRecyclerView.adapter = vacanciesAdapter
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun processingChangedScreenState(newState: SearchFragmentState) {
         when (newState) {
-            SearchFragmentState.Default -> {
-                binding.infoImageView.setImageResource(R.drawable.start_info_image)
-                binding.infoImageView.isVisible = true
-
-                binding.infoTextView.isVisible = false
-                binding.vacancyRecyclerView.isVisible = false
-                binding.vacancyCountTextView.isVisible = false
-                binding.progressBar.isVisible = false
-                binding.progressBarForPageLoading.isVisible = false
-            }
-
-            SearchFragmentState.EmptyResults -> {
-                binding.infoImageView.setImageResource(R.drawable.no_vacancy_image)
-                binding.infoImageView.isVisible = true
-                binding.infoTextView.setText(R.string.cant_get_vacancy)
-                binding.infoTextView.isVisible = true
-                binding.vacancyCountTextView.isVisible = true
-                binding.vacancyCountTextView.setText(R.string.no_such_vacancy)
-
-                binding.vacancyRecyclerView.isVisible = false
-                binding.progressBar.isVisible = false
-                binding.progressBarForPageLoading.isVisible = false
-            }
-
-            SearchFragmentState.LoadingNewPageOfResults -> {
-                binding.progressBarForPageLoading.isVisible = true
-                binding.vacancyRecyclerView.isVisible = true
-                binding.vacancyCountTextView.isVisible = true
-                binding.vacancyRecyclerView.scrollToPosition(vacanciesAdapter.itemCount - 1)
-
-                binding.infoImageView.isVisible = false
-                binding.infoTextView.isVisible = false
-                binding.progressBar.isVisible = false
-            }
-
-            SearchFragmentState.NoInternetAccess -> {
-                binding.infoImageView.setImageResource(R.drawable.no_internet_info_image)
-                binding.infoImageView.isVisible = true
-                binding.infoTextView.setText(R.string.no_internet)
-                binding.infoTextView.isVisible = true
-
-                binding.vacancyRecyclerView.isVisible = false
-                binding.vacancyCountTextView.isVisible = false
-                binding.progressBar.isVisible = false
-                binding.progressBarForPageLoading.isVisible = false
-            }
-
-            SearchFragmentState.RequestInProgress -> {
-                binding.progressBar.isVisible = true
-
-                binding.infoImageView.isVisible = false
-                binding.infoTextView.isVisible = false
-                binding.vacancyRecyclerView.isVisible = false
-                binding.vacancyCountTextView.isVisible = false
-                binding.progressBarForPageLoading.isVisible = false
-            }
-
-            SearchFragmentState.ServerError -> {
-                binding.infoImageView.setImageResource(R.drawable.server_error)
-                binding.infoImageView.isVisible = true
-                binding.infoTextView.setText(R.string.server_error)
-                binding.infoTextView.isVisible = true
-
-                binding.vacancyRecyclerView.isVisible = false
-                binding.vacancyCountTextView.isVisible = false
-                binding.progressBar.isVisible = false
-                binding.progressBarForPageLoading.isVisible = false
-            }
-
-            is SearchFragmentState.ShowingResults -> {
-                binding.vacancyCountTextView.isVisible = true
-                binding.vacancyRecyclerView.isVisible = true
-                vacanciesAdapter.resetDataTo(newState.vacancies)
-                vacanciesAdapter.notifyDataSetChanged()
-                binding.vacancyCountTextView.text = context?.resources?.getQuantityString(
-                    R.plurals.vacancies_found,
-                    newState.total,
-                    newState.total,
-                )
-
-                binding.infoTextView.isVisible = false
-                binding.infoImageView.isVisible = false
-                binding.progressBar.isVisible = false
-                binding.progressBarForPageLoading.isVisible = false
-            }
+            SearchFragmentState.Default -> showDefaultScreenState()
+            SearchFragmentState.EmptyResults -> showEmptyResultsScreen()
+            SearchFragmentState.LoadingNewPageOfResults -> showLoadingNewPageScreen()
+            SearchFragmentState.NoInternetAccess -> showNoInternetAccessScreen()
+            SearchFragmentState.RequestInProgress -> showRequestInProgressScreen()
+            SearchFragmentState.ServerError -> showServerErrorScreen()
+            is SearchFragmentState.ShowingResults -> showResultsScreen(newState)
         }
+    }
+    private fun showDefaultScreenState() {
+        binding.infoImageView.setImageResource(R.drawable.start_info_image)
+        binding.infoImageView.isVisible = true
+
+        binding.infoTextView.isVisible = false
+        binding.vacancyRecyclerView.isVisible = false
+        binding.vacancyCountTextView.isVisible = false
+        binding.progressBar.isVisible = false
+        binding.progressBarForPageLoading.isVisible = false
+    }
+
+    private fun showEmptyResultsScreen() {
+        binding.infoImageView.setImageResource(R.drawable.no_vacancy_image)
+        binding.infoImageView.isVisible = true
+        binding.infoTextView.setText(R.string.cant_get_vacancy)
+        binding.infoTextView.isVisible = true
+        binding.vacancyCountTextView.isVisible = true
+        binding.vacancyCountTextView.setText(R.string.no_such_vacancy)
+
+        binding.vacancyRecyclerView.isVisible = false
+        binding.progressBar.isVisible = false
+        binding.progressBarForPageLoading.isVisible = false
+    }
+
+    private fun showLoadingNewPageScreen() {
+        binding.progressBarForPageLoading.isVisible = true
+        binding.vacancyRecyclerView.isVisible = true
+        binding.vacancyCountTextView.isVisible = true
+        binding.vacancyRecyclerView.scrollToPosition(vacanciesAdapter.itemCount - 1)
+
+        binding.infoImageView.isVisible = false
+        binding.infoTextView.isVisible = false
+        binding.progressBar.isVisible = false
+    }
+
+    private fun showNoInternetAccessScreen() {
+        binding.infoImageView.setImageResource(R.drawable.no_internet_info_image)
+        binding.infoImageView.isVisible = true
+        binding.infoTextView.setText(R.string.no_internet)
+        binding.infoTextView.isVisible = true
+
+        binding.vacancyRecyclerView.isVisible = false
+        binding.vacancyCountTextView.isVisible = false
+        binding.progressBar.isVisible = false
+        binding.progressBarForPageLoading.isVisible = false
+    }
+
+    private fun showRequestInProgressScreen() {
+        binding.progressBar.isVisible = true
+
+        binding.infoImageView.isVisible = false
+        binding.infoTextView.isVisible = false
+        binding.vacancyRecyclerView.isVisible = false
+        binding.vacancyCountTextView.isVisible = false
+        binding.progressBarForPageLoading.isVisible = false
+    }
+
+    private fun showServerErrorScreen() {
+        binding.infoImageView.setImageResource(R.drawable.server_error)
+        binding.infoImageView.isVisible = true
+        binding.infoTextView.setText(R.string.server_error)
+        binding.infoTextView.isVisible = true
+
+        binding.vacancyRecyclerView.isVisible = false
+        binding.vacancyCountTextView.isVisible = false
+        binding.progressBar.isVisible = false
+        binding.progressBarForPageLoading.isVisible = false
+    }
+
+    private fun showResultsScreen(newState: SearchFragmentState.ShowingResults) {
+        binding.vacancyCountTextView.isVisible = true
+        binding.vacancyRecyclerView.isVisible = true
+        vacanciesAdapter.resetDataTo(newState.vacancies)
+        vacanciesAdapter.notifyDataSetChanged()
+        binding.vacancyCountTextView.text = context?.resources?.getQuantityString(
+            R.plurals.vacancies_found,
+            newState.total,
+            newState.total,
+        )
+
+        binding.infoTextView.isVisible = false
+        binding.infoImageView.isVisible = false
+        binding.progressBar.isVisible = false
+        binding.progressBarForPageLoading.isVisible = false
     }
 }
