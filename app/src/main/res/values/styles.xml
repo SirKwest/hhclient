@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TopBarNameTextStyle">
+    <style name="ToolbarTitleTextStyle">
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/text_size_22</item>
-        <item name="android:paddingTop">@dimen/dim_19dp</item>
-        <item name="android:paddingLeft">@dimen/dim_16dp</item>
-        <item name="android:paddingBottom">@dimen/dim_19dp</item>
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="fontWeight">500</item>
         <item name="lineHeight">@dimen/line_height_size_26sp</item>
@@ -38,12 +35,7 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="MenuTextActiveStyle">
-        <item name="fontFamily">@font/ys_display_regular</item>
-        <item name="fontWeight">400</item>
-        <item name="android:textSize">@dimen/text_size_12</item>
-        <item name="lineHeight">@dimen/text_size_16</item>
-        <item name="android:layout_gravity">center</item>
+    <style name="MenuTextActiveStyle" parent="MenuTextInactiveStyle">
         <item name="android:textColor">@color/blue</item>
     </style>
 
@@ -96,17 +88,9 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="VacancyFragmentHeaderTextStyle">
-        <item name="fontFamily">@font/ys_display_bold</item>
-        <item name="android:textSize">@dimen/text_size_32</item>
-        <item name="fontWeight">700</item>
-        <item name="lineHeight">@dimen/line_height_size_38sp</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
-        <item name="android:paddingHorizontal">@dimen/dim_16dp</item>
-        <item name="android:paddingVertical">@dimen/dim_8dp</item>
-    </style>
-
-    <style name="VacancyFragmentSalaryTextStyle">
+    <style name="VacancyFragmentMediumTextStyle">
+        <item name="android:paddingLeft">@dimen/dim_16dp</item>
+        <item name="android:paddingTop">@dimen/dim_16dp</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/text_size_22</item>
         <item name="fontWeight">500</item>
@@ -114,13 +98,45 @@
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
-    <style name="VacancyFragmentMediumTextStyle">
-        <item name="android:paddingLeft">@dimen/dim_16dp</item>
-        <item name="android:paddingTop">@dimen/dim_16dp</item>
-        <item name="fontFamily">@font/ys_display_medium</item>
+    <style name="VacancyFragmentHeaderTextStyle">
+        <item name="fontFamily">@font/ys_display_bold</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">@dimen/text_size_32</item>
+        <item name="fontWeight">700</item>
+        <item name="lineHeight">@dimen/line_height_size_38sp</item>
+    </style>
+
+    <style name="VacancyFragmentDefaultTextStyle">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="android:textSize">@dimen/text_size_16</item>
-        <item name="fontWeight">500</item>
+        <item name="fontWeight">400</item>
         <item name="lineHeight">@dimen/line_height_size_19sp</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="VacancyFragmentSalaryTextStyle">
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">@dimen/text_size_22</item>
+        <item name="fontWeight">500</item>
+        <item name="lineHeight">@dimen/line_height_size_26sp</item>
+    </style>
+
+    <style name="VacancyFragmentSubheaderTextStyle">
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">@dimen/text_size_22</item>
+        <item name="fontWeight">500</item>
+        <item name="lineHeight">@dimen/line_height_size_26sp</item>
+    </style>
+
+    <style name="VacancyFragmentSubheader2TextStyle" parent="VacancyFragmentSubheaderTextStyle">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="lineHeight">@dimen/line_height_size_19sp</item>
+    </style>
+
+    <style name="LogoRadius">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
     </style>
 </resources>
