@@ -40,7 +40,7 @@ class IndustriesFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
-            binding.searchEditText.doOnTextChanged { text, _, _, _ ->
+            searchEditText.doOnTextChanged { text, _, _, _ ->
                 val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
                     ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
                 } else {
@@ -53,7 +53,7 @@ class IndustriesFragment : Fragment() {
                     null
                 )
             }
-            binding.searchEditText.setOnTouchListener { _, event ->
+            searchEditText.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_UP) {
                     val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2]
                     val position = binding.searchEditText.width -
@@ -71,6 +71,9 @@ class IndustriesFragment : Fragment() {
 
             industriesRecyclerView.adapter = industriesListAdapter
         }
+
+        binding.industriesRecyclerView.isVisible = false
+        binding.notFoundStub.isVisible = true
     }
 
     override fun onDestroyView() {
