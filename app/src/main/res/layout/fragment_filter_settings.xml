@@ -1,123 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:minHeight="@dimen/toolbar_height"
-        app:contentInsetStartWithNavigation="0dp"
+        style="@style/Toolbar"
         app:navigationIcon="@drawable/icon_arrow_back_24px"
-        app:title="@string/filter_settings_text"
-        app:titleTextAppearance="@style/ToolbarTitleTextStyle" />
+        app:title="@string/filter_settings_text" />
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/location_til"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/dim_16dp">
-
-        <TextView
-            style="@style/FilterFragmentInactiveTextStyle"
-            android:id="@+id/filter_place_of_work_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/dim_16dp"
-            android:paddingTop="@dimen/dim_20_5dp"
-            android:paddingBottom="@dimen/dim_20_5dp"
-            android:layout_weight="1"
-            android:text="@string/work_of_place_text" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/dim_24dp"
-            android:src="@drawable/icon_arrow_forward" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            style="@style/FilterFragmentInactiveTextStyle"
-            android:id="@+id/filter_industry_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/dim_16dp"
-            android:paddingTop="@dimen/dim_20_5dp"
-            android:paddingBottom="@dimen/dim_20_5dp"
-            android:layout_weight="1"
-            android:text="@string/industry_text" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/dim_24dp"
-            android:src="@drawable/icon_arrow_forward" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/outlinedTextField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dim_16dp"
-        android:layout_marginTop="@dimen/dim_24dp"
-        android:layout_marginEnd="@dimen/dim_16dp"
-        android:layout_marginBottom="@dimen/dim_24dp"
-        android:background="@drawable/background_rounded_edit_text"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/FilterSmallerTextStyle"
-            android:id="@+id/filter_expected_salary_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dim_16dp"
-            android:paddingTop="@dimen/dim_8dp"
-            android:text="@string/expected_salary_text" />
+        android:hint="@string/job_location"
+        android:layout_marginTop="@dimen/dim_16dp"
+        style="@style/FilterItemSelector">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/filter_salary_edit_text"
-            style="@style/SearchHintStyle"
+            android:id="@+id/location_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dim_16dp"
-            android:layout_marginEnd="@dimen/dim_16dp"
-            android:layout_marginBottom="@dimen/dim_8dp"
-            android:background="@android:color/transparent"
-            android:hint="@string/enter_sum_text"
-            android:textColor="@color/black"
-            android:lines="1"
-            android:singleLine="true"
-            tools:ignore="TouchTargetSizeCheck" />
+            style="@style/FilterItemValue" />
 
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/industry_til"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:hint="@string/industry"
+        android:layout_marginTop="@dimen/dim_16dp"
+        style="@style/FilterItemSelector">
 
-        <TextView
-            style="@style/FilterFragmentActiveTextStyle"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/industry_et"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/dim_16dp"
-            android:text="@string/salary_only_checkbox_text" />
+            style="@style/FilterItemValue" />
 
-        <CheckBox
-            android:id="@+id/filter_only_salary_checkbox"
-            android:layout_width="@dimen/dim_50dp"
-            android:layout_height="@dimen/dim_50dp"
-            android:buttonTint="@color/blue" />
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 </LinearLayout>

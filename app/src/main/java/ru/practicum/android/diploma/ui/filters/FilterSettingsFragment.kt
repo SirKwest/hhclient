@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.R
+import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 
 class FilterSettingsFragment : Fragment() {
@@ -19,27 +17,10 @@ class FilterSettingsFragment : Fragment() {
         return binding.root
     }
 
-    fun changeExpectedSalaryTextViewState(isSalaryEntered: Boolean, isSalaryEnteringFinished: Boolean) {
-        if (isSalaryEntered) {
-            binding.filterExpectedSalaryTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
-            if (isSalaryEnteringFinished) {
-                binding.filterExpectedSalaryTextView.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.black
-                    )
-                )
-            }
-        } else {
-            binding.filterExpectedSalaryTextView.setTextAppearance(R.style.FilterSmallerTextStyle)
-        }
-    }
-
-    fun changeFilterTextViewState(isFilterChosen: Boolean, view: TextView) {
-        if (isFilterChosen) {
-            view.setTextAppearance(R.style.FilterFragmentActiveTextStyle)
-        } else {
-            view.setTextAppearance(R.style.FilterFragmentInactiveTextStyle)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
