@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        app:navigationIcon="@drawable/icon_arrow_back_24px"
+        app:title="@string/filter_settings_text" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/location_til"
+        style="@style/FilterItemSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_16dp"
+        android:hint="@string/job_location">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/location_et"
+            style="@style/FilterItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/industry_til"
+        style="@style/FilterItemSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_16dp"
+        android:hint="@string/industry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/industry_et"
+            style="@style/FilterItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</LinearLayout>

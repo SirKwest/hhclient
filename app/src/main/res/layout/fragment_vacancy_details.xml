@@ -9,14 +9,10 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:minHeight="@dimen/toolbar_height"
-        app:contentInsetStartWithNavigation="0dp"
+        style="@style/Toolbar"
         app:menu="@menu/vacancy_details_toolbar_menu"
         app:navigationIcon="@drawable/icon_arrow_back_24px"
-        app:title="Вакансия"
-        app:titleTextAppearance="@style/ToolbarTitleTextStyle" />
+        app:title="@string/vacancy" />
 
     <ScrollView
         android:id="@+id/content"
