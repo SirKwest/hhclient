@@ -30,7 +30,7 @@ class IndustriesFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         industriesListAdapter.industries = (1..20).map { ind -> Industry(ind.toString(), "Stub") } // Stub
@@ -40,41 +40,46 @@ class IndustriesFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
-            searchEditText.doOnTextChanged { text, _, _, _ ->
-                val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
-                    ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
-                } else {
-                    ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
-                }
-                binding.searchEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    null,
-                    null,
-                    drawableEnd,
-                    null
-                )
-            }
-            searchEditText.setOnTouchListener { _, event ->
-                if (event.action == MotionEvent.ACTION_UP) {
-                    val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2]
-                    val position = binding.searchEditText.width -
-                        binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
-                    if (drawableEnd != null && event.rawX >= position) {
-                        binding.searchEditText.text?.clear()
-                        true
-                    } else {
-                        false
-                    }
-                } else {
-                    false
-                }
-            }
-
             industriesRecyclerView.adapter = industriesListAdapter
         }
+        initSearchEditText()
 
         binding.industriesRecyclerView.isVisible = false
         binding.notFoundStub.isVisible = true
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun initSearchEditText() {
+        binding.searchEditText.doOnTextChanged { text, _, _, _ ->
+            val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
+                ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
+            } else {
+                ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
+            }
+            binding.searchEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                null,
+                null,
+                drawableEnd,
+                null
+            )
+        }
+        binding.searchEditText.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.searchEditText.compoundDrawablesRelative[2]
+                val position = binding.searchEditText.width -
+                    binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
+                if (drawableEnd != null && event.rawX >= position) {
+                    binding.searchEditText.text?.clear()
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
