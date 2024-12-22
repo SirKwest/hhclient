@@ -17,6 +17,7 @@ class SearchFragmentViewModel(
     private var lastSearchedValue: String = ""
     private var lastLoadedPage: Int = 0
     private var totalPagesInLastRequest: Int = 0
+    private var totalVacanciesFound: Int = 0
     private var vacancyList = mutableListOf<VacancyShort>()
 
     private var errorMessage = MutableLiveData<Int>()
@@ -56,7 +57,7 @@ class SearchFragmentViewModel(
                     }
 
                     is VacanciesSearchResource.Error -> {
-                        screenState.postValue(SearchFragmentState.ShowingResults(vacancyList))
+                        screenState.postValue(SearchFragmentState.ShowingResults(vacancyList, totalVacanciesFound))
                         errorMessage.postValue(result.code)
                     }
                 }
@@ -80,26 +81,19 @@ class SearchFragmentViewModel(
                         if (result.items.isNotEmpty()) {
                             totalPagesInLastRequest = result.pages
                             vacancyList.addAll(result.items)
+                            totalVacanciesFound = result.total
                             screenState.postValue(SearchFragmentState.ShowingResults(result.items, result.total))
                         } else {
                             screenState.postValue(SearchFragmentState.EmptyResults)
                         }
                     }
-
                     is VacanciesSearchResource.Error -> {
                         when (result.code) {
-                            HttpURLConnection.HTTP_BAD_REQUEST -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
-
-                            HttpURLConnection.HTTP_FORBIDDEN -> {
-                                screenState.postValue(SearchFragmentState.ServerError)
-                            }
-
+                            HttpURLConnection.HTTP_BAD_REQUEST,
+                            HttpURLConnection.HTTP_FORBIDDEN,
                             HttpURLConnection.HTTP_NOT_FOUND -> {
                                 screenState.postValue(SearchFragmentState.ServerError)
                             }
-
                             else -> {
                                 screenState.postValue(SearchFragmentState.NoInternetAccess)
                             }

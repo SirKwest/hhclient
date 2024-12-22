@@ -54,17 +54,9 @@ class RetrofitNetworkClient(
             return Response().apply { responseCode = HttpURLConnection.HTTP_UNAVAILABLE }
         }
         return when (dto) {
-            is VacanciesSearchRequest -> {
-                getVacanciesSearchResponse(dto)
-            }
-
-            is VacancyByIdRequest -> {
-                getVacancyByIdResponse(dto)
-            }
-
-            else -> {
-                Response()
-            }
+            is VacanciesSearchRequest -> getVacanciesSearchResponse(dto)
+            is VacancyByIdRequest -> getVacancyByIdResponse(dto)
+            else -> Response()
         }
     }
 
