@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:button="@null"
+    android:background="@android:color/transparent"
     android:checked="true"
     android:drawableEnd="?android:attr/listChoiceIndicatorSingle"
     android:drawablePadding="8dp"
@@ -14,5 +14,4 @@
     android:paddingEnd="8dp"
     android:textSize="16sp"
     android:theme="@style/RadioButtonStyle"
-    app:textFontWeight="400"
     tools:text="Автокомпоненты, запчасти, шины (продвеждение, оптовая торговля)" />

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 
 class FilterSettingsFragment : Fragment() {
@@ -21,6 +22,9 @@ class FilterSettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
+        }
+        binding.industryEt.setOnClickListener {
+            findNavController().navigate(R.id.industries_fragment)
         }
     }
 

@@ -41,4 +41,5 @@
 
     <string name="select_industry">Выбор отрасли</string>
     <string name="industry_input_hint">Введите отрасль</string>
+    <string name="select">Выбрать</string>
 </resources>

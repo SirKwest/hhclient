@@ -27,6 +27,7 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
             diffResult.dispatchUpdatesTo(this)
         }
 
+    var onItemClickListener: OnItemClickListener? = null
     private var selectedPosition = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustriesListViewHolder {
@@ -40,10 +41,15 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
         holder.itemView.setOnClickListener {
             selectedPosition = holder.adapterPosition
             notifyDataSetChanged()
+            onItemClickListener?.onItemClick(industries[position].id)
         }
     }
 
     override fun getItemCount(): Int {
         return industries.size
+    }
+
+    fun interface OnItemClickListener {
+        fun onItemClick(id: String)
     }
 }
