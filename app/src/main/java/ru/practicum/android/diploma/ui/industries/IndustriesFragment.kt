@@ -30,7 +30,6 @@ class IndustriesFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         industriesListAdapter.industries = (1..20).map { ind -> Industry(ind.toString(), "Stub") } // Stub
@@ -79,7 +78,6 @@ class IndustriesFragment : Fragment() {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
