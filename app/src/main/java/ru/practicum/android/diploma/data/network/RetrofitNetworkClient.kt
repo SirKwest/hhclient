@@ -5,6 +5,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import retrofit2.HttpException
+import ru.practicum.android.diploma.data.dto.request.IndustryRequest
 import ru.practicum.android.diploma.data.dto.request.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.request.VacancyByIdRequest
 import ru.practicum.android.diploma.data.dto.response.Response
@@ -56,6 +57,7 @@ class RetrofitNetworkClient(
         return when (dto) {
             is VacanciesSearchRequest -> getVacanciesSearchResponse(dto)
             is VacancyByIdRequest -> getVacancyByIdResponse(dto)
+            is IndustryRequest -> getIndustriesResponse()
             else -> Response()
         }
     }
@@ -80,6 +82,19 @@ class RetrofitNetworkClient(
     ): Response {
         return try {
             val result = api.getVacancyById(request.id)
+            val response = result.body() ?: Response()
+            response.responseCode = result.code()
+            response
+        } catch (error: HttpException) {
+            val response = Response()
+            response.responseCode = error.code()
+            response
+        }
+    }
+
+    private suspend fun getIndustriesResponse(): Response {
+        return try {
+            val result = api.getIndustries()
             val response = result.body() ?: Response()
             response.responseCode = result.code()
             response
