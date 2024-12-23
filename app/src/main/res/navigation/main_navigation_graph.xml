@@ -56,7 +56,7 @@
         tools:layout="@layout/fragment_industries" />
     <fragment
         android:id="@+id/work_location_fragment"
-        android:name="ru.practicum.android.diploma.ui.place.WorkLocationFragment"
+        android:name="ru.practicum.android.diploma.ui.location.WorkLocationFragment"
         android:label="WorkLocationFragment"
         tools:layout="@layout/fragment_work_location" />
 

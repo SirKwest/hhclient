@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.place
+package ru.practicum.android.diploma.ui.location
 
 import android.os.Bundle
 import android.view.LayoutInflater
