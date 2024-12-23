@@ -76,12 +76,14 @@ class FilterSettingsFragment : Fragment() {
         binding.locationEt.setOnClickListener {
             if (binding.locationEt.text.isNullOrBlank()) {
                 binding.locationEt.setText("Москва")
-                binding.locationTil.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.icon_delete)
+                binding.locationTil.endIconDrawable =
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.icon_delete)
                 binding.resetBtn.isVisible = true
                 binding.applyBtn.isVisible = true
             } else {
                 binding.locationEt.setText("")
-                binding.locationTil.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
+                binding.locationTil.endIconDrawable =
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
                 binding.resetBtn.isVisible = false
                 binding.applyBtn.isVisible = false
             }
@@ -89,9 +91,11 @@ class FilterSettingsFragment : Fragment() {
 
         binding.resetBtn.setOnClickListener {
             binding.locationEt.setText("")
-            binding.locationTil.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
+            binding.locationTil.endIconDrawable =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
             binding.industryEt.setText("")
-            binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
+            binding.industryTil.endIconDrawable =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
             binding.resetBtn.isVisible = false
             binding.applyBtn.isVisible = false
         }
