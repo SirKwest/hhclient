@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentIndustriesBinding
-import ru.practicum.android.diploma.domain.models.Industry
 
 class IndustriesFragment : Fragment() {
     private var _binding: FragmentIndustriesBinding? = null
@@ -32,7 +31,6 @@ class IndustriesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        industriesListAdapter.industries = (1..20).map { ind -> Industry(ind.toString(), "Stub") } // Stub
         industriesListAdapter.onItemClickListener =
             IndustriesListAdapter.OnItemClickListener { binding.selectButton.isVisible = true }
         binding.apply {
@@ -42,9 +40,6 @@ class IndustriesFragment : Fragment() {
             industriesRecyclerView.adapter = industriesListAdapter
         }
         initSearchEditText()
-
-        binding.industriesRecyclerView.isVisible = false
-        binding.notFoundStub.isVisible = true
     }
 
     @SuppressLint("ClickableViewAccessibility")
