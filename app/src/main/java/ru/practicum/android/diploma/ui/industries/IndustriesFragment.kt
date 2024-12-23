@@ -25,7 +25,7 @@ class IndustriesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentIndustriesBinding.inflate(layoutInflater)
+        _binding = FragmentIndustriesBinding.inflate(inflater, container, false)
         return binding.root
     }
 

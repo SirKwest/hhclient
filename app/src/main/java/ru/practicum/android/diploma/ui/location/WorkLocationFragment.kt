@@ -17,7 +17,7 @@ class WorkLocationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentWorkLocationBinding.inflate(inflater)
+        _binding = FragmentWorkLocationBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -34,7 +34,7 @@ class VacancyDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentVacancyDetailsBinding.inflate(layoutInflater)
+        _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
