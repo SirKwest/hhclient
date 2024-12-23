@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,33 +13,33 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/location_til"
+        style="@style/FilterItemSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/job_location"
         android:layout_marginTop="@dimen/dim_16dp"
-        style="@style/FilterItemSelector">
+        android:hint="@string/job_location">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/location_et"
+            style="@style/FilterItemValue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/FilterItemValue" />
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/industry_til"
+        style="@style/FilterItemSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/industry"
         android:layout_marginTop="@dimen/dim_16dp"
-        style="@style/FilterItemSelector">
+        android:hint="@string/industry">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/industry_et"
+            style="@style/FilterItemValue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/FilterItemValue" />
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

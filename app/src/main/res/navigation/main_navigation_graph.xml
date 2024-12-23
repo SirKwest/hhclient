@@ -41,6 +41,15 @@
         android:id="@+id/filter_settings_fragment"
         android:name="ru.practicum.android.diploma.ui.filters.FilterSettingsFragment"
         android:label="filter_settings_fragment"
-        tools:layout="@layout/fragment_filter_settings" />
+        tools:layout="@layout/fragment_filter_settings">
+        <action
+            android:id="@+id/action_filter_settings_fragment_to_industriesFragment"
+            app:destination="@id/industries_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/industries_fragment"
+        android:name="ru.practicum.android.diploma.ui.industries.IndustriesFragment"
+        android:label="IndustriesFragment"
+        tools:layout="@layout/fragment_industries" />
 
 </navigation>

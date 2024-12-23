@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.filters
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -40,6 +39,10 @@ class FilterSettingsFragment : Fragment() {
 
         settingListenersForTesting()
         settingListenersForReal()
+
+        binding.industryEt.setOnClickListener {
+            findNavController().navigate(R.id.industries_fragment)
+        }
     }
 
     override fun onDestroyView() {
@@ -91,16 +94,6 @@ class FilterSettingsFragment : Fragment() {
             binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
             binding.resetBtn.isVisible = false
             binding.applyBtn.isVisible = false
-        }
-
-        binding.industryEt.setOnClickListener {
-            if (binding.industryEt.text.isNullOrBlank()) {
-                binding.industryEt.setText("Администрирование")
-                binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.icon_delete)
-            } else {
-                binding.industryEt.setText("")
-                binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
-            }
         }
     }
 
