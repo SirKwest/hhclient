@@ -45,11 +45,19 @@
         <action
             android:id="@+id/action_filter_settings_fragment_to_industriesFragment"
             app:destination="@id/industries_fragment" />
+        <action
+            android:id="@+id/action_filter_settings_fragment_to_workLocationFragment"
+            app:destination="@id/work_location_fragment" />
     </fragment>
     <fragment
         android:id="@+id/industries_fragment"
         android:name="ru.practicum.android.diploma.ui.industries.IndustriesFragment"
         android:label="IndustriesFragment"
         tools:layout="@layout/fragment_industries" />
+    <fragment
+        android:id="@+id/work_location_fragment"
+        android:name="ru.practicum.android.diploma.ui.place.WorkLocationFragment"
+        android:label="WorkLocationFragment"
+        tools:layout="@layout/fragment_work_location" />
 
 </navigation>

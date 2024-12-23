@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:minHeight="@dimen/toolbar_height"
+        app:contentInsetStartWithNavigation="0dp"
+        app:navigationIcon="@drawable/icon_arrow_back_24px"
+        app:title="@string/select_work_location"
+        app:titleTextAppearance="@style/ToolbarTitleTextStyle" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/country_til"
+        style="@style/FilterItemSelector"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/dim_16dp"
+        android:hint="@string/country">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/country_et"
+            style="@style/FilterItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/region_til"
+        style="@style/FilterItemSelector"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="@string/region">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/region_et"
+            style="@style/FilterItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>
