@@ -18,8 +18,9 @@ class CountriesViewModel(
     private fun loadData() {
         viewModelScope.launch {
             locationInteractor.getCountries().collect { resource ->
-                if (resource is CountriesResource.Success)
+                if (resource is CountriesResource.Success) {
                     Log.d("my", "${resource.items}")
+                }
             }
         }
     }
