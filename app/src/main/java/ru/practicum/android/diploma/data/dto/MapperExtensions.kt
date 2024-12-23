@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.data.dto
 
 import ru.practicum.android.diploma.data.dto.response.VacancyByIdResponse
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyShort
 
@@ -34,5 +35,12 @@ fun VacancyByIdResponse.toVacancy(isFavorite: Boolean): Vacancy {
         schedule = schedule?.name,
         url = url,
         isFavorite = isFavorite
+    )
+}
+
+fun CountryDto.toCountry(): Country {
+    return Country(
+        id = id,
+        name = name
     )
 }

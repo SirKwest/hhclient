@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentCountriesBinding
+import ru.practicum.android.diploma.presentation.CountriesViewModel
 
 class CountriesFragment : Fragment() {
     private var _binding: FragmentCountriesBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: CountriesViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,6 +21,11 @@ class CountriesFragment : Fragment() {
     ): View {
         _binding = FragmentCountriesBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel
     }
 
     override fun onDestroyView() {
