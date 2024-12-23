@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentWorkLocationBinding
 
 class WorkLocationFragment : Fragment() {
@@ -26,6 +27,9 @@ class WorkLocationFragment : Fragment() {
         binding.apply {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
+            }
+            countryEt.setOnClickListener {
+                findNavController().navigate(R.id.countries_fragment)
             }
         }
     }

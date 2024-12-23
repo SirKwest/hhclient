@@ -58,6 +58,15 @@
         android:id="@+id/work_location_fragment"
         android:name="ru.practicum.android.diploma.ui.location.WorkLocationFragment"
         android:label="WorkLocationFragment"
-        tools:layout="@layout/fragment_work_location" />
+        tools:layout="@layout/fragment_work_location">
+        <action
+            android:id="@+id/action_work_location_fragment_to_countriesFragment"
+            app:destination="@id/countries_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/countries_fragment"
+        android:name="ru.practicum.android.diploma.ui.countries.CountriesFragment"
+        android:label="CountriesFragment"
+        tools:layout="@layout/fragment_countries" />
 
 </navigation>
