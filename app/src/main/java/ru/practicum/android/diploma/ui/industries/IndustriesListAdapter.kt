@@ -41,7 +41,7 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
         holder.itemView.setOnClickListener {
             selectedPosition = holder.adapterPosition
             notifyDataSetChanged()
-            onItemClickListener?.onItemClick(industries[position].id)
+            onItemClickListener?.onItemClick(industries[selectedPosition].id)
         }
     }
 

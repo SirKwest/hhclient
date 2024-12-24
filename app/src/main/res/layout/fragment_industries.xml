@@ -95,7 +95,7 @@
         android:id="@+id/server_error_stub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout="@layout/industries_error_placeholder" />
+        android:layout="@layout/failure_to_get_list_placeholder" />
 
     <ViewStub
         android:id="@+id/no_internet_stub"

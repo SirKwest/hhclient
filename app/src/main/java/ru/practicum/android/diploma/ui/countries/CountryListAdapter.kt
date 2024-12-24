@@ -18,6 +18,9 @@ class CountryListAdapter(private val countries: List<Country>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: CountryListViewHolder, position: Int) {
         holder.bind(countries[position])
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.onItemClick(countries[holder.adapterPosition].id)
+        }
     }
 
     override fun getItemCount(): Int {
