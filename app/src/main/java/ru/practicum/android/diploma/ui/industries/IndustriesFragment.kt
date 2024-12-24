@@ -49,8 +49,9 @@ class IndustriesFragment : Fragment() {
         val industriesInteractor: IndustriesInteractor by inject()
         lifecycleScope.launch {
             industriesInteractor.getIndustries().collect {
-                if (it is IndustryResource.Success)
+                if (it is IndustryResource.Success) {
                     Log.d("my", "${it.industries}")
+                }
             }
         }
     }
