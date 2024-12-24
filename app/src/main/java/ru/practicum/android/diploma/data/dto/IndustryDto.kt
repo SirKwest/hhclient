@@ -1,12 +1,12 @@
 package ru.practicum.android.diploma.data.dto
 
-data class IndustryDto(
+data class IndustryGroupDto(
     val id: String,
-    val industries: List<SubIndustryDto>,
+    val industries: List<IndustryDto>,
     val name: String
 )
 
-data class SubIndustryDto(
+data class IndustryDto(
     val id: String,
     val name: String
 )

@@ -49,6 +49,10 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
         return industries.size
     }
 
+    fun getSelectedIndustry(): Industry {
+        return industries[selectedPosition]
+    }
+
     fun interface OnItemClickListener {
         fun onItemClick(id: String)
     }
