@@ -70,6 +70,9 @@ class FilterSettingsFragment : Fragment() {
         binding.industryEt.setOnClickListener {
             findNavController().navigate(R.id.industries_fragment)
         }
+        binding.locationEt.setOnClickListener {
+            findNavController().navigate(R.id.work_location_fragment)
+        }
     }
 
     override fun onDestroyView() {
