@@ -71,6 +71,7 @@ class IndustriesFragment : Fragment() {
         binding.apply {
             content.isVisible = true
             industriesListAdapter.industries = industries
+            industriesRecyclerView.scrollToPosition(0)
 
             noInternetStub.isVisible = false
             serverErrorStub.isVisible = false
@@ -114,6 +115,7 @@ class IndustriesFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     fun initSearchEditText() {
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
+            viewModel.filter(text?.toString().orEmpty())
             val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
                 ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             } else {
