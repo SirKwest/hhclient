@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.domain.api.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.repository.FilterRepository
 
-class FilterInteractorImpl(private val filterRepository: FilterRepository): FilterInteractor {
+class FilterInteractorImpl(private val filterRepository: FilterRepository) : FilterInteractor {
     override fun saveFilter(filter: Filter) {
         filterRepository.saveFilter(filter)
     }

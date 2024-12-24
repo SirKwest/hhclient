@@ -48,8 +48,11 @@ class FilterSettingsFragment : Fragment() {
         }
         binding.applyBtn.setOnClickListener {
             val salary =
-                if (binding.salaryEt.text.toString().isBlank()) null
-                else binding.salaryEt.text.toString().toInt()
+                if (binding.salaryEt.text.toString().isBlank()) {
+                    null
+                } else {
+                    binding.salaryEt.text.toString().toInt()
+                }
 
             val filter = Filter(
                 binding.locationEt.text.toString(),
