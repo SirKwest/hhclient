@@ -52,3 +52,14 @@ data class EmploymentDto(
 data class KeySkill(
     val name: String
 )
+
+data class IndustryDto(
+    val id: String,
+    val industries: List<SubIndustriesDto>,
+    val name: String
+)
+
+data class SubIndustriesDto(
+    val id: String,
+    val name: String
+)
