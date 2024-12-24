@@ -12,4 +12,8 @@ class FilterInteractorImpl(private val filterRepository: FilterRepository) : Fil
     override fun getFilter(): Filter? {
         return filterRepository.getFilter()
     }
+
+    override fun isFiltersSaved(): Boolean {
+        return filterRepository.isFiltersSaved()
+    }
 }

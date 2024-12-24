@@ -16,4 +16,13 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
         return filter
     }
 
+    override fun isFiltersSaved(): Boolean {
+        val filter = getFilter() ?: return false
+        val isSalarySaved = filter.salary != null
+        val isOnlyWithSalaryCheckSaved = filter.isExistSalary
+        val isRegionSaved = filter.workPlace != null
+        val isIndustrySaved = filter.industry != null
+        return isSalarySaved || isOnlyWithSalaryCheckSaved || isRegionSaved || isIndustrySaved
+    }
+
 }

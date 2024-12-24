@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.filters
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
 import ru.practicum.android.diploma.domain.models.Filter
-import ru.practicum.android.diploma.presentation.FilterSettingsFragmentState
 import ru.practicum.android.diploma.presentation.FilterSettingsViewModel
 
 class FilterSettingsFragment : Fragment() {
@@ -32,20 +30,29 @@ class FilterSettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.observeScreenState().observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is FilterSettingsFragmentState.SavedFilter -> setPreviousFilters(state.filter)
-            }
-        }
-
-        viewModel.getFilter()
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+
+        viewModel.observeScreenState().observe(viewLifecycleOwner) { state ->
+            setPreviousFilters(state.filterSettings)
+        }
+        viewModel.observeSalaryValueState().observe(viewLifecycleOwner) {state ->
+            setSalaryFieldIconAndListener(state.isNullOrBlank())
+        }
+        viewModel.observeApplyButtonState().observe(viewLifecycleOwner) { state ->
+            binding.applyBtn.isVisible = state
+        }
+        viewModel.observeResetButtonState().observe(viewLifecycleOwner) { state ->
+            binding.resetBtn.isVisible = state
+        }
+
         binding.onlyWithSalaryTv.setOnClickListener {
             binding.onlyWithSalaryTv.toggle()
+            viewModel.updateOnlyWithSalaryValue(binding.onlyWithSalaryTv.isChecked)
         }
+
         binding.applyBtn.setOnClickListener {
             val salary =
                 if (binding.salaryEt.text.toString().isBlank()) {
@@ -64,8 +71,7 @@ class FilterSettingsFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        settingListenersForTesting()
-        settingListenersForReal()
+        settingListeners()
 
         binding.industryEt.setOnClickListener {
             findNavController().navigate(R.id.industries_fragment)
@@ -73,6 +79,7 @@ class FilterSettingsFragment : Fragment() {
         binding.locationEt.setOnClickListener {
             findNavController().navigate(R.id.work_location_fragment)
         }
+        viewModel.getFilter()
     }
 
     override fun onDestroyView() {
@@ -80,58 +87,97 @@ class FilterSettingsFragment : Fragment() {
         _binding = null
     }
 
-    private fun settingListenersForReal() {
+    private fun settingListeners() {
         binding.salaryEt.doOnTextChanged { text, _, _, _ ->
-            val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
-                ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
-            } else {
-                null
-            }
-            binding.salaryTil.endIconDrawable = drawableEnd
-
-            if (text?.isNotBlank() == true) {
-                binding.salaryTil.setEndIconOnClickListener {
-                    binding.salaryEt.setText("")
-                    val inputMethodManager =
-                        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                    inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
-                    binding.salaryEt.clearFocus()
-                }
-            }
+            viewModel.updateSalaryValue(text.toString())
         }
-
-    }
-
-    private fun settingListenersForTesting() {
-        binding.locationEt.setOnClickListener {
-            if (binding.locationEt.text.isNullOrBlank()) {
-                binding.locationEt.setText("Москва")
-                binding.locationTil.endIconDrawable =
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.icon_delete)
-                binding.resetBtn.isVisible = true
-                binding.applyBtn.isVisible = true
-            } else {
-                binding.locationEt.setText("")
-                binding.locationTil.endIconDrawable =
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.icon_arrow_forward)
-                binding.resetBtn.isVisible = false
-                binding.applyBtn.isVisible = false
-            }
-        }
-
         binding.resetBtn.setOnClickListener {
-            viewModel.saveFilter(Filter(null, null, null, false))
-            findNavController().navigateUp()
+            viewModel.resetFilters()
         }
     }
 
     private fun setPreviousFilters(filter: Filter?) {
-        if (filter != null) {
-            val salary = if (filter.salary == null) "" else filter.salary.toString()
-            binding.locationEt.setText(filter.workPlace)
-            binding.industryEt.setText(filter.industry)
-            binding.salaryEt.setText(salary)
-            binding.onlyWithSalaryTv.isChecked = filter.isExistSalary
+        if (filter == null) {
+            return
+        }
+        binding.resetBtn.isVisible = true
+        binding.onlyWithSalaryTv.isChecked = filter.isExistSalary
+
+        if (filter.salary == null) {
+            binding.salaryEt.setText("")
+        } else {
+            binding.salaryEt.setText(filter.salary.toString())
+        }
+        if (filter.workPlace == null) {
+            setLocationEmptyValue()
+        } else {
+            setLocationValue(filter.workPlace)
+        }
+        if (filter.industry == null) {
+            setIndustryEmptyValue()
+        } else {
+            setIndustryValue(filter.industry)
+        }
+    }
+
+    private fun setSalaryFieldIconAndListener(isEmpty: Boolean) {
+        if (isEmpty) {
+            binding.salaryTil.endIconDrawable = null
+            binding.salaryTil.setEndIconOnClickListener(null)
+        } else {
+            binding.salaryTil.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
+            binding.salaryTil.setEndIconOnClickListener {
+                viewModel.updateSalaryValue("")
+                binding.salaryEt.setText("")
+                val inputMethodManager =
+                    activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
+                binding.salaryEt.clearFocus()
+            }
+        }
+    }
+
+    private fun setLocationEmptyValue() {
+        binding.locationEt.setText("")
+        binding.locationTil.endIconDrawable = AppCompatResources.getDrawable(
+            requireContext(),
+            R.drawable.icon_arrow_forward
+        )
+        binding.locationTil.setOnClickListener {
+            findNavController().navigate(R.id.action_filter_settings_fragment_to_work_location_fragment)
+        }
+    }
+
+    private fun setLocationValue(value: String) {
+        binding.locationEt.setText(value)
+        binding.locationTil.endIconDrawable = AppCompatResources.getDrawable(
+            requireContext(),
+            R.drawable.icon_delete
+        )
+        binding.locationTil.setOnClickListener {
+            setLocationEmptyValue()
+        }
+    }
+
+    private fun setIndustryEmptyValue() {
+        binding.industryEt.setText("")
+        binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(
+            requireContext(),
+            R.drawable.icon_arrow_forward
+        )
+        binding.industryTil.setOnClickListener {
+            findNavController().navigate(R.id.action_filter_settings_fragment_to_industries_fragment)
+        }
+    }
+
+    private fun setIndustryValue(value: String) {
+        binding.industryEt.setText(value)
+        binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(
+            requireContext(),
+            R.drawable.icon_delete
+        )
+        binding.industryTil.setOnClickListener {
+            setLocationEmptyValue()
         }
     }
 }
