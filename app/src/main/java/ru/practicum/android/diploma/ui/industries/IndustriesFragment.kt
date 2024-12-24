@@ -22,7 +22,6 @@ import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.presentation.IndustriesFragmentState
 import ru.practicum.android.diploma.presentation.IndustriesViewModel
 
-
 class IndustriesFragment : Fragment() {
     private var _binding: FragmentIndustriesBinding? = null
     private val binding get() = _binding!!
@@ -150,9 +149,10 @@ class IndustriesFragment : Fragment() {
     }
 }
 
-
 private fun Int.toPx(resources: Resources): Int {
     return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), resources.displayMetrics
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        resources.displayMetrics
     ).toInt()
 }
