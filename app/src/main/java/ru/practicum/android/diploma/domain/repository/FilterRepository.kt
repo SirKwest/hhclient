@@ -4,6 +4,6 @@ import ru.practicum.android.diploma.domain.models.Filter
 
 interface FilterRepository {
     fun saveFilter(filter: Filter)
-    fun getFilter(): Filter
+    fun getFilter(): Filter?
 
 }

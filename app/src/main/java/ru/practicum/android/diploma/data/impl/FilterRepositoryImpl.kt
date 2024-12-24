@@ -11,7 +11,7 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
         sharedPreferences.edit().putString(FILTER_KEY, Gson().toJson(filter)).apply()
     }
 
-    override fun getFilter(): Filter {
+    override fun getFilter(): Filter? {
         val filter = Gson().fromJson(sharedPreferences.getString(FILTER_KEY, null), Filter::class.java)
         return filter
     }
