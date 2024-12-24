@@ -28,7 +28,7 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
         }
 
     var onItemClickListener: OnItemClickListener? = null
-    private var selectedPosition = RecyclerView.NO_POSITION
+    private var selectedIndustry: Industry? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustriesListViewHolder {
         return IndustriesListViewHolder(
@@ -37,11 +37,12 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: IndustriesListViewHolder, position: Int) {
-        holder.bind(industries[position], position == selectedPosition)
+        val industry = industries[position]
+        holder.bind(industry, selectedIndustry?.id == industry.id)
         holder.itemView.setOnClickListener {
-            selectedPosition = holder.adapterPosition
+            selectedIndustry = industry
             notifyDataSetChanged()
-            onItemClickListener?.onItemClick(industries[selectedPosition].id)
+            onItemClickListener?.onItemClick(industry.id)
         }
     }
 
@@ -49,8 +50,8 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
         return industries.size
     }
 
-    fun getSelectedIndustry(): Industry {
-        return industries[selectedPosition]
+    fun getSelectedIndustry(): Industry? {
+        return selectedIndustry
     }
 
     fun interface OnItemClickListener {

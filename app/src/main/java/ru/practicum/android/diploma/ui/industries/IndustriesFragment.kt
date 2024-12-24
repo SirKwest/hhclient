@@ -63,18 +63,35 @@ class IndustriesFragment : Fragment() {
             is IndustriesFragmentState.ShowingResults -> showResults(state.industries)
             is IndustriesFragmentState.NoInternetAccess -> showNoInternet()
             is IndustriesFragmentState.RequestInProgress -> showRequestInProgress()
+            is IndustriesFragmentState.EmptyResults -> showEmptyResults()
             is IndustriesFragmentState.ServerError -> showServerError()
         }
     }
 
     private fun showResults(industries: List<Industry>) {
         binding.apply {
+            industriesRecyclerView.isVisible = true
             content.isVisible = true
             industriesListAdapter.industries = industries
+            industriesRecyclerView.scrollToPosition(0)
 
+            notFoundStub.isVisible = false
             noInternetStub.isVisible = false
             serverErrorStub.isVisible = false
             loading.isVisible = false
+        }
+    }
+
+    private fun showEmptyResults() {
+        binding.apply {
+            notFoundStub.isVisible = true
+            content.isVisible = true
+
+            industriesRecyclerView.isVisible = false
+            noInternetStub.isVisible = false
+            serverErrorStub.isVisible = false
+            loading.isVisible = false
+
         }
     }
 
@@ -114,6 +131,7 @@ class IndustriesFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     fun initSearchEditText() {
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
+            viewModel.filter(text?.toString().orEmpty())
             val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
                 ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             } else {
