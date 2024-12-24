@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.FilterInteractor
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
 import ru.practicum.android.diploma.domain.models.VacanciesSearchResource
 import ru.practicum.android.diploma.domain.models.VacancyShort
@@ -12,7 +13,8 @@ import ru.practicum.android.diploma.util.debouncedAction
 import java.net.HttpURLConnection
 
 class SearchFragmentViewModel(
-    private val vacancyInteractor: VacancyInteractor
+    private val vacancyInteractor: VacancyInteractor,
+    private val filterInteractor: FilterInteractor
 ) : ViewModel() {
     private var lastSearchedValue: String = ""
     private var lastLoadedPage: Int = 0
@@ -27,9 +29,8 @@ class SearchFragmentViewModel(
     fun observeFilter(): LiveData<Boolean> = filtersButtonState
     fun observeErrorMessage(): LiveData<Int> = errorMessage
 
-    fun addFilter() {
-        val newValue = filtersButtonState.value ?: false
-        filtersButtonState.postValue(!newValue)
+    init {
+        getFilters()
     }
 
     val search: (String) -> Unit =
@@ -63,6 +64,11 @@ class SearchFragmentViewModel(
                 }
             }
         }
+    }
+
+    fun getFilters() {
+        val isFiltersSaved = filterInteractor.isFiltersSaved()
+        filtersButtonState.postValue(isFiltersSaved)
     }
 
     private fun processNewSearch(text: String) {

@@ -43,10 +43,10 @@
         android:label="filter_settings_fragment"
         tools:layout="@layout/fragment_filter_settings">
         <action
-            android:id="@+id/action_filter_settings_fragment_to_industriesFragment"
+            android:id="@+id/action_filter_settings_fragment_to_industries_fragment"
             app:destination="@id/industries_fragment" />
         <action
-            android:id="@+id/action_filter_settings_fragment_to_workLocationFragment"
+            android:id="@+id/action_filter_settings_fragment_to_work_location_fragment"
             app:destination="@id/work_location_fragment" />
     </fragment>
     <fragment
@@ -60,7 +60,7 @@
         android:label="WorkLocationFragment"
         tools:layout="@layout/fragment_work_location">
         <action
-            android:id="@+id/action_work_location_fragment_to_countriesFragment"
+            android:id="@+id/action_work_location_fragment_to_countries_fragment"
             app:destination="@id/countries_fragment" />
     </fragment>
     <fragment
