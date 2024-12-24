@@ -3,17 +3,13 @@ package ru.practicum.android.diploma.data.impl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.db.AppDatabase
-import ru.practicum.android.diploma.data.dto.request.IndustryRequest
 import ru.practicum.android.diploma.data.dto.request.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.request.VacancyByIdRequest
-import ru.practicum.android.diploma.data.dto.response.IndustryResponse
 import ru.practicum.android.diploma.data.dto.response.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.response.VacancyByIdResponse
-import ru.practicum.android.diploma.data.dto.toIndustry
 import ru.practicum.android.diploma.data.dto.toVacancy
 import ru.practicum.android.diploma.data.dto.toVacancyShort
 import ru.practicum.android.diploma.data.network.NetworkClient
-import ru.practicum.android.diploma.domain.models.IndustryResource
 import ru.practicum.android.diploma.domain.models.VacanciesSearchResource
 import ru.practicum.android.diploma.domain.models.VacancyByIdResource
 import ru.practicum.android.diploma.domain.repository.VacancyRepository
@@ -44,16 +40,6 @@ class VacancyRepositoryImpl(
             emit(VacancyByIdResource.Success(vacancy))
         } else {
             emit(VacancyByIdResource.Error(response.responseCode))
-        }
-    }
-
-    override fun getIndustries(): Flow<IndustryResource> = flow {
-        val response = headhunterClient.doRequest(IndustryRequest())
-        if (response.responseCode == HttpURLConnection.HTTP_OK && response is IndustryResponse) {
-            val items = response.items.map { it.toIndustry() }
-            emit(IndustryResource.Success(items))
-        } else {
-            emit(IndustryResource.Error(response.responseCode))
         }
     }
 }

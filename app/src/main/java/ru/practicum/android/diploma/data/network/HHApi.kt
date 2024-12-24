@@ -7,7 +7,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.CountryDto
-import ru.practicum.android.diploma.data.dto.response.IndustryResponse
+import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.response.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.response.VacancyByIdResponse
 
@@ -27,7 +27,7 @@ interface HHApi {
     suspend fun getVacancyById(@Path("vacancy_id") id: String): Response<VacancyByIdResponse>
 
     @GET("/industries")
-    suspend fun getIndustries(): Response<IndustryResponse>
+    suspend fun getIndustries(): Response<List<IndustryDto>>
 
     @GET("/areas/countries")
     suspend fun getCountries(): Response<List<CountryDto>>

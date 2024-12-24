@@ -2,6 +2,6 @@ package ru.practicum.android.diploma.data.dto.response
 
 import ru.practicum.android.diploma.data.dto.IndustryDto
 
-class IndustryResponse(
+class IndustriesResponse(
     val items: List<IndustryDto>
 ) : Response()

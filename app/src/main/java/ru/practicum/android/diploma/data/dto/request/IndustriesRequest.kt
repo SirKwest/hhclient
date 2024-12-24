@@ -1,3 +1,3 @@
 package ru.practicum.android.diploma.data.dto.request
 
-class IndustryRequest
+object IndustriesRequest

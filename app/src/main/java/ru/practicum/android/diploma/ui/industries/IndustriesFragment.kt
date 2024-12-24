@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.industries
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -11,9 +12,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentIndustriesBinding
+import ru.practicum.android.diploma.domain.api.IndustriesInteractor
+import ru.practicum.android.diploma.domain.models.IndustryResource
 
 class IndustriesFragment : Fragment() {
     private var _binding: FragmentIndustriesBinding? = null
@@ -40,6 +46,13 @@ class IndustriesFragment : Fragment() {
             industriesRecyclerView.adapter = industriesListAdapter
         }
         initSearchEditText()
+        val industriesInteractor: IndustriesInteractor by inject()
+        lifecycleScope.launch {
+            industriesInteractor.getIndustries().collect {
+                if (it is IndustryResource.Success)
+                    Log.d("my", "${it.industries}")
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
