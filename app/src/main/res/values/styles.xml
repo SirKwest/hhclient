@@ -27,6 +27,7 @@
         <item name="android:inputType">none</item>
         <item name="endIconTint">?attr/colorPrimary</item>
         <item name="hintTextColor">?attr/colorPrimary</item>
+        <item name="android:focusable">true</item>
         <item name="endIconDrawable">@drawable/icon_arrow_forward</item>
     </style>
 
@@ -34,6 +35,7 @@
         <item name="android:cursorVisible">false</item>
         <item name="android:focusable">false</item>
         <item name="android:background">?attr/colorPrimaryDark</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
     <style name="SearchHintStyle" parent="@android:style/Widget.EditText">
