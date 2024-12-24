@@ -4,6 +4,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import ru.practicum.android.diploma.presentation.CountriesViewModel
 import ru.practicum.android.diploma.presentation.FavoritesViewModel
+import ru.practicum.android.diploma.presentation.IndustriesViewModel
 import ru.practicum.android.diploma.presentation.SearchFragmentViewModel
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
 
@@ -11,5 +12,6 @@ val viewModelModule = module {
     viewModelOf(::SearchFragmentViewModel)
     viewModelOf(::VacancyDetailsViewModel)
     viewModelOf(::FavoritesViewModel)
+    viewModelOf(::IndustriesViewModel)
     viewModelOf(::CountriesViewModel)
 }
