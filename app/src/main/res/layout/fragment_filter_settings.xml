@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        app:navigationIcon="@drawable/icon_arrow_back_24px"
+        app:title="@string/filter_settings" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/location_til"
+        style="@style/FilterItemSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_16dp"
+        android:hint="@string/job_location">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/location_et"
+            style="@style/FilterItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/industry_til"
+        style="@style/FilterItemSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_16dp"
+        android:hint="@string/industry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/industry_et"
+            style="@style/FilterItemValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/salary_til"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_rounded_edit_text"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:hint="@string/expected_salary"
+        android:textColorHint="?colorSecondaryVariant"
+        android:inputType="none"
+        android:maxLines="1"
+        app:expandedHintEnabled="false"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:cursorColor="@color/blue"
+        app:endIconMode="custom"
+        app:endIconTint="@color/black"
+        app:hintTextColor="@color/blue"
+        app:placeholderText="@string/enter_sum"
+        app:placeholderTextColor="?colorSecondaryVariant">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/salary_et"
+            android:layout_width="match_parent"
+            android:background="@drawable/background_rounded_edit_text"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:imeOptions="actionDone"
+            android:textColor="@color/black"
+            android:inputType="number"
+            android:scrollHorizontally="false"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckedTextView
+        android:id="@+id/only_with_salary_tv"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:checkMark="@drawable/checkbox"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:fontWeight="400"
+        android:textSize="@dimen/text_size_16"
+        android:text="@string/dont_show_without_salary" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/apply_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_blue_text"
+        android:visibility="visible"
+        android:text="@string/apply"
+        android:textColor="@color/white"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/text_size_16"
+        android:textAllCaps="false"
+        android:fontWeight="500"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/reset_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginBottom="16dp"
+        android:background="@null"
+        android:text="@string/reset"
+        android:textColor="@color/red"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/text_size_16"
+        android:textAllCaps="false"
+        android:fontWeight="500" />
+
+</LinearLayout>

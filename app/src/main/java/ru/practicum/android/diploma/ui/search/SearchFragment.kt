@@ -52,7 +52,9 @@ class SearchFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun applyingFunctionsToLayoutItems() {
-        binding.filterIcon.setOnClickListener { viewModel.addFilter() }
+        binding.filterIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_search_to_filter_settings_fragment)
+        }
         binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
             if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
                 viewModel.search(binding.searchEditText.text.toString())
