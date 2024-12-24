@@ -70,13 +70,12 @@ class IndustriesFragment : Fragment() {
 
     private fun showResults(industries: List<Industry>) {
         binding.apply {
-            industriesRecyclerView.isVisible = true
+            content.isVisible = true
             industriesListAdapter.industries = industries
 
             noInternetStub.isVisible = false
             serverErrorStub.isVisible = false
             loading.isVisible = false
-
         }
     }
 
@@ -84,7 +83,7 @@ class IndustriesFragment : Fragment() {
         binding.apply {
             noInternetStub.isVisible = true
 
-            industriesRecyclerView.isVisible = false
+            content.isVisible = false
             serverErrorStub.isVisible = false
             loading.isVisible = false
 
@@ -96,7 +95,7 @@ class IndustriesFragment : Fragment() {
             loading.isVisible = true
 
             noInternetStub.isVisible = false
-            industriesRecyclerView.isVisible = false
+            content.isVisible = false
             serverErrorStub.isVisible = false
 
         }
@@ -106,7 +105,7 @@ class IndustriesFragment : Fragment() {
         binding.apply {
             serverErrorStub.isVisible = true
 
-            industriesRecyclerView.isVisible = false
+            content.isVisible = false
             noInternetStub.isVisible = false
             loading.isVisible = false
 
