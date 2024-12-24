@@ -95,7 +95,6 @@ class IndustriesFragment : Fragment() {
         }
     }
 
-
     private fun showNoInternet() {
         binding.apply {
             noInternetStub.isVisible = true

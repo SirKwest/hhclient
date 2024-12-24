@@ -54,9 +54,11 @@ class IndustriesViewModel(
     fun filter(query: String) {
         baseIndustries?.let { industries ->
             val filteredList = industries.filter { industry -> industry.name.lowercase().contains(query.lowercase()) }
-            screenState.value =
-                if (filteredList.isEmpty()) IndustriesFragmentState.EmptyResults
-                else IndustriesFragmentState.ShowingResults(filteredList)
+            if (filteredList.isEmpty()) {
+                screenState.value = IndustriesFragmentState.EmptyResults
+            } else {
+                screenState.value = IndustriesFragmentState.ShowingResults(filteredList)
+            }
         }
     }
 }
