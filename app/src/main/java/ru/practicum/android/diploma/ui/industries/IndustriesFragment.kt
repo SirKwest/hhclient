@@ -50,6 +50,10 @@ class IndustriesFragment : Fragment() {
                 findNavController().navigateUp()
             }
             industriesRecyclerView.adapter = industriesListAdapter
+            selectButton.setOnClickListener {
+                // использовать industriesListAdapter.getSelectedIndustry() для получения селекта
+                findNavController().navigateUp()
+            }
         }
         initSearchEditText()
         viewModel.observeScreenState().observe(viewLifecycleOwner, ::processState)
