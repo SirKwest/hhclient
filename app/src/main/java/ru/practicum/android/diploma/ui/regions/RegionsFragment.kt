@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.databinding.FragmentRegionsBinding
 import ru.practicum.android.diploma.domain.models.Country
+import ru.practicum.android.diploma.domain.models.Region
+import ru.practicum.android.diploma.presentation.RegionsFragmentState
 import ru.practicum.android.diploma.presentation.RegionsViewModel
+import ru.practicum.android.diploma.ui.countries.LocationListAdapter
 import ru.practicum.android.diploma.ui.location.WorkLocationFragment
 import ru.practicum.android.diploma.util.getSerializableData
 
@@ -21,6 +26,7 @@ class RegionsFragment : Fragment() {
         val selectedCountryId = selectedCountry?.id ?: ""
         parametersOf(selectedCountryId)
     }
+    private val regionsListAdapter = LocationListAdapter<Region>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +39,83 @@ class RegionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel
+        binding.apply {
+            toolbar.setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
+            regionsRecyclerView.adapter = regionsListAdapter
+        }
+        viewModel.observeScreenState().observe(viewLifecycleOwner, ::processState)
+    }
+
+    private fun processState(state: RegionsFragmentState) {
+        when (state) {
+            is RegionsFragmentState.ShowingResults -> showResults(state.regions)
+            is RegionsFragmentState.NoInternetAccess -> showNoInternet()
+            is RegionsFragmentState.RequestInProgress -> showRequestInProgress()
+            is RegionsFragmentState.EmptyResults -> showEmptyResults()
+            is RegionsFragmentState.ServerError -> showServerError()
+        }
+    }
+
+    private fun showResults(regions: List<Region>) {
+        binding.apply {
+            regionsRecyclerView.isVisible = true
+            content.isVisible = true
+            regionsListAdapter.locations = regions
+            regionsRecyclerView.scrollToPosition(0)
+
+            notFoundStub.isVisible = false
+            noInternetStub.isVisible = false
+            serverErrorStub.isVisible = false
+            loading.isVisible = false
+        }
+    }
+
+    private fun showEmptyResults() {
+        binding.apply {
+            notFoundStub.isVisible = true
+            content.isVisible = true
+
+            regionsRecyclerView.isVisible = false
+            noInternetStub.isVisible = false
+            serverErrorStub.isVisible = false
+            loading.isVisible = false
+
+        }
+    }
+
+    private fun showNoInternet() {
+        binding.apply {
+            noInternetStub.isVisible = true
+
+            content.isVisible = false
+            serverErrorStub.isVisible = false
+            loading.isVisible = false
+
+        }
+    }
+
+    private fun showRequestInProgress() {
+        binding.apply {
+            loading.isVisible = true
+
+            noInternetStub.isVisible = false
+            content.isVisible = false
+            serverErrorStub.isVisible = false
+
+        }
+    }
+
+    private fun showServerError() {
+        binding.apply {
+            serverErrorStub.isVisible = true
+
+            content.isVisible = false
+            noInternetStub.isVisible = false
+            loading.isVisible = false
+
+        }
     }
 
     override fun onDestroyView() {
