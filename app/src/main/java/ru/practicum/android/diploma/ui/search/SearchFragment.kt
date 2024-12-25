@@ -47,7 +47,7 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getFilters()
+        viewModel.checkFilterValuesExistence()
     }
 
     override fun onDestroyView() {

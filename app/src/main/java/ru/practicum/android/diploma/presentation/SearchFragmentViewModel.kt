@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FilterInteractor
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
-import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.VacanciesSearchResource
 import ru.practicum.android.diploma.domain.models.VacancyShort
 import ru.practicum.android.diploma.util.debouncedAction
@@ -31,7 +30,7 @@ class SearchFragmentViewModel(
     fun observeErrorMessage(): LiveData<Int> = errorMessage
 
     init {
-        getFilters()
+        checkFilterValuesExistence()
     }
 
     val search: (String) -> Unit =
@@ -67,8 +66,7 @@ class SearchFragmentViewModel(
         }
     }
 
-    fun getFilters() {
-        val filterData = filterInteractor.getFilter()
+    fun checkFilterValuesExistence() {
         val isFiltersSaved = filterInteractor.isFiltersSaved()
         filtersButtonState.postValue(isFiltersSaved)
     }

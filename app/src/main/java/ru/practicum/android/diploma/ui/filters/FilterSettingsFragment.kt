@@ -38,7 +38,7 @@ class FilterSettingsFragment : Fragment() {
         viewModel.observeScreenState().observe(viewLifecycleOwner) { state ->
             setPreviousFilters(state.filterSettings)
         }
-        viewModel.observeSalaryValueState().observe(viewLifecycleOwner) {state ->
+        viewModel.observeSalaryValueState().observe(viewLifecycleOwner) { state ->
             setSalaryFieldIconAndListener(state.isNullOrBlank())
         }
         viewModel.observeApplyButtonState().observe(viewLifecycleOwner) { state ->
