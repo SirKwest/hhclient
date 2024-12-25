@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -21,8 +20,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:visibility="visible">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/search_edit_text"
@@ -48,22 +53,24 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/industries_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:clipToPadding="false"
-            android:paddingBottom="8dp"
+            android:paddingBottom="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_edit_text" />
 
         <ViewStub
             android:id="@+id/not_found_stub"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout="@layout/industries_not_found_placeholder"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_edit_text" />
 
@@ -93,15 +100,23 @@
 
     <ViewStub
         android:id="@+id/server_error_stub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/failure_to_get_list_placeholder" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout="@layout/failure_to_get_list_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ViewStub
         android:id="@+id/no_internet_stub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/no_internet_placeholder" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout="@layout/no_internet_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -109,5 +124,9 @@
         android:layout_height="@dimen/progress_bar_size"
         android:layout_gravity="center"
         android:indeterminateTint="@color/blue"
-        android:visibility="gone" />
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:visibility="gone" />
+</androidx.constraintlayout.widget.ConstraintLayout>
