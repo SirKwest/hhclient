@@ -164,7 +164,7 @@ class FilterSettingsFragment : Fragment() {
             R.drawable.icon_delete
         )
         binding.industryTil.setEndIconOnClickListener {
-            viewModel.updateFilter(Filter(industry = null))
+            viewModel.updateFilter(Filter(industry = Industry(null, null)))
             setIndustryEmptyValue()
         }
     }

@@ -6,5 +6,5 @@ interface FilterRepository {
     fun saveFilter(filter: Filter)
     fun getFilter(): Filter
     fun isFiltersSaved(): Boolean
-    fun updateFilterComplexFields(filter: Filter)
+    fun updateFilter(filter: Filter)
 }

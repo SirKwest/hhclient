@@ -1,9 +1,9 @@
 package ru.practicum.android.diploma.domain.models
 
 data class Area(
-    val regionId: String,
-    val countryName: String,
-    val regionName: String,
+    val regionId: String? = null,
+    val countryName: String? = null,
+    val regionName: String? = null,
 )
 
 fun Area.displayName(): String {

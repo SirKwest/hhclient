@@ -3,7 +3,9 @@ package ru.practicum.android.diploma.data.impl
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.FILTER_KEY
+import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.repository.FilterRepository
 
 class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : FilterRepository {
@@ -16,16 +18,28 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
         return filter
     }
 
-    override fun updateFilterComplexFields(filter: Filter) {
+    override fun updateFilter(filter: Filter) {
         var newFilter = getFilter()
         if (filter.industry != null) {
-            newFilter = newFilter.copy(industry = filter.industry)
+            newFilter = if (filter.industry == Industry()) {
+                newFilter.copy(industry = null)
+            } else {
+                newFilter.copy(industry = filter.industry)
+            }
         }
         if (filter.workPlace != null) {
-            newFilter = newFilter.copy(workPlace = filter.workPlace)
+            newFilter = if (filter.workPlace == Area()) {
+                newFilter.copy(workPlace = null)
+            } else {
+                newFilter.copy(workPlace = filter.workPlace)
+            }
         }
         if (filter.salary != null) {
-            newFilter = newFilter.copy(salary = filter.salary)
+            newFilter = if (filter.salary == -1) {
+                newFilter.copy(salary = null)
+            } else {
+                newFilter.copy(salary = filter.salary)
+            }
         }
         if (filter.isExistSalary != null) {
             newFilter = newFilter.copy(isExistSalary = filter.isExistSalary)
@@ -36,7 +50,7 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
     override fun isFiltersSaved(): Boolean {
         val filter = getFilter()
         val isSalarySaved = filter.salary != null
-        val isOnlyWithSalaryCheckSaved = filter.isExistSalary != null
+        val isOnlyWithSalaryCheckSaved = filter.isExistSalary == true
         val isRegionSaved = filter.workPlace != null
         val isIndustrySaved = filter.industry != null
         return isSalarySaved || isOnlyWithSalaryCheckSaved || isRegionSaved || isIndustrySaved
