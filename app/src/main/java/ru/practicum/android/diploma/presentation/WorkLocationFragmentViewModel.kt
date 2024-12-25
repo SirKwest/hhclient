@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.domain.api.FilterInteractor
@@ -16,7 +17,7 @@ class WorkLocationFragmentViewModel(
 
     private val applyButtonState = MutableLiveData(false)
 
-    fun observeApplyButtonState(): MutableLiveData<Boolean> = applyButtonState
+    fun observeApplyButtonState(): LiveData<Boolean> = applyButtonState
 
     fun setCountryValue(value: Country) {
         countryValue = value

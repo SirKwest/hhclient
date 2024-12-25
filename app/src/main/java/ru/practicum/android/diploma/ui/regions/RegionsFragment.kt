@@ -34,9 +34,11 @@ class RegionsFragment : Fragment() {
 
         val locationInteractor: LocationInteractor by inject()
         lifecycleScope.launch {
-            locationInteractor.getRegions(selectedCountryId).collect {
-                if (it is RegionsResource.Success) {
-                    requireActivity().findViewById<TextView>(R.id.tv).text = it.items.toString()
+            if (selectedCountryId.isNotBlank()) {
+                locationInteractor.getRegions(selectedCountryId).collect {
+                    if (it is RegionsResource.Success) {
+                        requireActivity().findViewById<TextView>(R.id.tv).text = it.items.toString()
+                    }
                 }
             }
         }

@@ -28,6 +28,6 @@ class CountryListAdapter(private val countries: List<Country>) : RecyclerView.Ad
     }
 
     fun interface OnItemClickListener {
-        fun onItemClick(id: Country)
+        fun onItemClick(country: Country)
     }
 }
