@@ -34,9 +34,10 @@ class RegionsViewModel(
             flow.collect { resource ->
                 when (resource) {
                     is RegionsResource.Success -> {
-                        baseRegions = resource.items
-                        if (resource.items.isNotEmpty()) {
-                            screenState.postValue(RegionsFragmentState.ShowingResults(resource.items))
+                        val flattedItems = flatRegions(resource.items)
+                        baseRegions = flattedItems
+                        if (flattedItems.isNotEmpty()) {
+                            screenState.postValue(RegionsFragmentState.ShowingResults(flattedItems))
                         } else {
                             screenState.postValue(RegionsFragmentState.EmptyResults)
                         }
@@ -67,6 +68,16 @@ class RegionsViewModel(
                 screenState.value = RegionsFragmentState.EmptyResults
             } else {
                 screenState.value = RegionsFragmentState.ShowingResults(filteredList)
+            }
+        }
+    }
+
+    private fun flatRegions(regions: List<Region>): List<Region> {
+        return regions.flatMap {
+            flatRegions(it.regions).toMutableList().apply {
+                if (it.parentId != null) {
+                    add(0, it)
+                }
             }
         }
     }
