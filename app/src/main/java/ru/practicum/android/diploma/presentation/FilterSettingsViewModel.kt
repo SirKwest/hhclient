@@ -45,7 +45,6 @@ class FilterSettingsViewModel(
             resetButtonState.postValue(value)
             updateFilter(Filter(isExistSalary = value))
         }
-        //applyButtonState.postValue(newFilterData != screenState.value?.filterSettings)
     }
 
     fun getFilter() {
