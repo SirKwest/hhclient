@@ -102,7 +102,8 @@ class SearchFragmentViewModel(
             vacancyList.clear()
             lastSearchedValue = text
             vacancyInteractor.searchVacancies(
-                SearchOptions(text = text, page = lastLoadedPage, filter = filterState)).collect { result ->
+                SearchOptions(text = text, page = lastLoadedPage, filter = filterState)
+            ).collect { result ->
                 when (result) {
                     is VacanciesSearchResource.Success -> {
                         if (result.items.isNotEmpty()) {
