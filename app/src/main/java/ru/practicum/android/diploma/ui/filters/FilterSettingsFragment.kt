@@ -129,7 +129,7 @@ class FilterSettingsFragment : Fragment() {
             requireContext(),
             R.drawable.icon_arrow_forward
         )
-        binding.locationTil.setOnClickListener {
+        binding.locationEt.setOnClickListener {
             findNavController().navigate(R.id.action_filter_settings_fragment_to_work_location_fragment)
         }
     }
@@ -140,8 +140,8 @@ class FilterSettingsFragment : Fragment() {
             requireContext(),
             R.drawable.icon_delete
         )
-        binding.locationTil.setOnClickListener {
-            viewModel.updateFilter(Filter(workPlace = null))
+        binding.locationEt.setOnClickListener {
+            viewModel.updateFilter(Filter(workPlace = Area()))
             setLocationEmptyValue()
         }
     }
@@ -152,7 +152,7 @@ class FilterSettingsFragment : Fragment() {
             requireContext(),
             R.drawable.icon_arrow_forward
         )
-        binding.industryTil.setEndIconOnClickListener {
+        binding.industryEt.setOnClickListener {
             findNavController().navigate(R.id.action_filter_settings_fragment_to_industries_fragment)
         }
     }
@@ -163,8 +163,8 @@ class FilterSettingsFragment : Fragment() {
             requireContext(),
             R.drawable.icon_delete
         )
-        binding.industryTil.setEndIconOnClickListener {
-            viewModel.updateFilter(Filter(industry = Industry(null, null)))
+        binding.industryEt.setOnClickListener {
+            viewModel.updateFilter(Filter(industry = Industry()))
             setIndustryEmptyValue()
         }
     }
