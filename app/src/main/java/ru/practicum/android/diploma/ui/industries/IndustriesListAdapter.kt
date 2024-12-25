@@ -42,7 +42,7 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
         holder.itemView.setOnClickListener {
             selectedIndustry = industry
             notifyDataSetChanged()
-            onItemClickListener?.onItemClick(industry.id)
+            onItemClickListener?.onItemClick(industry.id!!)
         }
     }
 

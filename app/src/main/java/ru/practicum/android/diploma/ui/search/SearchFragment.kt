@@ -45,6 +45,11 @@ class SearchFragment : Fragment() {
         settingRecyclerViewAdapter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilterValuesExistence()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -97,9 +102,9 @@ class SearchFragment : Fragment() {
             processingChangedScreenState(state)
         }
 
-        viewModel.observeFilter().observe(viewLifecycleOwner) { filterState ->
+        viewModel.observeFilter().observe(viewLifecycleOwner) { filterSaved ->
             binding.filterIcon.setImageResource(
-                if (filterState) {
+                if (filterSaved) {
                     R.drawable.icon_filter_active
                 } else {
                     R.drawable.icon_filter_inactive

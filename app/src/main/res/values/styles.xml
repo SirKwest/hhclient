@@ -34,6 +34,7 @@
     <style name="FilterItemValue">
         <item name="android:cursorVisible">false</item>
         <item name="android:focusable">false</item>
+        <item name="android:editable">false</item>
         <item name="android:background">?attr/colorPrimaryDark</item>
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
