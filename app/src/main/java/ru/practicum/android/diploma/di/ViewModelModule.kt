@@ -8,6 +8,7 @@ import ru.practicum.android.diploma.presentation.FilterSettingsViewModel
 import ru.practicum.android.diploma.presentation.IndustriesViewModel
 import ru.practicum.android.diploma.presentation.SearchFragmentViewModel
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
+import ru.practicum.android.diploma.presentation.WorkLocationFragmentViewModel
 
 val viewModelModule = module {
     viewModelOf(::SearchFragmentViewModel)
@@ -16,4 +17,5 @@ val viewModelModule = module {
     viewModelOf(::FilterSettingsViewModel)
     viewModelOf(::IndustriesViewModel)
     viewModelOf(::CountriesViewModel)
+    viewModelOf(::WorkLocationFragmentViewModel)
 }

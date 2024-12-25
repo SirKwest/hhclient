@@ -11,7 +11,10 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.api.LocationInteractor
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.RegionsResource
+import ru.practicum.android.diploma.ui.location.WorkLocationFragment
+import ru.practicum.android.diploma.util.getSerializableData
 
 class RegionsFragment : Fragment() {
 
@@ -25,11 +28,17 @@ class RegionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val selectedCountry = requireArguments().getSerializableData<Country>(WorkLocationFragment.REGION_DATA_KEY)
+        val selectedCountryId = selectedCountry?.id ?: ""
+
         val locationInteractor: LocationInteractor by inject()
         lifecycleScope.launch {
-            locationInteractor.getRegions("113").collect {
-                if (it is RegionsResource.Success) {
-                    requireActivity().findViewById<TextView>(R.id.tv).text = it.items.toString()
+            if (selectedCountryId.isNotBlank()) {
+                locationInteractor.getRegions(selectedCountryId).collect {
+                    if (it is RegionsResource.Success) {
+                        requireActivity().findViewById<TextView>(R.id.tv).text = it.items.toString()
+                    }
                 }
             }
         }
