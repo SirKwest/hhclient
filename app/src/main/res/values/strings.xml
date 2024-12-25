@@ -52,4 +52,5 @@
     <string name="select_country">Выбор страны</string>
     <string name="select_region">Выбор региона</string>
     <string name="region_input_hint">Введите регион</string>
+    <string name="no_such_region">Такого региона нет</string>
 </resources>
