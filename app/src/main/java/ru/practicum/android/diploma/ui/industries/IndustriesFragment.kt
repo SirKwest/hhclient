@@ -50,7 +50,8 @@ class IndustriesFragment : Fragment() {
             }
             industriesRecyclerView.adapter = industriesListAdapter
             selectButton.setOnClickListener {
-                // использовать industriesListAdapter.getSelectedIndustry() для получения селекта
+                val item = industriesListAdapter.getSelectedIndustry()
+                viewModel.saveValue(item)
                 findNavController().navigateUp()
             }
         }

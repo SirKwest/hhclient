@@ -5,13 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.FilterInteractor
 import ru.practicum.android.diploma.domain.api.IndustriesInteractor
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.IndustriesResource
 import ru.practicum.android.diploma.domain.models.Industry
 import java.net.HttpURLConnection
 
 class IndustriesViewModel(
-    private val industriesInteractor: IndustriesInteractor
+    private val industriesInteractor: IndustriesInteractor,
+    private val filtersInteractor: FilterInteractor
 ) : ViewModel() {
 
     private val screenState = MutableLiveData<IndustriesFragmentState>()
@@ -59,6 +62,12 @@ class IndustriesViewModel(
             } else {
                 screenState.value = IndustriesFragmentState.ShowingResults(filteredList)
             }
+        }
+    }
+
+    fun saveValue(item: Industry?) {
+        if (item != null) {
+            filtersInteractor.updateFilter(Filter(industry = item))
         }
     }
 }

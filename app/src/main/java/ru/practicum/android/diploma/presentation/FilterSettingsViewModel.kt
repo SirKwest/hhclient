@@ -21,11 +21,10 @@ class FilterSettingsViewModel(
 
     fun updateSalaryValue(value: String) {
         salaryValueState.postValue(value)
-        var newSalary: Int?
-        if (value.isBlank()) {
-            newSalary = null
+        val newSalary: Int? = if (value.isBlank()) {
+            null
         } else {
-            newSalary = value.toInt()
+            value.toInt()
         }
         val newFilterData = screenState.value?.filterSettings?.copy(salary = newSalary)
         if (newFilterData != null) {
@@ -33,9 +32,8 @@ class FilterSettingsViewModel(
             resetButtonState.postValue(newFilterData != Filter())
         } else {
             resetButtonState.postValue(value.isNotEmpty())
-            saveFilter(Filter(salary = value.toInt()))
+            updateFilter(Filter(salary = value.toInt()))
         }
-        applyButtonState.postValue(newFilterData != screenState.value?.filterSettings)
     }
 
     fun updateOnlyWithSalaryValue(value: Boolean) {
@@ -45,21 +43,33 @@ class FilterSettingsViewModel(
             resetButtonState.postValue(newFilterData != Filter())
         } else {
             resetButtonState.postValue(value)
-            saveFilter(Filter(isExistSalary = value))
+            updateFilter(Filter(isExistSalary = value))
         }
-        applyButtonState.postValue(newFilterData != screenState.value?.filterSettings)
+        //applyButtonState.postValue(newFilterData != screenState.value?.filterSettings)
     }
 
     fun getFilter() {
+        val newFilterData = filterInteractor.getFilter()
+        if (screenState.value?.filterSettings != null
+            && filterInteractor.isFiltersSaved()
+            && newFilterData != screenState.value!!.filterSettings
+        ) {
+            applyButtonState.postValue(true)
+        }
         screenState.postValue(FilterSettingsFragmentState(filterInteractor.getFilter()))
     }
 
-    fun saveFilter(filter: Filter) {
-        filterInteractor.saveFilter(filter)
+    fun updateFilter(filter: Filter) {
+        applyButtonState.postValue(true)
+        filterInteractor.updateFilter(filter)
     }
 
     fun resetFilters() {
         saveFilter(Filter())
         getFilter()
+    }
+
+    private fun saveFilter(filter: Filter) {
+        filterInteractor.saveFilter(filter)
     }
 }

@@ -11,17 +11,34 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
         sharedPreferences.edit().putString(FILTER_KEY, Gson().toJson(filter)).apply()
     }
 
-    override fun getFilter(): Filter? {
-        val filter = Gson().fromJson(sharedPreferences.getString(FILTER_KEY, null), Filter::class.java)
+    override fun getFilter(): Filter {
+        val filter = Gson().fromJson(sharedPreferences.getString(FILTER_KEY, null), Filter::class.java) ?: Filter()
         return filter
     }
 
+    override fun updateFilterComplexFields(filter: Filter) {
+        var newFilter = getFilter()
+        if (filter.industry != null) {
+            newFilter = newFilter.copy(industry = filter.industry)
+        }
+        if (filter.workPlace != null) {
+            newFilter = newFilter.copy(workPlace = filter.workPlace)
+        }
+        if (filter.salary != null) {
+            newFilter = newFilter.copy(salary = filter.salary)
+        }
+        if (filter.isExistSalary != null) {
+            newFilter = newFilter.copy(isExistSalary = filter.isExistSalary)
+        }
+        saveFilter(newFilter)
+    }
+
     override fun isFiltersSaved(): Boolean {
-        val filter = getFilter() ?: return false
+        val filter = getFilter()
         val isSalarySaved = filter.salary != null
-        val isOnlyWithSalaryCheckSaved = filter.isExistSalary
-        val isRegionSaved = !filter.workPlace.isNullOrBlank()
-        val isIndustrySaved = !filter.industry.isNullOrBlank()
+        val isOnlyWithSalaryCheckSaved = filter.isExistSalary != null
+        val isRegionSaved = filter.workPlace != null
+        val isIndustrySaved = filter.industry != null
         return isSalarySaved || isOnlyWithSalaryCheckSaved || isRegionSaved || isIndustrySaved
     }
 

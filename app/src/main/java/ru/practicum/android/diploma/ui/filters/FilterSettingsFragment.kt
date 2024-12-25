@@ -15,7 +15,10 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
+import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.displayName
 import ru.practicum.android.diploma.presentation.FilterSettingsViewModel
 
 class FilterSettingsFragment : Fragment() {
@@ -31,10 +34,6 @@ class FilterSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-
         viewModel.observeScreenState().observe(viewLifecycleOwner) { state ->
             setPreviousFilters(state.filterSettings)
         }
@@ -48,6 +47,22 @@ class FilterSettingsFragment : Fragment() {
             binding.resetBtn.isVisible = state
         }
 
+        settingListeners()
+
+        viewModel.getFilter()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun settingListeners() {
+        binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+        binding.salaryEt.doOnTextChanged { text, _, _, _ ->
+            viewModel.updateSalaryValue(text.toString())
+        }
+        binding.resetBtn.setOnClickListener { viewModel.resetFilters() }
         binding.onlyWithSalaryTv.setOnClickListener {
             binding.onlyWithSalaryTv.toggle()
             viewModel.updateOnlyWithSalaryValue(binding.onlyWithSalaryTv.isChecked)
@@ -62,46 +77,17 @@ class FilterSettingsFragment : Fragment() {
                 }
 
             val filter = Filter(
-                binding.locationEt.text.toString(),
-                binding.industryEt.text.toString(),
-                salary,
-                binding.onlyWithSalaryTv.isChecked
+                salary = salary,
+                isExistSalary = binding.onlyWithSalaryTv.isChecked
             )
-            viewModel.saveFilter(filter)
+            viewModel.updateFilter(filter)
             findNavController().navigateUp()
         }
-
-        settingListeners()
-
-        binding.industryEt.setOnClickListener {
-            findNavController().navigate(R.id.industries_fragment)
-        }
-        binding.locationEt.setOnClickListener {
-            findNavController().navigate(R.id.work_location_fragment)
-        }
-        viewModel.getFilter()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun settingListeners() {
-        binding.salaryEt.doOnTextChanged { text, _, _, _ ->
-            viewModel.updateSalaryValue(text.toString())
-        }
-        binding.resetBtn.setOnClickListener {
-            viewModel.resetFilters()
-        }
-    }
-
-    private fun setPreviousFilters(filter: Filter?) {
-        if (filter == null) {
-            return
-        }
-        binding.resetBtn.isVisible = true
-        binding.onlyWithSalaryTv.isChecked = filter.isExistSalary
+    private fun setPreviousFilters(filter: Filter) {
+        binding.resetBtn.isVisible = filter != Filter()
+        binding.onlyWithSalaryTv.isChecked = filter.isExistSalary == true
 
         if (filter.salary == null) {
             binding.salaryEt.setText("")
@@ -148,13 +134,14 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
-    private fun setLocationValue(value: String) {
-        binding.locationEt.setText(value)
+    private fun setLocationValue(value: Area) {
+        binding.locationEt.setText(value.displayName())
         binding.locationTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_delete
         )
         binding.locationTil.setOnClickListener {
+            viewModel.updateFilter(Filter(workPlace = null))
             setLocationEmptyValue()
         }
     }
@@ -165,19 +152,20 @@ class FilterSettingsFragment : Fragment() {
             requireContext(),
             R.drawable.icon_arrow_forward
         )
-        binding.industryTil.setOnClickListener {
+        binding.industryTil.setEndIconOnClickListener {
             findNavController().navigate(R.id.action_filter_settings_fragment_to_industries_fragment)
         }
     }
 
-    private fun setIndustryValue(value: String) {
-        binding.industryEt.setText(value)
+    private fun setIndustryValue(value: Industry) {
+        binding.industryEt.setText(value.name)
         binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_delete
         )
-        binding.industryTil.setOnClickListener {
-            setLocationEmptyValue()
+        binding.industryTil.setEndIconOnClickListener {
+            viewModel.updateFilter(Filter(industry = null))
+            setIndustryEmptyValue()
         }
     }
 }
