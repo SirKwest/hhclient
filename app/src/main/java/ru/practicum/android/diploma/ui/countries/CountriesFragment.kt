@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.databinding.FragmentCountriesBinding
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.presentation.CountriesFragmentState
 import ru.practicum.android.diploma.presentation.CountriesViewModel
+import ru.practicum.android.diploma.ui.location.LocationListAdapter
 import ru.practicum.android.diploma.ui.location.WorkLocationFragment
 
 class CountriesFragment : Fragment() {

@@ -14,6 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentWorkLocationBinding
 import ru.practicum.android.diploma.domain.models.Country
+import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.presentation.WorkLocationFragmentViewModel
 import ru.practicum.android.diploma.util.getSerializableData
 
@@ -64,6 +65,13 @@ class WorkLocationFragment : Fragment() {
                     }
                 }
             }
+
+            setFragmentResultListener(REGION_RESULT_KEY) { _, bundle ->
+                bundle.getSerializableData<Region>(REGION_DATA_KEY)?.let {
+                    viewModel.setRegionValue(it)
+                    setRegionValue(it)
+                }
+            }
         }
     }
 
@@ -96,6 +104,15 @@ class WorkLocationFragment : Fragment() {
             R.drawable.icon_delete
         )
         binding.countryEt.setOnClickListener { setCountryEmptyValue() }
+    }
+
+    private fun setRegionValue(value: Region) {
+        binding.regionEt.setText(value.name)
+        binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
+            requireContext(),
+            R.drawable.icon_delete
+        )
+        binding.regionEt.setOnClickListener { setRegionEmptyValue() }
     }
 
     companion object {

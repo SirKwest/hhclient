@@ -8,9 +8,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -20,7 +22,7 @@ import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.presentation.RegionsFragmentState
 import ru.practicum.android.diploma.presentation.RegionsViewModel
-import ru.practicum.android.diploma.ui.countries.LocationListAdapter
+import ru.practicum.android.diploma.ui.location.LocationListAdapter
 import ru.practicum.android.diploma.ui.location.WorkLocationFragment
 import ru.practicum.android.diploma.util.getSerializableData
 
@@ -45,6 +47,13 @@ class RegionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        regionsListAdapter.onItemClickListener = LocationListAdapter.OnItemClickListener { region ->
+            setFragmentResult(
+                WorkLocationFragment.REGION_RESULT_KEY,
+                bundleOf(WorkLocationFragment.REGION_DATA_KEY to region)
+            )
+            findNavController().navigateUp()
+        }
         binding.apply {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()

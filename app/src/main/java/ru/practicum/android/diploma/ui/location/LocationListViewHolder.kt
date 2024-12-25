@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.countries
+package ru.practicum.android.diploma.ui.location
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.LocationListItemBinding

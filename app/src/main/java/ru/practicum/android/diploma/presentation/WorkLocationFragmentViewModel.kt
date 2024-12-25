@@ -13,7 +13,7 @@ class WorkLocationFragmentViewModel(
     private val filterInteractor: FilterInteractor
 ) : ViewModel() {
     private var countryValue: Country? = null
-    var regionValue: Region? = null
+    private var regionValue: Region? = null
 
     private val applyButtonState = MutableLiveData(false)
 
@@ -26,6 +26,11 @@ class WorkLocationFragmentViewModel(
 
     fun getCountryValue(): Country? {
         return countryValue
+    }
+
+    fun setRegionValue(value: Region) {
+        regionValue = value
+        applyButtonState.postValue(true)
     }
 
     fun isSelectedRegionShouldBeRemoved(): Boolean {
