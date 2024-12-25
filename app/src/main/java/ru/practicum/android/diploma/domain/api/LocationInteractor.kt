@@ -6,5 +6,5 @@ import ru.practicum.android.diploma.domain.models.RegionsResource
 
 interface LocationInteractor {
     fun getCountries(): Flow<CountriesResource>
-    fun getRegions(countryId: String): Flow<RegionsResource>
+    fun getRegions(countryId: String?): Flow<RegionsResource>
 }

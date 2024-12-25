@@ -11,7 +11,7 @@ class LocationInteractorImpl(private val locationRepository: LocationRepository)
         return locationRepository.getCountries()
     }
 
-    override fun getRegions(countryId: String): Flow<RegionsResource> {
+    override fun getRegions(countryId: String?): Flow<RegionsResource> {
         return locationRepository.getRegions(countryId)
     }
 }
