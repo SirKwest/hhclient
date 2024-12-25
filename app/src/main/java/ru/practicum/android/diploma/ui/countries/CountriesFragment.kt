@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentCountriesBinding
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.presentation.CountriesFragmentState
 import ru.practicum.android.diploma.presentation.CountriesViewModel
+import ru.practicum.android.diploma.ui.location.WorkLocationFragment
 
 class CountriesFragment : Fragment() {
     private var _binding: FragmentCountriesBinding? = null
@@ -49,8 +52,12 @@ class CountriesFragment : Fragment() {
         binding.apply {
             countriesRecyclerView.isVisible = true
             countriesRecyclerView.adapter = CountryListAdapter(countries).apply {
-                onItemClickListener = CountryListAdapter.OnItemClickListener {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                onItemClickListener = CountryListAdapter.OnItemClickListener { countryItem ->
+                    setFragmentResult(
+                        WorkLocationFragment.COUNTRY_RESULT_KEY,
+                        bundleOf(WorkLocationFragment.COUNTRY_DATA_KEY to countryItem)
+                    )
+                    findNavController().navigateUp()
                 }
             }
 
