@@ -10,8 +10,10 @@ import ru.practicum.android.diploma.data.dto.response.VacancyByIdResponse
 import ru.practicum.android.diploma.data.dto.toVacancy
 import ru.practicum.android.diploma.data.dto.toVacancyShort
 import ru.practicum.android.diploma.data.network.NetworkClient
+import ru.practicum.android.diploma.domain.models.SearchOptions
 import ru.practicum.android.diploma.domain.models.VacanciesSearchResource
 import ru.practicum.android.diploma.domain.models.VacancyByIdResource
+import ru.practicum.android.diploma.domain.models.toQueryMap
 import ru.practicum.android.diploma.domain.repository.VacancyRepository
 import java.net.HttpURLConnection
 
@@ -19,8 +21,8 @@ class VacancyRepositoryImpl(
     private val headhunterClient: NetworkClient,
     private val appDatabase: AppDatabase
 ) : VacancyRepository {
-    override fun searchVacancies(text: String, page: Int): Flow<VacanciesSearchResource> = flow {
-        val response = headhunterClient.doRequest(VacanciesSearchRequest(text, page))
+    override fun searchVacancies(searchOptions: SearchOptions): Flow<VacanciesSearchResource> = flow {
+        val response = headhunterClient.doRequest(VacanciesSearchRequest(searchOptions.toQueryMap()))
         if (
             response.responseCode != HttpURLConnection.HTTP_OK
             || response !is VacanciesSearchResponse

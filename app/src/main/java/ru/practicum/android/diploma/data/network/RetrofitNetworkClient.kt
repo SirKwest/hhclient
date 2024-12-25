@@ -73,7 +73,7 @@ class RetrofitNetworkClient(
         request: VacanciesSearchRequest
     ): Response {
         return try {
-            val result = api.getVacancies(request.text, request.page)
+            val result = api.getVacancies(request.options)
             val response = result.body() ?: Response()
             response.responseCode = result.code()
             response
