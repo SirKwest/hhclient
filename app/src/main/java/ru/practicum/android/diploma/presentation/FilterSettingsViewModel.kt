@@ -21,15 +21,33 @@ class FilterSettingsViewModel(
 
     fun updateSalaryValue(value: String) {
         salaryValueState.postValue(value)
-        //save to cache
-        applyButtonState.postValue(true) // true -> is cache different from saved
-        resetButtonState.postValue(value.isNotEmpty()) // value.isNotEmpty -> is any data currently set
+        var newSalary: Int?
+        if (value.isBlank()) {
+            newSalary = null
+        } else {
+            newSalary = value.toInt()
+        }
+        val newFilterData = screenState.value?.filterSettings?.copy(salary = newSalary)
+        if (newFilterData != null) {
+            saveFilter(newFilterData)
+            resetButtonState.postValue(newFilterData != Filter())
+        } else {
+            resetButtonState.postValue(value.isNotEmpty())
+            saveFilter(Filter(salary = value.toInt()))
+        }
+        applyButtonState.postValue(newFilterData != screenState.value?.filterSettings)
     }
 
     fun updateOnlyWithSalaryValue(value: Boolean) {
-        //save to cache
-        applyButtonState.postValue(true) // true -> is cache different from saved
-        resetButtonState.postValue(value) // value.isNotEmpty -> is any data currently set
+        val newFilterData = screenState.value?.filterSettings?.copy(isExistSalary = value)
+        if (newFilterData != null) {
+            saveFilter(newFilterData)
+            resetButtonState.postValue(newFilterData != Filter())
+        } else {
+            resetButtonState.postValue(value)
+            saveFilter(Filter(isExistSalary = value))
+        }
+        applyButtonState.postValue(newFilterData != screenState.value?.filterSettings)
     }
 
     fun getFilter() {
@@ -41,7 +59,7 @@ class FilterSettingsViewModel(
     }
 
     fun resetFilters() {
-        saveFilter(Filter(null, null, null, false))
+        saveFilter(Filter())
         getFilter()
     }
 }
