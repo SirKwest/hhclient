@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.ui.regions
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -100,7 +99,6 @@ class RegionsFragment : Fragment() {
     }
 
     private fun showResults(regions: List<Region>) {
-        Log.d("my", "showResults $regions")
         binding.apply {
             regionsRecyclerView.isVisible = true
             content.isVisible = true
