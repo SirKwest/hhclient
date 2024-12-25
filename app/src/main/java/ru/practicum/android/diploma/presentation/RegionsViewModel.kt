@@ -35,7 +35,11 @@ class RegionsViewModel(
                 when (resource) {
                     is RegionsResource.Success -> {
                         baseRegions = resource.items
-                        screenState.postValue(RegionsFragmentState.ShowingResults(resource.items))
+                        if (resource.items.isNotEmpty()) {
+                            screenState.postValue(RegionsFragmentState.ShowingResults(resource.items))
+                        } else {
+                            screenState.postValue(RegionsFragmentState.EmptyResults)
+                        }
                     }
 
                     is RegionsResource.Error -> {
