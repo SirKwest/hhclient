@@ -52,8 +52,11 @@ class CountriesFragment : Fragment() {
         binding.apply {
             countriesRecyclerView.isVisible = true
             countriesRecyclerView.adapter = CountryListAdapter(countries).apply {
-                onItemClickListener = CountryListAdapter.OnItemClickListener {
-                    setFragmentResult(WorkLocationFragment.COUNTRY_RESULT_KEY, bundleOf(WorkLocationFragment.COUNTRY_DATA_KEY to it))
+                onItemClickListener = CountryListAdapter.OnItemClickListener { countryItem ->
+                    setFragmentResult(
+                        WorkLocationFragment.COUNTRY_RESULT_KEY,
+                        bundleOf(WorkLocationFragment.COUNTRY_DATA_KEY to countryItem)
+                    )
                     findNavController().navigateUp()
                 }
             }
