@@ -7,10 +7,12 @@ import android.net.NetworkRequest
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.request.CountriesRequest
 import ru.practicum.android.diploma.data.dto.request.IndustriesRequest
+import ru.practicum.android.diploma.data.dto.request.RegionsRequest
 import ru.practicum.android.diploma.data.dto.request.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.request.VacancyByIdRequest
 import ru.practicum.android.diploma.data.dto.response.CountriesResponse
 import ru.practicum.android.diploma.data.dto.response.IndustriesResponse
+import ru.practicum.android.diploma.data.dto.response.RegionsResponse
 import ru.practicum.android.diploma.data.dto.response.Response
 import java.net.HttpURLConnection
 
@@ -62,6 +64,7 @@ class RetrofitNetworkClient(
             is VacancyByIdRequest -> getVacancyByIdResponse(dto)
             is IndustriesRequest -> getIndustriesResponse(dto)
             is CountriesRequest -> getCountries(dto)
+            is RegionsRequest -> getRegions(dto)
             else -> Response()
         }
     }
@@ -121,6 +124,30 @@ class RetrofitNetworkClient(
             val response = if (body != null) CountriesResponse(body) else Response()
             response.responseCode = result.code()
             response
+        } catch (error: HttpException) {
+            val response = Response()
+            response.responseCode = error.code()
+            response
+        }
+    }
+
+    private suspend fun getRegions(
+        request: RegionsRequest
+    ): Response {
+        return try {
+            if (request.countryId == null) {
+                val result = api.getRegions()
+                val body = result.body()
+                val response = if (body != null) RegionsResponse(body) else Response()
+                response.responseCode = result.code()
+                response
+            } else {
+                val result = api.getRegionsOfCountry(request.countryId)
+                val body = result.body()
+                val response = if (body != null) RegionsResponse(body.regions) else Response()
+                response.responseCode = result.code()
+                response
+            }
         } catch (error: HttpException) {
             val response = Response()
             response.responseCode = error.code()

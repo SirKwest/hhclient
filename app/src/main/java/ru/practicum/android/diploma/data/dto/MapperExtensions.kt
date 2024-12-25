@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.data.dto
 import ru.practicum.android.diploma.data.dto.response.VacancyByIdResponse
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.models.SubIndustry
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyShort
@@ -57,5 +58,14 @@ fun CountryDto.toCountry(): Country {
     return Country(
         id = id,
         name = name
+    )
+}
+
+fun RegionDto.toRegion(): Region {
+    return Region(
+        id = id,
+        name = name,
+        parentId = parentId,
+        regions = regions.map { it.toRegion() }
     )
 }
