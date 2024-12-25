@@ -15,6 +15,7 @@
         android:id="@+id/location_til"
         style="@style/FilterItemSelector"
         android:layout_width="match_parent"
+        android:minHeight="60dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dim_16dp"
         android:hint="@string/job_location">
@@ -32,7 +33,7 @@
         style="@style/FilterItemSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dim_16dp"
+        android:minHeight="60dp"
         android:hint="@string/industry">
 
         <com.google.android.material.textfield.TextInputEditText
