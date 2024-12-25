@@ -31,6 +31,9 @@ class WorkLocationFragment : Fragment() {
             countryEt.setOnClickListener {
                 findNavController().navigate(R.id.countries_fragment)
             }
+            regionEt.setOnClickListener {
+                findNavController().navigate(R.id.regions_fragment)
+            }
         }
     }
 

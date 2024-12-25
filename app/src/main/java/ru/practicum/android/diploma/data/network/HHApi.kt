@@ -8,6 +8,7 @@ import retrofit2.http.Query
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.CountryDto
 import ru.practicum.android.diploma.data.dto.IndustryGroupDto
+import ru.practicum.android.diploma.data.dto.RegionDto
 import ru.practicum.android.diploma.data.dto.response.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.response.VacancyByIdResponse
 
@@ -31,4 +32,10 @@ interface HHApi {
 
     @GET("/areas/countries")
     suspend fun getCountries(): Response<List<CountryDto>>
+
+    @GET("/areas")
+    suspend fun getRegions(): Response<List<RegionDto>>
+
+    @GET("/areas/{area_id}")
+    suspend fun getRegionsOfCountry(@Path("area_id") countryId: String): Response<RegionDto>
 }
