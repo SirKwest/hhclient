@@ -62,11 +62,19 @@
         <action
             android:id="@+id/action_work_location_fragment_to_countries_fragment"
             app:destination="@id/countries_fragment" />
+        <action
+            android:id="@+id/action_work_location_fragment_to_regionsFragment"
+            app:destination="@id/regions_fragment" />
     </fragment>
     <fragment
         android:id="@+id/countries_fragment"
         android:name="ru.practicum.android.diploma.ui.countries.CountriesFragment"
         android:label="CountriesFragment"
         tools:layout="@layout/fragment_countries" />
+    <fragment
+        android:id="@+id/regions_fragment"
+        android:name="ru.practicum.android.diploma.ui.regions.RegionsFragment"
+        android:label="fragment_regions"
+        tools:layout="@layout/fragment_regions" />
 
 </navigation>
