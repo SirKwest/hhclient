@@ -7,5 +7,11 @@ data class Area(
 )
 
 fun Area.displayName(): String {
-    return "$countryName, $regionName"
+    return if (countryName != null && regionName == null) {
+        countryName
+    } else if (countryName == null && regionName != null) {
+        regionName
+    } else {
+        "$countryName, $regionName"
+    }
 }
