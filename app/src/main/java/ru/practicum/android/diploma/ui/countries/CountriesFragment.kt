@@ -50,7 +50,8 @@ class CountriesFragment : Fragment() {
     private fun showResults(countries: List<Country>) {
         binding.apply {
             countriesRecyclerView.isVisible = true
-            countriesRecyclerView.adapter = LocationListAdapter(countries).apply {
+            countriesRecyclerView.adapter = LocationListAdapter<Country>().apply {
+                locations = countries
                 onItemClickListener = LocationListAdapter.OnItemClickListener { countryItem ->
                     setFragmentResult(
                         WorkLocationFragment.COUNTRY_RESULT_KEY,
