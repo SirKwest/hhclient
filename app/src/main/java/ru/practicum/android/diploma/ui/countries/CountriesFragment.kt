@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -51,8 +50,8 @@ class CountriesFragment : Fragment() {
     private fun showResults(countries: List<Country>) {
         binding.apply {
             countriesRecyclerView.isVisible = true
-            countriesRecyclerView.adapter = CountryListAdapter(countries).apply {
-                onItemClickListener = CountryListAdapter.OnItemClickListener { countryItem ->
+            countriesRecyclerView.adapter = LocationListAdapter(countries).apply {
+                onItemClickListener = LocationListAdapter.OnItemClickListener { countryItem ->
                     setFragmentResult(
                         WorkLocationFragment.COUNTRY_RESULT_KEY,
                         bundleOf(WorkLocationFragment.COUNTRY_DATA_KEY to countryItem)
