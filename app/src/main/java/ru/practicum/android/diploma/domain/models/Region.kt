@@ -7,4 +7,8 @@ data class Region(
     override val name: String,
     val parentId: String?,
     val regions: List<Region>
-) : Location(id, name), Serializable
+) : Location(id, name), Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
+    }
+}
