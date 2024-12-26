@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.LocationInteractor
+import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.models.RegionsResource
 import java.net.HttpURLConnection
 
@@ -16,6 +17,7 @@ class RegionsViewModel(
 
     private val screenState = MutableLiveData<RegionsFragmentState>()
     fun observeScreenState(): LiveData<RegionsFragmentState> = screenState
+    private var baseRegions: List<Region>? = null
 
     init {
         loadData()
@@ -32,6 +34,7 @@ class RegionsViewModel(
             flow.collect { resource ->
                 when (resource) {
                     is RegionsResource.Success -> {
+                        baseRegions = resource.items
                         screenState.postValue(RegionsFragmentState.ShowingResults(resource.items))
                     }
 
@@ -49,6 +52,17 @@ class RegionsViewModel(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    fun filter(query: String) {
+        baseRegions?.let { regions ->
+            val filteredList = regions.filter { region -> region.name.lowercase().contains(query.lowercase()) }
+            if (filteredList.isEmpty()) {
+                screenState.value = RegionsFragmentState.EmptyResults
+            } else {
+                screenState.value = RegionsFragmentState.ShowingResults(filteredList)
             }
         }
     }
