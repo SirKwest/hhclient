@@ -70,4 +70,8 @@ class IndustriesViewModel(
             filtersInteractor.updateFilter(Filter(industry = item))
         }
     }
+
+    fun getSavedIndustry(): Industry? {
+        return filtersInteractor.getFilter().industry
+    }
 }

@@ -1,8 +1,10 @@
 package ru.practicum.android.diploma.ui.filters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -146,6 +148,7 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setIndustryEmptyValue() {
         binding.industryEt.setText("")
         binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(
@@ -155,8 +158,10 @@ class FilterSettingsFragment : Fragment() {
         binding.industryEt.setOnClickListener {
             findNavController().navigate(R.id.action_filter_settings_fragment_to_industries_fragment)
         }
+        binding.industryEt.setOnTouchListener(null)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setIndustryValue(value: Industry) {
         binding.industryEt.setText(value.name)
         binding.industryTil.endIconDrawable = AppCompatResources.getDrawable(
@@ -164,8 +169,24 @@ class FilterSettingsFragment : Fragment() {
             R.drawable.icon_delete
         )
         binding.industryEt.setOnClickListener {
-            viewModel.updateFilter(Filter(industry = Industry()))
-            setIndustryEmptyValue()
+            findNavController().navigate(R.id.action_filter_settings_fragment_to_industries_fragment)
+        }
+
+        binding.industryEt.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.industryEt.compoundDrawablesRelative[2]
+                val position = binding.industryEt.width -
+                    binding.industryEt.paddingEnd - drawableEnd.bounds.width()
+                if (drawableEnd != null && event.rawX >= position) {
+                    viewModel.updateFilter(Filter(industry = Industry()))
+                    setIndustryEmptyValue()
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
         }
     }
 }
