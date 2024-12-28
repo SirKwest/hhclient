@@ -61,7 +61,7 @@ class FilterSettingsFragment : Fragment() {
     private fun settingListeners() {
         binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
         binding.salaryEt.doOnTextChanged { text, _, _, _ ->
-            if (text.toString().length > 19) {
+            if (text.toString().length > MAX_SALARY_NUMBER) {
                 Toast.makeText(
                     requireContext(),
                     ContextCompat.getString(requireContext(), R.string.too_large_number),
@@ -179,7 +179,7 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
-    companion object{
+    companion object {
         private const val MAX_SALARY_NUMBER = 19
     }
 }
