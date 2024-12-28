@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_search_to_details_fragment"
             app:destination="@id/vacancy_details_fragment" />
+        <action
+            android:id="@+id/action_search_to_filter_settings_fragment"
+            app:destination="@id/filter_settings_fragment" />
     </fragment>
 
     <fragment
@@ -33,5 +36,45 @@
         android:name="ru.practicum.android.diploma.ui.details.VacancyDetailsFragment"
         android:label="fragment_vacancy_details"
         tools:layout="@layout/fragment_vacancy_details" />
+
+    <fragment
+        android:id="@+id/filter_settings_fragment"
+        android:name="ru.practicum.android.diploma.ui.filters.FilterSettingsFragment"
+        android:label="filter_settings_fragment"
+        tools:layout="@layout/fragment_filter_settings">
+        <action
+            android:id="@+id/action_filter_settings_fragment_to_industries_fragment"
+            app:destination="@id/industries_fragment" />
+        <action
+            android:id="@+id/action_filter_settings_fragment_to_work_location_fragment"
+            app:destination="@id/work_location_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/industries_fragment"
+        android:name="ru.practicum.android.diploma.ui.industries.IndustriesFragment"
+        android:label="IndustriesFragment"
+        tools:layout="@layout/fragment_industries" />
+    <fragment
+        android:id="@+id/work_location_fragment"
+        android:name="ru.practicum.android.diploma.ui.location.WorkLocationFragment"
+        android:label="WorkLocationFragment"
+        tools:layout="@layout/fragment_work_location">
+        <action
+            android:id="@+id/action_work_location_fragment_to_countries_fragment"
+            app:destination="@id/countries_fragment" />
+        <action
+            android:id="@+id/action_work_location_fragment_to_regionsFragment"
+            app:destination="@id/regions_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/countries_fragment"
+        android:name="ru.practicum.android.diploma.ui.countries.CountriesFragment"
+        android:label="CountriesFragment"
+        tools:layout="@layout/fragment_countries" />
+    <fragment
+        android:id="@+id/regions_fragment"
+        android:name="ru.practicum.android.diploma.ui.regions.RegionsFragment"
+        android:label="fragment_regions"
+        tools:layout="@layout/fragment_regions" />
 
 </navigation>

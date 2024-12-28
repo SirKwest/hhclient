@@ -34,7 +34,7 @@ class VacancyDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentVacancyDetailsBinding.inflate(layoutInflater)
+        _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -65,6 +65,7 @@ class VacancyDetailsFragment : Fragment() {
         viewModel.observeScreenState().observe(viewLifecycleOwner, ::processState)
         viewModel.observeFavoriteState().observe(viewLifecycleOwner, ::processFavoriteState)
     }
+
     private fun processFavoriteState(state: Boolean) {
         if (state) {
             binding.toolbar.menu[1].setIcon(R.drawable.icon_favorite_active)

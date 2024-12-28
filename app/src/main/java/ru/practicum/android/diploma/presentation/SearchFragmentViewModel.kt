@@ -5,19 +5,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.FilterInteractor
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
+import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.SearchOptions
 import ru.practicum.android.diploma.domain.models.VacanciesSearchResource
 import ru.practicum.android.diploma.domain.models.VacancyShort
 import ru.practicum.android.diploma.util.debouncedAction
 import java.net.HttpURLConnection
 
 class SearchFragmentViewModel(
-    private val vacancyInteractor: VacancyInteractor
+    private val vacancyInteractor: VacancyInteractor,
+    private val filterInteractor: FilterInteractor
 ) : ViewModel() {
     private var lastSearchedValue: String = ""
     private var lastLoadedPage: Int = 0
     private var totalPagesInLastRequest: Int = 0
     private var totalVacanciesFound: Int = 0
+    private var filterState: Filter = Filter()
     private var vacancyList = mutableListOf<VacancyShort>()
 
     private var errorMessage = MutableLiveData<Int>()
@@ -27,9 +32,8 @@ class SearchFragmentViewModel(
     fun observeFilter(): LiveData<Boolean> = filtersButtonState
     fun observeErrorMessage(): LiveData<Int> = errorMessage
 
-    fun addFilter() {
-        val newValue = filtersButtonState.value ?: false
-        filtersButtonState.postValue(!newValue)
+    init {
+        checkFilterValuesExistence()
     }
 
     val search: (String) -> Unit =
@@ -47,7 +51,9 @@ class SearchFragmentViewModel(
         }
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.LoadingNewPageOfResults)
-            vacancyInteractor.searchVacancies(lastSearchedValue, ++lastLoadedPage).collect { result ->
+            vacancyInteractor.searchVacancies(
+                SearchOptions(text = lastSearchedValue, page = ++lastLoadedPage, filter = filterState)
+            ).collect { result ->
                 when (result) {
                     is VacanciesSearchResource.Success -> {
                         if (result.items.isNotEmpty()) {
@@ -65,17 +71,39 @@ class SearchFragmentViewModel(
         }
     }
 
+    fun checkFilterValuesExistence() {
+        val isFiltersSaved = filterInteractor.isFiltersSaved()
+        filtersButtonState.postValue(isFiltersSaved)
+        if (isFiltersSaved && filterState == Filter()) {
+            filterState = filterInteractor.getFilter()
+        }
+        if (isFiltersSaved && lastSearchedValue.isNotEmpty()) {
+            search(lastSearchedValue)
+        }
+    }
+
+    private fun isFiltersSetChanged(): Boolean {
+        val newFilterState = filterInteractor.getFilter()
+        if (newFilterState != filterState) {
+            filterState = newFilterState
+            return true
+        }
+        return false
+    }
+
     private fun processNewSearch(text: String) {
         lastLoadedPage = 0
         totalPagesInLastRequest = 0
-        if (lastSearchedValue == text) {
+        if (!isFiltersSetChanged() && lastSearchedValue == text) {
             return
         }
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.RequestInProgress)
             vacancyList.clear()
             lastSearchedValue = text
-            vacancyInteractor.searchVacancies(text, lastLoadedPage).collect { result ->
+            vacancyInteractor.searchVacancies(
+                SearchOptions(text = text, page = lastLoadedPage, filter = filterState)
+            ).collect { result ->
                 when (result) {
                     is VacanciesSearchResource.Success -> {
                         if (result.items.isNotEmpty()) {

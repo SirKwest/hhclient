@@ -45,6 +45,11 @@ class SearchFragment : Fragment() {
         settingRecyclerViewAdapter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilterValuesExistence()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -52,7 +57,9 @@ class SearchFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun applyingFunctionsToLayoutItems() {
-        binding.filterIcon.setOnClickListener { viewModel.addFilter() }
+        binding.filterIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_search_to_filter_settings_fragment)
+        }
         binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
             if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
                 viewModel.search(binding.searchEditText.text.toString())
@@ -95,9 +102,9 @@ class SearchFragment : Fragment() {
             processingChangedScreenState(state)
         }
 
-        viewModel.observeFilter().observe(viewLifecycleOwner) { filterState ->
+        viewModel.observeFilter().observe(viewLifecycleOwner) { filterSaved ->
             binding.filterIcon.setImageResource(
-                if (filterState) {
+                if (filterSaved) {
                     R.drawable.icon_filter_active
                 } else {
                     R.drawable.icon_filter_inactive

@@ -24,6 +24,7 @@ class FavoritesViewModel(private val favoriteInteractor: FavoriteInteractor) : V
                             screenState.postValue(FavoritesFragmentState.ShowResults(result.records))
                         }
                     }
+
                     is VacancyShortFromDatabaseResource.Error -> {
                         screenState.postValue(FavoritesFragmentState.Error)
                     }

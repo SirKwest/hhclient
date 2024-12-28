@@ -21,7 +21,12 @@ class RootActivity : AppCompatActivity() {
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.vacancy_details_fragment -> {
+                R.id.vacancy_details_fragment,
+                R.id.filter_settings_fragment,
+                R.id.work_location_fragment,
+                R.id.industries_fragment,
+                R.id.countries_fragment,
+                R.id.regions_fragment -> {
                     binding.mainNavigationView.isVisible = false
                     binding.mainNavigationViewSplitter.isVisible = false
                 }
