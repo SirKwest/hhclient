@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -60,7 +61,16 @@ class FilterSettingsFragment : Fragment() {
     private fun settingListeners() {
         binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
         binding.salaryEt.doOnTextChanged { text, _, _, _ ->
-            viewModel.updateSalaryValue(text.toString())
+            if (text.toString().length > 19) {
+                Toast.makeText(
+                    requireContext(),
+                    ContextCompat.getString(requireContext(), R.string.too_large_number),
+                    Toast.LENGTH_SHORT
+                ).show()
+                binding.salaryEt.setText(text.toString().take(MAX_SALARY_NUMBER))
+            } else {
+                viewModel.updateSalaryValue(text.toString())
+            }
         }
         binding.resetBtn.setOnClickListener { viewModel.resetFilters() }
         binding.onlyWithSalaryTv.setOnClickListener {
@@ -73,7 +83,7 @@ class FilterSettingsFragment : Fragment() {
                 if (binding.salaryEt.text.toString().isBlank()) {
                     null
                 } else {
-                    binding.salaryEt.text.toString().toInt()
+                    binding.salaryEt.text.toString().toLong()
                 }
 
             val filter = Filter(
@@ -167,5 +177,9 @@ class FilterSettingsFragment : Fragment() {
             viewModel.updateFilter(Filter(industry = Industry()))
             setIndustryEmptyValue()
         }
+    }
+
+    companion object{
+        private const val MAX_SALARY_NUMBER = 19
     }
 }

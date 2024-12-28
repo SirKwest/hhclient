@@ -35,7 +35,7 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
             }
         }
         if (filter.salary != null) {
-            newFilter = if (filter.salary == -1) {
+            newFilter = if (filter.salary == -1L) {
                 newFilter.copy(salary = null)
             } else {
                 newFilter.copy(salary = filter.salary)

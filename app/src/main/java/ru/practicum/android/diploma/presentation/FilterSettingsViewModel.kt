@@ -21,10 +21,10 @@ class FilterSettingsViewModel(
 
     fun updateSalaryValue(value: String) {
         salaryValueState.postValue(value)
-        val newSalary: Int? = if (value.isBlank()) {
+        val newSalary: Long? = if (value.isBlank()) {
             null
         } else {
-            value.toInt()
+            value.toLong()
         }
         val newFilterData = screenState.value?.filterSettings?.copy(salary = newSalary)
         val isValueChanged = newSalary != screenState.value?.filterSettings?.salary
