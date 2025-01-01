@@ -45,10 +45,7 @@ class WorkLocationFragment : Fragment() {
                 findNavController().navigate(R.id.countries_fragment)
             }
             regionEt.setOnClickListener {
-                findNavController().navigate(
-                    R.id.regions_fragment,
-                    bundleOf(REGION_DATA_KEY to viewModel.getCountryValue())
-                )
+                navigateToRegions()
             }
 
             selectButton.setOnClickListener {
@@ -86,6 +83,7 @@ class WorkLocationFragment : Fragment() {
             requireContext(),
             R.drawable.icon_arrow_forward
         )
+        binding.regionEt.setOnClickListener { navigateToRegions() }
     }
 
     private fun setCountryEmptyValue() {
@@ -113,6 +111,13 @@ class WorkLocationFragment : Fragment() {
             R.drawable.icon_delete
         )
         binding.regionEt.setOnClickListener { setRegionEmptyValue() }
+    }
+
+    private fun navigateToRegions() {
+        findNavController().navigate(
+            R.id.regions_fragment,
+            bundleOf(REGION_DATA_KEY to viewModel.getCountryValue())
+        )
     }
 
     companion object {
