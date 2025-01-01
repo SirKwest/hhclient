@@ -67,7 +67,7 @@ class RegionsFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     fun initSearchEditText() {
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
-            viewModel.filter(text?.toString().orEmpty())
+            viewModel.onQueryChanged(text?.toString().orEmpty())
             val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
                 ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             } else {
