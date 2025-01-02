@@ -72,11 +72,11 @@ class FilterSettingsFragment : Fragment() {
 
     private fun setScreenState(filter: Filter) {
         if (filter != Filter()) {
-            binding.resetBtn.visibility = View.VISIBLE
             binding.applyBtn.visibility = View.VISIBLE
+            binding.resetBtn.visibility = View.VISIBLE
         } else {
-            binding.resetBtn.visibility = View.GONE
             binding.applyBtn.visibility = View.GONE
+            binding.resetBtn.visibility = View.GONE
         }
         binding.onlyWithSalaryTv.isChecked = filter.isExistSalary == true
 
@@ -102,6 +102,8 @@ class FilterSettingsFragment : Fragment() {
             binding.salaryTil.endIconDrawable = null
             binding.salaryTil.setEndIconOnClickListener(null)
         } else {
+            binding.applyBtn.visibility = View.VISIBLE
+            binding.resetBtn.visibility = View.VISIBLE
             binding.salaryTil.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             binding.salaryTil.setEndIconOnClickListener {
                 viewModel.updateSalaryValue("")

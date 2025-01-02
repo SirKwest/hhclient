@@ -37,12 +37,15 @@ class FilterSettingsViewModel(
     fun updateSalaryValue(value: String) {
         if (value.isNotBlank()) {
             currentFilter.salary = value.toInt()
+        } else {
+            currentFilter.salary = null
         }
         salaryValueState.postValue(value)
     }
 
     fun updateOnlyWithSalaryValue(value: Boolean) {
-        currentFilter.isExistSalary = value
+        currentFilter.isExistSalary = value.takeIf { it }
+        screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
 
     private fun getFilter() {
@@ -61,11 +64,13 @@ class FilterSettingsViewModel(
     fun resetArea() {
         currentFilter.workPlace = null
         filterInteractor.saveArea(Area())
+        screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
 
     fun resetIndustry() {
         currentFilter.industry = null
         filterInteractor.saveIndustry(Industry())
+        screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
 
     override fun onCleared() {
