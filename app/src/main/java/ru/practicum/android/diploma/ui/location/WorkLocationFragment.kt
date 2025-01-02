@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.ui.location
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
@@ -80,39 +82,72 @@ class WorkLocationFragment : Fragment() {
         _binding = null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setRegionEmptyValue() {
         binding.regionEt.setText("")
         binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_arrow_forward
         )
+        binding.regionEt.setOnTouchListener(null)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setCountryEmptyValue() {
         binding.countryEt.setText("")
         binding.countryTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_arrow_forward
         )
-        binding.countryEt.setOnClickListener { findNavController().navigate(R.id.countries_fragment) }
+        binding.countryEt.setOnTouchListener(null)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setCountryValue(value: Country) {
         binding.countryEt.setText(value.name)
         binding.countryTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_delete
         )
-        binding.countryEt.setOnClickListener { setCountryEmptyValue() }
+        binding.countryEt.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.countryEt.compoundDrawablesRelative[2]
+                val position = binding.countryEt.width -
+                    binding.countryEt.paddingEnd - drawableEnd.bounds.width()
+                if (drawableEnd != null && event.rawX >= position) {
+                    setCountryEmptyValue()
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setRegionValue(value: Region) {
         binding.regionEt.setText(value.name)
         binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_delete
         )
-        binding.regionEt.setOnClickListener { setRegionEmptyValue() }
+        binding.regionEt.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.regionEt.compoundDrawablesRelative[2]
+                val position = binding.regionEt.width -
+                    binding.regionEt.paddingEnd - drawableEnd.bounds.width()
+                if (drawableEnd != null && event.rawX >= position) {
+                    setRegionEmptyValue()
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
     }
 
     companion object {
