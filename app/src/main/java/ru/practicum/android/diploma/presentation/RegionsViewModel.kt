@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.api.LocationInteractor
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.models.RegionsResource
+import ru.practicum.android.diploma.util.debouncedAction
 import java.net.HttpURLConnection
 
 class RegionsViewModel(
@@ -18,6 +21,9 @@ class RegionsViewModel(
     private val screenState = MutableLiveData<RegionsFragmentState>()
     fun observeScreenState(): LiveData<RegionsFragmentState> = screenState
     private var baseRegions: List<Region>? = null
+    private val filterDebounce = debouncedAction<String>(FILTER_DEBOUNCE, viewModelScope) { query ->
+        filter(query)
+    }
 
     init {
         loadData()
@@ -33,20 +39,37 @@ class RegionsViewModel(
             }
             flow.collect { resource ->
                 when (resource) {
-                    is RegionsResource.Success -> { processSuccessResult(resource) }
-                    is RegionsResource.Error -> { processErrorResult(resource) }
+                    is RegionsResource.Success -> {
+                        processSuccessResult(resource)
+                    }
+
+                    is RegionsResource.Error -> {
+                        processErrorResult(resource)
+                    }
                 }
             }
         }
     }
 
+    fun onQueryChanged(newQuery: String) {
+        filterDebounce(newQuery)
+    }
+
+    private
     fun filter(query: String) {
-        baseRegions?.let { regions ->
-            val filteredList = regions.filter { region -> region.name.lowercase().contains(query.lowercase()) }
-            if (filteredList.isEmpty()) {
-                screenState.value = RegionsFragmentState.EmptyResults
-            } else {
-                screenState.value = RegionsFragmentState.ShowingResults(filteredList)
+        viewModelScope.launch {
+            baseRegions?.let { regions ->
+                val filteredList = withContext(Dispatchers.Default) {
+                    regions.filter { region ->
+                        region.name.lowercase().contains(query.lowercase())
+                    }
+                }
+
+                screenState.value = if (filteredList.isEmpty()) {
+                    RegionsFragmentState.EmptyResults
+                } else {
+                    RegionsFragmentState.ShowingResults(filteredList)
+                }
             }
         }
     }
@@ -83,5 +106,9 @@ class RegionsViewModel(
                 }
             }
         }
+    }
+
+    companion object {
+        private const val FILTER_DEBOUNCE = 200L
     }
 }
