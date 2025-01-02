@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -35,21 +34,15 @@ class FilterSettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.observeScreenState().observe(viewLifecycleOwner) { state ->
-            setPreviousFilters(state.filterSettings)
+            setScreenState(state.filterSettings)
         }
         viewModel.observeSalaryValueState().observe(viewLifecycleOwner) { state ->
             setSalaryFieldIconAndListener(state.isNullOrBlank())
         }
-        viewModel.observeApplyButtonState().observe(viewLifecycleOwner) { state ->
-            binding.applyBtn.isVisible = state
-        }
-        viewModel.observeResetButtonState().observe(viewLifecycleOwner) { state ->
-            binding.resetBtn.isVisible = state
-        }
 
         settingListeners()
 
-        viewModel.getFilter()
+        viewModel.initializeData()
     }
 
     override fun onDestroyView() {
@@ -62,31 +55,29 @@ class FilterSettingsFragment : Fragment() {
         binding.salaryEt.doOnTextChanged { text, _, _, _ ->
             viewModel.updateSalaryValue(text.toString())
         }
-        binding.resetBtn.setOnClickListener { viewModel.resetFilters() }
+        binding.resetBtn.setOnClickListener {
+            viewModel.resetFilters()
+            findNavController().navigateUp()
+        }
         binding.onlyWithSalaryTv.setOnClickListener {
             binding.onlyWithSalaryTv.toggle()
             viewModel.updateOnlyWithSalaryValue(binding.onlyWithSalaryTv.isChecked)
         }
 
         binding.applyBtn.setOnClickListener {
-            val salary =
-                if (binding.salaryEt.text.toString().isBlank()) {
-                    null
-                } else {
-                    binding.salaryEt.text.toString().toInt()
-                }
-
-            val filter = Filter(
-                salary = salary,
-                isExistSalary = binding.onlyWithSalaryTv.isChecked
-            )
-            viewModel.updateFilter(filter)
+            viewModel.saveFilter()
             findNavController().navigateUp()
         }
     }
 
-    private fun setPreviousFilters(filter: Filter) {
-        binding.resetBtn.isVisible = filter != Filter()
+    private fun setScreenState(filter: Filter) {
+        if (filter != Filter()) {
+            binding.resetBtn.visibility = View.VISIBLE
+            binding.applyBtn.visibility = View.VISIBLE
+        } else {
+            binding.resetBtn.visibility = View.GONE
+            binding.applyBtn.visibility = View.GONE
+        }
         binding.onlyWithSalaryTv.isChecked = filter.isExistSalary == true
 
         if (filter.salary == null) {
@@ -97,12 +88,12 @@ class FilterSettingsFragment : Fragment() {
         if (filter.workPlace == null) {
             setLocationEmptyValue()
         } else {
-            setLocationValue(filter.workPlace)
+            setLocationValue(filter.workPlace!!)
         }
         if (filter.industry == null) {
             setIndustryEmptyValue()
         } else {
-            setIndustryValue(filter.industry)
+            setIndustryValue(filter.industry!!)
         }
     }
 
@@ -141,7 +132,7 @@ class FilterSettingsFragment : Fragment() {
             R.drawable.icon_delete
         )
         binding.locationEt.setOnClickListener {
-            viewModel.updateFilter(Filter(workPlace = Area()))
+            viewModel.resetArea()
             setLocationEmptyValue()
         }
     }
@@ -164,7 +155,7 @@ class FilterSettingsFragment : Fragment() {
             R.drawable.icon_delete
         )
         binding.industryEt.setOnClickListener {
-            viewModel.updateFilter(Filter(industry = Industry()))
+            viewModel.resetIndustry()
             setIndustryEmptyValue()
         }
     }
