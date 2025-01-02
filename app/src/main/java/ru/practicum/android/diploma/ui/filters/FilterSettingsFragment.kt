@@ -88,12 +88,12 @@ class FilterSettingsFragment : Fragment() {
         if (filter.workPlace == null) {
             setLocationEmptyValue()
         } else {
-            setLocationValue(filter.workPlace!!)
+            setLocationValue(filter.workPlace)
         }
         if (filter.industry == null) {
             setIndustryEmptyValue()
         } else {
-            setIndustryValue(filter.industry!!)
+            setIndustryValue(filter.industry)
         }
     }
 

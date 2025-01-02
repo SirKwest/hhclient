@@ -26,30 +26,30 @@ class FilterSettingsViewModel(
         val newArea = filterInteractor.getArea()
         val newIndustry = filterInteractor.getIndustry()
         if (newArea != Area()) {
-            currentFilter.workPlace = newArea
+            currentFilter = currentFilter.copy(workPlace = newArea)
         }
         if (newIndustry != Industry()) {
-            currentFilter.industry = newIndustry
+            currentFilter = currentFilter.copy(industry = newIndustry)
         }
         screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
 
     fun updateSalaryValue(value: String) {
-        if (value.isNotBlank()) {
-            currentFilter.salary = value.toInt()
+        currentFilter = if (value.isNotBlank()) {
+            currentFilter.copy(salary = value.toInt())
         } else {
-            currentFilter.salary = null
+            currentFilter.copy(salary = null)
         }
         salaryValueState.postValue(value)
     }
 
     fun clearSalaryValue() {
-        currentFilter.salary = null
+        currentFilter = currentFilter.copy(salary = null)
         screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
 
     fun updateOnlyWithSalaryValue(value: Boolean) {
-        currentFilter.isExistSalary = value.takeIf { it }
+        currentFilter = currentFilter.copy(isExistSalary = value.takeIf { it })
         screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
 
@@ -67,13 +67,13 @@ class FilterSettingsViewModel(
     }
 
     fun resetArea() {
-        currentFilter.workPlace = null
+        currentFilter = currentFilter.copy(workPlace = null)
         filterInteractor.saveArea(Area())
         screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
 
     fun resetIndustry() {
-        currentFilter.industry = null
+        currentFilter = currentFilter.copy(industry = null)
         filterInteractor.saveIndustry(Industry())
         screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
