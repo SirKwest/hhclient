@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.LocationInteractor
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.models.RegionsResource
 import java.net.HttpURLConnection
@@ -18,6 +19,7 @@ class RegionsViewModel(
     private val screenState = MutableLiveData<RegionsFragmentState>()
     fun observeScreenState(): LiveData<RegionsFragmentState> = screenState
     private var baseRegions: List<Region>? = null
+    private var parentRegions: List<Region>? = null
 
     init {
         loadData()
@@ -35,9 +37,11 @@ class RegionsViewModel(
                 when (resource) {
                     is RegionsResource.Success -> {
                         val flattedItems = flatRegions(resource.items)
-                        baseRegions = flattedItems
-                        if (flattedItems.isNotEmpty()) {
-                            screenState.postValue(RegionsFragmentState.ShowingResults(flattedItems))
+                        parentRegions = flattedItems.filter { it.regions.isNotEmpty() }
+                        val regionsWithoutCountry = flattedItems.filter { it.parentId != null }
+                        baseRegions = regionsWithoutCountry
+                        if (regionsWithoutCountry.isNotEmpty()) {
+                            screenState.postValue(RegionsFragmentState.ShowingResults(regionsWithoutCountry))
                         } else {
                             screenState.postValue(RegionsFragmentState.EmptyResults)
                         }
@@ -75,10 +79,18 @@ class RegionsViewModel(
     private fun flatRegions(regions: List<Region>): List<Region> {
         return regions.flatMap {
             flatRegions(it.regions).toMutableList().apply {
-                if (it.parentId != null) {
-                    add(0, it)
-                }
+                add(0, it)
             }
+        }
+    }
+
+    fun hasCountry(): Boolean = countryId.isNotBlank()
+
+    fun getCountryForRegion(region: Region): Country {
+        return if (region.parentId == null) {
+            Country(region.id, region.name)
+        } else {
+            getCountryForRegion(parentRegions!!.first { it.id == region.parentId })
         }
     }
 }

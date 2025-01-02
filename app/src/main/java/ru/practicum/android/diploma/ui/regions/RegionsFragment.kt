@@ -29,6 +29,8 @@ import ru.practicum.android.diploma.util.getSerializableData
 class RegionsFragment : Fragment() {
     private var _binding: FragmentRegionsBinding? = null
     private val binding get() = _binding!!
+
+    // todo крестик все еще пропадает при заход выходе с регионов
     private val viewModel: RegionsViewModel by viewModel {
         val selectedCountry = requireArguments().getSerializableData<Country>(WorkLocationFragment.REGION_DATA_KEY)
         val selectedCountryId = selectedCountry?.id ?: ""
@@ -52,6 +54,12 @@ class RegionsFragment : Fragment() {
                 WorkLocationFragment.REGION_RESULT_KEY,
                 bundleOf(WorkLocationFragment.REGION_DATA_KEY to region)
             )
+            if (!viewModel.hasCountry()) {
+                setFragmentResult(
+                    WorkLocationFragment.COUNTRY_RESULT_KEY,
+                    bundleOf(WorkLocationFragment.COUNTRY_DATA_KEY to viewModel.getCountryForRegion(region))
+                )
+            }
             findNavController().navigateUp()
         }
         binding.apply {
