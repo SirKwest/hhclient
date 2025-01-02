@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.data.impl
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
 import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.AREA_KEY
 import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.FILTER_KEY
@@ -17,7 +16,6 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
     }
 
     override fun saveArea(area: Area) {
-        Log.d("EXAMPLE_TEST", area.toString())
         sharedPreferences.edit().putString(AREA_KEY, Gson().toJson(area)).apply()
     }
 
