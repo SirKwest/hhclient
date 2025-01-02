@@ -106,7 +106,7 @@ class FilterSettingsFragment : Fragment() {
             binding.resetBtn.visibility = View.VISIBLE
             binding.salaryTil.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             binding.salaryTil.setEndIconOnClickListener {
-                viewModel.updateSalaryValue("")
+                viewModel.clearSalaryValue()
                 binding.salaryEt.setText("")
                 val inputMethodManager =
                     activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager

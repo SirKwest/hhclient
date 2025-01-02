@@ -43,6 +43,11 @@ class FilterSettingsViewModel(
         salaryValueState.postValue(value)
     }
 
+    fun clearSalaryValue() {
+        currentFilter.salary = null
+        screenState.postValue(FilterSettingsFragmentState(currentFilter))
+    }
+
     fun updateOnlyWithSalaryValue(value: Boolean) {
         currentFilter.isExistSalary = value.takeIf { it }
         screenState.postValue(FilterSettingsFragmentState(currentFilter))
