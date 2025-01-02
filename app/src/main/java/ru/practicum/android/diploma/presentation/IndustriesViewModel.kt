@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FilterInteractor
 import ru.practicum.android.diploma.domain.api.IndustriesInteractor
-import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.IndustriesResource
 import ru.practicum.android.diploma.domain.models.Industry
 import java.net.HttpURLConnection
@@ -66,8 +65,6 @@ class IndustriesViewModel(
     }
 
     fun saveValue(item: Industry?) {
-        if (item != null) {
-            filtersInteractor.updateFilter(Filter(industry = item))
-        }
+        filtersInteractor.saveIndustry(item!!)
     }
 }

@@ -17,9 +17,9 @@ fun SearchOptions.toQueryMap(): Map<String, String> =
             put("salary", filter.salary.toString())
         }
         if (filter.industry != null) {
-            put("industry", filter.industry.id.toString())
+            put("industry", filter.industry!!.id.toString())
         }
         if (filter.workPlace != null) {
-            put("area", filter.workPlace.regionId.toString())
+            put("area", filter.workPlace!!.regionId.toString())
         }
     }
