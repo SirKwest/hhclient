@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.ui.location
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
@@ -10,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentWorkLocationBinding
@@ -45,7 +48,10 @@ class WorkLocationFragment : Fragment() {
                 findNavController().navigate(R.id.countries_fragment)
             }
             regionEt.setOnClickListener {
-                navigateToRegions()
+                findNavController().navigate(
+                    R.id.regions_fragment,
+                    bundleOf(REGION_DATA_KEY to viewModel.getCountryValue())
+                )
             }
 
             selectButton.setOnClickListener {
@@ -72,52 +78,79 @@ class WorkLocationFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        binding.apply {
+            if (countryEt.text?.isNotBlank() == true) {
+                setClearButton(binding.countryTil) { setCountryEmptyValue() }
+            }
+
+            if (regionEt.text?.isNotBlank() == true) {
+                setClearButton(binding.regionTil) { setRegionEmptyValue() }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setRegionEmptyValue() {
         binding.regionEt.setText("")
         binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_arrow_forward
         )
-        binding.regionEt.setOnClickListener { navigateToRegions() }
+        binding.regionEt.setOnTouchListener(null)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setCountryEmptyValue() {
         binding.countryEt.setText("")
         binding.countryTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_arrow_forward
         )
-        binding.countryEt.setOnClickListener { findNavController().navigate(R.id.countries_fragment) }
+        binding.countryEt.setOnTouchListener(null)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setCountryValue(value: Country) {
         binding.countryEt.setText(value.name)
-        binding.countryTil.endIconDrawable = AppCompatResources.getDrawable(
-            requireContext(),
-            R.drawable.icon_delete
-        )
-        binding.countryEt.setOnClickListener { setCountryEmptyValue() }
+        setClearButton(binding.countryTil) { setCountryEmptyValue() }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setRegionValue(value: Region) {
         binding.regionEt.setText(value.name)
-        binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
+        setClearButton(binding.regionTil) { setRegionEmptyValue() }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setClearButton(til: TextInputLayout, onClear: () -> Unit) {
+        til.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_delete
         )
-        binding.regionEt.setOnClickListener { setRegionEmptyValue() }
-    }
-
-    private fun navigateToRegions() {
-        findNavController().navigate(
-            R.id.regions_fragment,
-            bundleOf(REGION_DATA_KEY to viewModel.getCountryValue())
-        )
+        til.editText?.let {
+            it.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    val drawableEnd = it.compoundDrawablesRelative[2]
+                    val position = it.width - it.paddingEnd - drawableEnd.bounds.width()
+                    if (drawableEnd != null && event.rawX >= position) {
+                        onClear()
+                        true
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            }
+        }
     }
 
     companion object {
