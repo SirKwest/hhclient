@@ -35,31 +35,8 @@ class RegionsViewModel(
             }
             flow.collect { resource ->
                 when (resource) {
-                    is RegionsResource.Success -> {
-                        val flattedItems = flatRegions(resource.items)
-                        parentRegions = flattedItems.filter { it.regions.isNotEmpty() }
-                        val regionsWithoutCountry = flattedItems.filter { it.parentId != null }
-                        baseRegions = regionsWithoutCountry
-                        if (regionsWithoutCountry.isNotEmpty()) {
-                            screenState.postValue(RegionsFragmentState.ShowingResults(regionsWithoutCountry))
-                        } else {
-                            screenState.postValue(RegionsFragmentState.EmptyResults)
-                        }
-                    }
-
-                    is RegionsResource.Error -> {
-                        when (resource.code) {
-                            HttpURLConnection.HTTP_BAD_REQUEST,
-                            HttpURLConnection.HTTP_FORBIDDEN,
-                            HttpURLConnection.HTTP_NOT_FOUND -> {
-                                screenState.postValue(RegionsFragmentState.ServerError)
-                            }
-
-                            else -> {
-                                screenState.postValue(RegionsFragmentState.NoInternetAccess)
-                            }
-                        }
-                    }
+                    is RegionsResource.Success -> { processSuccessResult(resource) }
+                    is RegionsResource.Error -> { processErrorResult(resource) }
                 }
             }
         }
@@ -72,6 +49,32 @@ class RegionsViewModel(
                 screenState.value = RegionsFragmentState.EmptyResults
             } else {
                 screenState.value = RegionsFragmentState.ShowingResults(filteredList)
+            }
+        }
+    }
+
+    private fun processSuccessResult(resource: RegionsResource.Success) {
+        val flattedItems = flatRegions(resource.items)
+        parentRegions = flattedItems.filter { it.regions.isNotEmpty() }
+        val regionsWithoutCountry = flattedItems.filter { it.parentId != null }
+        baseRegions = regionsWithoutCountry
+        if (regionsWithoutCountry.isNotEmpty()) {
+            screenState.postValue(RegionsFragmentState.ShowingResults(regionsWithoutCountry))
+        } else {
+            screenState.postValue(RegionsFragmentState.EmptyResults)
+        }
+    }
+
+    private fun processErrorResult(resource: RegionsResource.Error) {
+        when (resource.code) {
+            HttpURLConnection.HTTP_BAD_REQUEST,
+            HttpURLConnection.HTTP_FORBIDDEN,
+            HttpURLConnection.HTTP_NOT_FOUND -> {
+                screenState.postValue(RegionsFragmentState.ServerError)
+            }
+
+            else -> {
+                screenState.postValue(RegionsFragmentState.NoInternetAccess)
             }
         }
     }
