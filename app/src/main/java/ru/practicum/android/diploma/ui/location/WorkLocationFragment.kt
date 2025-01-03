@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentWorkLocationBinding
@@ -82,45 +83,11 @@ class WorkLocationFragment : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         binding.apply {
             if (countryEt.text?.isNotBlank() == true) {
-                countryTil.endIconDrawable =
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.icon_delete)
-                countryEt.setOnTouchListener { _, event ->
-                    if (event.action == MotionEvent.ACTION_UP) {
-                        val drawableEnd = countryEt.compoundDrawablesRelative[2]
-                        val position = countryEt.width -
-                            countryEt.paddingEnd - drawableEnd.bounds.width()
-                        if (drawableEnd != null && event.rawX >= position) {
-                            setCountryEmptyValue()
-                            true
-                        } else {
-                            false
-                        }
-                    } else {
-                        false
-                    }
-                }
+                setClearButton(binding.countryTil) { setCountryEmptyValue() }
             }
 
             if (regionEt.text?.isNotBlank() == true) {
-                regionTil.endIconDrawable = AppCompatResources.getDrawable(
-                    requireContext(),
-                    R.drawable.icon_delete
-                )
-                regionEt.setOnTouchListener { _, event ->
-                    if (event.action == MotionEvent.ACTION_UP) {
-                        val drawableEnd = regionEt.compoundDrawablesRelative[2]
-                        val position = regionEt.width -
-                            regionEt.paddingEnd - drawableEnd.bounds.width()
-                        if (drawableEnd != null && event.rawX >= position) {
-                            setRegionEmptyValue()
-                            true
-                        } else {
-                            false
-                        }
-                    } else {
-                        false
-                    }
-                }
+                setClearButton(binding.regionTil) { setRegionEmptyValue() }
             }
         }
     }
@@ -153,47 +120,35 @@ class WorkLocationFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setCountryValue(value: Country) {
         binding.countryEt.setText(value.name)
-        binding.countryTil.endIconDrawable = AppCompatResources.getDrawable(
-            requireContext(),
-            R.drawable.icon_delete
-        )
-        binding.countryEt.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = binding.countryEt.compoundDrawablesRelative[2]
-                val position = binding.countryEt.width -
-                    binding.countryEt.paddingEnd - drawableEnd.bounds.width()
-                if (drawableEnd != null && event.rawX >= position) {
-                    setCountryEmptyValue()
-                    true
-                } else {
-                    false
-                }
-            } else {
-                false
-            }
-        }
+        setClearButton(binding.countryTil) { setCountryEmptyValue() }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setRegionValue(value: Region) {
         binding.regionEt.setText(value.name)
-        binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
+        setClearButton(binding.regionTil) { setRegionEmptyValue() }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setClearButton(til: TextInputLayout, onClear: () -> Unit) {
+        til.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_delete
         )
-        binding.regionEt.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = binding.regionEt.compoundDrawablesRelative[2]
-                val position = binding.regionEt.width -
-                    binding.regionEt.paddingEnd - drawableEnd.bounds.width()
-                if (drawableEnd != null && event.rawX >= position) {
-                    setRegionEmptyValue()
-                    true
+        til.editText?.let {
+            it.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    val drawableEnd = it.compoundDrawablesRelative[2]
+                    val position = it.width - it.paddingEnd - drawableEnd.bounds.width()
+                    if (drawableEnd != null && event.rawX >= position) {
+                        onClear()
+                        true
+                    } else {
+                        false
+                    }
                 } else {
                     false
                 }
-            } else {
-                false
             }
         }
     }
