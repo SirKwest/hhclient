@@ -77,6 +77,54 @@ class WorkLocationFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        binding.apply {
+            if (countryEt.text?.isNotBlank() == true) {
+                countryTil.endIconDrawable =
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.icon_delete)
+                countryEt.setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        val drawableEnd = countryEt.compoundDrawablesRelative[2]
+                        val position = countryEt.width -
+                            countryEt.paddingEnd - drawableEnd.bounds.width()
+                        if (drawableEnd != null && event.rawX >= position) {
+                            setCountryEmptyValue()
+                            true
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                }
+            }
+
+            if (regionEt.text?.isNotBlank() == true) {
+                regionTil.endIconDrawable = AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.icon_delete
+                )
+                regionEt.setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        val drawableEnd = regionEt.compoundDrawablesRelative[2]
+                        val position = regionEt.width -
+                            regionEt.paddingEnd - drawableEnd.bounds.width()
+                        if (drawableEnd != null && event.rawX >= position) {
+                            setRegionEmptyValue()
+                            true
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
