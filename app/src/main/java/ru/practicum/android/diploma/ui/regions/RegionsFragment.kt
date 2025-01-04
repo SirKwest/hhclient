@@ -52,6 +52,12 @@ class RegionsFragment : Fragment() {
                 WorkLocationFragment.REGION_RESULT_KEY,
                 bundleOf(WorkLocationFragment.REGION_DATA_KEY to region)
             )
+            if (!viewModel.hasCountry()) {
+                setFragmentResult(
+                    WorkLocationFragment.COUNTRY_RESULT_KEY,
+                    bundleOf(WorkLocationFragment.COUNTRY_DATA_KEY to viewModel.getCountryForRegion(region))
+                )
+            }
             findNavController().navigateUp()
         }
         binding.apply {
