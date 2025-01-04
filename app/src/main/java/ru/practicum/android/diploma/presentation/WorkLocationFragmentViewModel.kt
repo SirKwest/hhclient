@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.domain.api.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Country
-import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Region
 
 class WorkLocationFragmentViewModel(
@@ -42,14 +41,10 @@ class WorkLocationFragmentViewModel(
     }
 
     fun saveAreaToFilter() {
-        filterInteractor.updateFilter(
-            Filter(
-                workPlace = Area(
-                    regionId = regionValue?.id ?: countryValue?.id,
-                    countryName = countryValue?.name,
-                    regionName = regionValue?.name,
-                )
-            )
-        )
+        filterInteractor.saveArea(Area(
+            regionId = regionValue?.id ?: countryValue?.id,
+            countryName = countryValue?.name,
+            regionName = regionValue?.name,
+        ))
     }
 }
