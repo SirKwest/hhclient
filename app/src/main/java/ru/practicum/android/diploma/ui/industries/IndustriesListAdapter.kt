@@ -50,6 +50,10 @@ class IndustriesListAdapter : RecyclerView.Adapter<IndustriesListViewHolder>() {
         return industries.size
     }
 
+    fun setSelectedIndustry(industry: Industry?) {
+        selectedIndustry = industry
+    }
+
     fun getSelectedIndustry(): Industry? {
         return selectedIndustry
     }
