@@ -4,8 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class CountryDto(
     val id: String,
-    val name: String,
-    val parentId: String?
+    val name: String
 )
 
 data class RegionDto(
