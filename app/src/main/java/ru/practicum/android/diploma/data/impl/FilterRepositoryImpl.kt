@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.AREA_KEY
 import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.FILTER_KEY
 import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.INDUSTRY_KEY
+import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.IS_APPLY_BUTTON
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
@@ -13,6 +14,10 @@ import ru.practicum.android.diploma.domain.repository.FilterRepository
 class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : FilterRepository {
     override fun saveFilter(filter: Filter) {
         sharedPreferences.edit().putString(FILTER_KEY, Gson().toJson(filter)).apply()
+    }
+
+    override fun savedFromApplyButton(isApply: Boolean) {
+        sharedPreferences.edit().putBoolean(IS_APPLY_BUTTON, isApply).apply()
     }
 
     override fun saveArea(area: Area) {
@@ -37,6 +42,10 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
         val industry =
             Gson().fromJson(sharedPreferences.getString(INDUSTRY_KEY, null), Industry::class.java) ?: Industry()
         return industry
+    }
+
+    override fun getFromApply(): Boolean {
+        return sharedPreferences.getBoolean(IS_APPLY_BUTTON, false)
     }
 
     override fun updateFilter(filter: Filter) {

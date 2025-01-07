@@ -13,4 +13,6 @@ interface FilterInteractor {
     fun getIndustry(): Industry
     fun updateFilter(filter: Filter)
     fun isFiltersSaved(): Boolean
+    fun savedFromApplyButton(isApply: Boolean)
+    fun getFromApply(): Boolean
 }

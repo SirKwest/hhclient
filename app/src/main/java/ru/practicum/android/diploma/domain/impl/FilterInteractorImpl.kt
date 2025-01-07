@@ -38,4 +38,12 @@ class FilterInteractorImpl(private val filterRepository: FilterRepository) : Fil
     override fun isFiltersSaved(): Boolean {
         return filterRepository.isFiltersSaved()
     }
+
+    override fun savedFromApplyButton(isApply: Boolean) {
+        filterRepository.savedFromApplyButton(isApply)
+    }
+
+    override fun getFromApply(): Boolean {
+        return filterRepository.getFromApply()
+    }
 }

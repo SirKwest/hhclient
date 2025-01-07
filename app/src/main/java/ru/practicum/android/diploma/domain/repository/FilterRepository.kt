@@ -13,4 +13,6 @@ interface FilterRepository {
     fun getIndustry(): Industry
     fun isFiltersSaved(): Boolean
     fun updateFilter(filter: Filter)
+    fun savedFromApplyButton(isApply: Boolean)
+    fun getFromApply(): Boolean
 }
