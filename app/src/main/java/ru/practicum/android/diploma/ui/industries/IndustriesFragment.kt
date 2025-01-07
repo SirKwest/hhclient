@@ -46,7 +46,7 @@ class IndustriesFragment : Fragment() {
             }
         viewModel.getSavedIndustry().let { industry ->
             industriesListAdapter.setSelectedIndustry(industry)
-            industry?.let {
+            industry.id?.let {
                 binding.selectButton.isVisible = true
                 binding.industriesRecyclerView.updatePadding(bottom = 84.toPx(resources))
             }
