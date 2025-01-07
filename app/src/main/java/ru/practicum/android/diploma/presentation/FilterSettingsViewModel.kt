@@ -62,8 +62,14 @@ class FilterSettingsViewModel(
         filterInteractor.saveFilter(Filter())
     }
 
-    fun saveFilter() {
+    fun saveFilterBackButton() {
+        filterInteractor.savedFromApplyButton(false)
         filterInteractor.saveFilter(currentFilter)
+    }
+
+    fun saveFilterFromApplyButton() {
+        filterInteractor.saveFilter(currentFilter)
+        filterInteractor.savedFromApplyButton(true)
     }
 
     fun resetArea() {

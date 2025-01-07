@@ -51,7 +51,10 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun settingListeners() {
-        binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.saveFilterBackButton()
+            findNavController().navigateUp()
+        }
         binding.salaryEt.doOnTextChanged { text, _, _, _ ->
             viewModel.updateSalaryValue(text.toString())
         }
@@ -65,7 +68,7 @@ class FilterSettingsFragment : Fragment() {
         }
 
         binding.applyBtn.setOnClickListener {
-            viewModel.saveFilter()
+            viewModel.saveFilterFromApplyButton()
             findNavController().navigateUp()
         }
     }
