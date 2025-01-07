@@ -15,10 +15,32 @@ class WorkLocationFragmentViewModel(
     private var regionValue: Region? = null
 
     private val applyButtonState = MutableLiveData(false)
-
     fun observeApplyButtonState(): LiveData<Boolean> = applyButtonState
 
+    var isSelectedRegionShouldBeRemoved = false
+        private set
+
+    init {
+        filterInteractor.getArea().let { area ->
+            if (area.countryId != null && area.countryName != null) {
+                countryValue = Country(id = area.countryId, name = area.countryName)
+            }
+
+            if (area.regionId != null && area.regionName != null) {
+                regionValue = Region(id = area.regionId, name = area.regionName, parentId = null, regions = emptyList())
+            }
+        }
+    }
+
+    fun getArea() = filterInteractor.getArea()
+
     fun setCountryValue(value: Country) {
+        if (countryValue?.id != value.id) {
+            isSelectedRegionShouldBeRemoved = true
+            regionValue = null
+        } else {
+            isSelectedRegionShouldBeRemoved = false
+        }
         countryValue = value
         applyButtonState.postValue(true)
     }
@@ -32,19 +54,14 @@ class WorkLocationFragmentViewModel(
         applyButtonState.postValue(true)
     }
 
-    fun isSelectedRegionShouldBeRemoved(): Boolean {
-        if (countryValue != null && regionValue != null && regionValue!!.parentId != countryValue!!.id) {
-            regionValue = null
-            return true
-        }
-        return false
-    }
-
     fun saveAreaToFilter() {
-        filterInteractor.saveArea(Area(
-            regionId = regionValue?.id ?: countryValue?.id,
-            countryName = countryValue?.name,
-            regionName = regionValue?.name,
-        ))
+        filterInteractor.saveArea(
+            Area(
+                regionId = regionValue?.id,
+                countryId = countryValue?.id,
+                countryName = countryValue?.name,
+                regionName = regionValue?.name,
+            )
+        )
     }
 }

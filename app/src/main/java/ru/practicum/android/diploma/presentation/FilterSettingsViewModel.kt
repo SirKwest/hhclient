@@ -77,10 +77,4 @@ class FilterSettingsViewModel(
         filterInteractor.saveIndustry(Industry())
         screenState.postValue(FilterSettingsFragmentState(currentFilter))
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        resetArea()
-        resetIndustry()
-    }
 }

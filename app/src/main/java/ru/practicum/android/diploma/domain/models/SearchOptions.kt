@@ -20,6 +20,6 @@ fun SearchOptions.toQueryMap(): Map<String, String> =
             put("industry", filter.industry!!.id.toString())
         }
         if (filter.workPlace != null) {
-            put("area", filter.workPlace!!.regionId.toString())
+            put("area", filter.workPlace!!.regionId ?: filter.workPlace!!.countryId.toString())
         }
     }
