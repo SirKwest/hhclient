@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -95,6 +96,15 @@ class SearchFragment : Fragment() {
                 false
             }
         }
+
+        binding.searchEditText.setOnEditorActionListener { editTextView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (editTextView.text.isNotEmpty()) {
+                    viewModel.search(editTextView.text.toString())
+                }
+            }
+            false
+        }
     }
 
     private fun settingListeners() {
@@ -161,6 +171,7 @@ class SearchFragment : Fragment() {
             is SearchFragmentState.ShowingResults -> showResultsScreen(newState)
         }
     }
+
     private fun showDefaultScreenState() {
         binding.infoImageView.setImageResource(R.drawable.start_info_image)
         binding.infoImageView.isVisible = true

@@ -32,10 +32,6 @@ class SearchFragmentViewModel(
     fun observeFilter(): LiveData<Boolean> = filtersButtonState
     fun observeErrorMessage(): LiveData<Int> = errorMessage
 
-    init {
-        checkFilterValuesExistence()
-    }
-
     val search: (String) -> Unit =
         debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
             processNewSearch(searchText)
@@ -74,29 +70,17 @@ class SearchFragmentViewModel(
     fun checkFilterValuesExistence() {
         val isFiltersSaved = filterInteractor.isFiltersSaved()
         filtersButtonState.postValue(isFiltersSaved)
-        if (isFiltersSaved && filterState == Filter()) {
-            filterState = filterInteractor.getFilter()
-        }
-        if (isFiltersSaved && lastSearchedValue.isNotEmpty()) {
-            search(lastSearchedValue)
-        }
-    }
-
-    private fun isFiltersSetChanged(): Boolean {
-        val newFilterState = filterInteractor.getFilter()
-        if (newFilterState != filterState) {
-            filterState = newFilterState
-            return true
-        }
-        return false
     }
 
     private fun processNewSearch(text: String) {
+        if (!filterInteractor.getFromApply()) {
+            if (lastSearchedValue == text) {
+                return
+            }
+        }
+        filterState = filterInteractor.getFilter()
         lastLoadedPage = 0
         totalPagesInLastRequest = 0
-        if (!isFiltersSetChanged() && lastSearchedValue == text) {
-            return
-        }
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.RequestInProgress)
             vacancyList.clear()
@@ -130,6 +114,11 @@ class SearchFragmentViewModel(
                 }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        filterInteractor.savedFromApplyButton(false)
     }
 
     companion object {
