@@ -49,7 +49,11 @@ class RegionsViewModel(
 
     fun filter(query: String) {
         baseRegions?.let { regions ->
-            val filteredList = regions.filter { region -> region.name.lowercase().contains(query.lowercase()) }
+            val processedQuery = query.filterNot { it.isWhitespace() }.lowercase()
+            val filteredList = regions.filter { region ->
+                val processedName = region.name.filterNot { it.isWhitespace() }.lowercase()
+                processedName.contains(processedQuery)
+            }
             if (filteredList.isEmpty()) {
                 screenState.value = RegionsFragmentState.EmptyResults
             } else {
