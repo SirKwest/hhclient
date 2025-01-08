@@ -35,8 +35,13 @@ class RegionsViewModel(
             }
             flow.collect { resource ->
                 when (resource) {
-                    is RegionsResource.Success -> { processSuccessResult(resource) }
-                    is RegionsResource.Error -> { processErrorResult(resource) }
+                    is RegionsResource.Success -> {
+                        processSuccessResult(resource)
+                    }
+
+                    is RegionsResource.Error -> {
+                        processErrorResult(resource)
+                    }
                 }
             }
         }
