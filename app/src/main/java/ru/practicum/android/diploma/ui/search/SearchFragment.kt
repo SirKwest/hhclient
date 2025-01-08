@@ -22,7 +22,6 @@ import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.presentation.SearchFragmentState
 import ru.practicum.android.diploma.presentation.SearchFragmentViewModel
 import ru.practicum.android.diploma.ui.details.VacancyDetailsFragment
-import ru.practicum.android.diploma.util.getSerializableData
 import java.net.HttpURLConnection
 
 class SearchFragment : Fragment() {
