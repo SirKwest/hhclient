@@ -41,6 +41,11 @@ class SearchFragmentViewModel(
             processNewSearch(searchText)
         }
 
+    fun performSearch(text: String) {
+        if (text != lastSearchedValue) {
+            search(text)
+        }
+    }
     fun loadNextPage() {
         if (screenState.value == SearchFragmentState.LoadingNewPageOfResults) {
             return
@@ -71,32 +76,22 @@ class SearchFragmentViewModel(
         }
     }
 
-    fun checkFilterValuesExistence() {
-        val isFiltersSaved = filterInteractor.isFiltersSaved()
-        filtersButtonState.postValue(isFiltersSaved)
-        if (isFiltersSaved && filterState == Filter()) {
-            filterState = filterInteractor.getFilter()
-        }
-        if (isFiltersSaved && lastSearchedValue.isNotEmpty()) {
-            search(lastSearchedValue)
-        }
+    fun applyFiltersAndSearch() {
+        checkFilterValuesExistence()
+        processNewSearch(lastSearchedValue)
     }
 
-    private fun isFiltersSetChanged(): Boolean {
-        val newFilterState = filterInteractor.getFilter()
-        if (newFilterState != filterState) {
-            filterState = newFilterState
-            return true
+    private fun checkFilterValuesExistence() {
+        val isFiltersSaved = filterInteractor.isFiltersSaved()
+        filtersButtonState.postValue(isFiltersSaved)
+        if (isFiltersSaved) {
+            filterState = filterInteractor.getFilter()
         }
-        return false
     }
 
     private fun processNewSearch(text: String) {
         lastLoadedPage = 0
         totalPagesInLastRequest = 0
-        if (!isFiltersSetChanged() && lastSearchedValue == text) {
-            return
-        }
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.RequestInProgress)
             vacancyList.clear()

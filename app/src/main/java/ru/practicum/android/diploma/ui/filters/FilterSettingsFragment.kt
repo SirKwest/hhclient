@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -21,6 +23,8 @@ import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.displayName
 import ru.practicum.android.diploma.presentation.FilterSettingsViewModel
+import ru.practicum.android.diploma.ui.search.SearchFragment.Companion.FILTERS_DATA_KEY
+import ru.practicum.android.diploma.ui.search.SearchFragment.Companion.FILTERS_RESULT_KEY
 
 class FilterSettingsFragment : Fragment() {
     private var _binding: FragmentFilterSettingsBinding? = null
@@ -59,6 +63,7 @@ class FilterSettingsFragment : Fragment() {
         }
         binding.resetBtn.setOnClickListener {
             viewModel.resetFilters()
+            setFragmentResult(FILTERS_RESULT_KEY, bundleOf(FILTERS_DATA_KEY to false))
             findNavController().navigateUp()
         }
         binding.onlyWithSalaryTv.setOnClickListener {
@@ -68,6 +73,7 @@ class FilterSettingsFragment : Fragment() {
 
         binding.applyBtn.setOnClickListener {
             viewModel.saveFilter()
+            setFragmentResult(FILTERS_RESULT_KEY, bundleOf(FILTERS_DATA_KEY to true))
             findNavController().navigateUp()
         }
     }
