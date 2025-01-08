@@ -40,6 +40,7 @@ class WorkLocationFragment : Fragment() {
         viewModel.observeApplyButtonState().observe(viewLifecycleOwner) { state ->
             binding.selectButton.isVisible = state
         }
+        loadSavedArea()
         binding.apply {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
@@ -58,22 +59,40 @@ class WorkLocationFragment : Fragment() {
                 viewModel.saveAreaToFilter()
                 findNavController().navigateUp()
             }
+        }
+        setFragmentResultListeners()
+    }
 
-            setFragmentResultListener(COUNTRY_RESULT_KEY) { _, bundle ->
-                bundle.getSerializableData<Country>(COUNTRY_DATA_KEY)?.let {
-                    viewModel.setCountryValue(it)
-                    setCountryValue(it)
-                    if (viewModel.isSelectedRegionShouldBeRemoved()) {
-                        setRegionEmptyValue()
-                    }
+    private fun loadSavedArea() {
+        viewModel.getArea().let {
+            if (it.countryName?.isNotBlank() == true) {
+                binding.countryEt.setText(it.countryName)
+                setClearButton(binding.countryTil) { setCountryEmptyValue() }
+            }
+
+            if (it.regionName?.isNotBlank() == true) {
+                binding.regionEt.setText(it.regionName)
+                setClearButton(binding.regionTil) { setRegionEmptyValue() }
+            }
+        }
+    }
+
+    private fun setFragmentResultListeners() {
+        setFragmentResultListener(COUNTRY_RESULT_KEY) { _, bundle ->
+            bundle.getSerializableData<Country>(COUNTRY_DATA_KEY)?.let {
+                viewModel.setCountryValue(it)
+                setCountryValue(it)
+                if (viewModel.isSelectedRegionShouldBeRemoved) {
+                    setRegionEmptyValue()
                 }
             }
 
-            setFragmentResultListener(REGION_RESULT_KEY) { _, bundle ->
-                bundle.getSerializableData<Region>(REGION_DATA_KEY)?.let {
-                    viewModel.setRegionValue(it)
-                    setRegionValue(it)
-                }
+        }
+
+        setFragmentResultListener(REGION_RESULT_KEY) { _, bundle ->
+            bundle.getSerializableData<Region>(REGION_DATA_KEY)?.let {
+                viewModel.setRegionValue(it)
+                setRegionValue(it)
             }
         }
     }
@@ -117,13 +136,11 @@ class WorkLocationFragment : Fragment() {
         binding.countryEt.setOnTouchListener(null)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun setCountryValue(value: Country) {
         binding.countryEt.setText(value.name)
         setClearButton(binding.countryTil) { setCountryEmptyValue() }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun setRegionValue(value: Region) {
         binding.regionEt.setText(value.name)
         setClearButton(binding.regionTil) { setRegionEmptyValue() }

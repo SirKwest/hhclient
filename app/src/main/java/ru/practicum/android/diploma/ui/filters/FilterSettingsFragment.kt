@@ -118,6 +118,7 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setLocationEmptyValue() {
         binding.locationEt.setText("")
         binding.locationTil.endIconDrawable = AppCompatResources.getDrawable(
@@ -127,8 +128,10 @@ class FilterSettingsFragment : Fragment() {
         binding.locationEt.setOnClickListener {
             findNavController().navigate(R.id.action_filter_settings_fragment_to_work_location_fragment)
         }
+        binding.locationEt.setOnTouchListener(null)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setLocationValue(value: Area) {
         binding.locationEt.setText(value.displayName())
         binding.locationTil.endIconDrawable = AppCompatResources.getDrawable(
@@ -136,8 +139,24 @@ class FilterSettingsFragment : Fragment() {
             R.drawable.icon_delete
         )
         binding.locationEt.setOnClickListener {
-            viewModel.resetArea()
-            setLocationEmptyValue()
+            findNavController().navigate(R.id.action_filter_settings_fragment_to_work_location_fragment)
+        }
+
+        binding.locationEt.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.locationEt.compoundDrawablesRelative[2]
+                val position = binding.locationEt.width -
+                    binding.locationEt.paddingEnd - drawableEnd.bounds.width()
+                if (drawableEnd != null && event.rawX >= position) {
+                    viewModel.resetArea()
+                    setLocationEmptyValue()
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
         }
     }
 
