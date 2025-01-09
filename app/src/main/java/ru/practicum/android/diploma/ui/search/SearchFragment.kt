@@ -88,7 +88,8 @@ class SearchFragment : Fragment() {
                     binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
                 if (drawableEnd != null && event.rawX >= position) {
                     binding.searchEditText.text?.clear()
-                    processingChangedScreenState(SearchFragmentState.Default)
+                    viewModel.clearLastSearchedValue()
+                    viewModel.updateScreenState(SearchFragmentState.Default)
                     true
                 } else {
                     false

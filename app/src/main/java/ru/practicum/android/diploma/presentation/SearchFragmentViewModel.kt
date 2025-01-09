@@ -33,11 +33,12 @@ class SearchFragmentViewModel(
     fun observeErrorMessage(): LiveData<Int> = errorMessage
 
     init {
-        checkFilterValuesExistence()
+        updateFilterStateForSearch()
     }
 
     val search: (String) -> Unit =
         debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
+            updateFilterStateForSearch()
             processNewSearch(searchText)
         }
 
@@ -77,11 +78,21 @@ class SearchFragmentViewModel(
     }
 
     fun applyFiltersAndSearch() {
-        checkFilterValuesExistence()
-        processNewSearch(lastSearchedValue)
+        updateFilterStateForSearch()
+        if (lastSearchedValue.isNotBlank()) {
+            processNewSearch(lastSearchedValue)
+        }
     }
 
-    private fun checkFilterValuesExistence() {
+    fun clearLastSearchedValue() {
+        lastSearchedValue = ""
+    }
+
+    fun updateScreenState(state: SearchFragmentState) {
+        screenState.postValue(state)
+    }
+
+    private fun updateFilterStateForSearch() {
         val isFiltersSaved = filterInteractor.isFiltersSaved()
         filtersButtonState.postValue(isFiltersSaved)
         if (isFiltersSaved) {
