@@ -33,14 +33,20 @@ class SearchFragmentViewModel(
     fun observeErrorMessage(): LiveData<Int> = errorMessage
 
     init {
-        checkFilterValuesExistence()
+        updateFilterStateForSearch()
     }
 
     val search: (String) -> Unit =
         debouncedAction(SEARCH_DEBOUNCE_DELAY, viewModelScope) { searchText ->
+            updateFilterStateForSearch()
             processNewSearch(searchText)
         }
 
+    fun performSearch(text: String) {
+        if (text != lastSearchedValue) {
+            search(text)
+        }
+    }
     fun loadNextPage() {
         if (screenState.value == SearchFragmentState.LoadingNewPageOfResults) {
             return
@@ -71,32 +77,32 @@ class SearchFragmentViewModel(
         }
     }
 
-    fun checkFilterValuesExistence() {
-        val isFiltersSaved = filterInteractor.isFiltersSaved()
-        filtersButtonState.postValue(isFiltersSaved)
-        if (isFiltersSaved && filterState == Filter()) {
-            filterState = filterInteractor.getFilter()
-        }
-        if (isFiltersSaved && lastSearchedValue.isNotEmpty()) {
-            search(lastSearchedValue)
+    fun applyFiltersAndSearch() {
+        updateFilterStateForSearch()
+        if (lastSearchedValue.isNotBlank()) {
+            processNewSearch(lastSearchedValue)
         }
     }
 
-    private fun isFiltersSetChanged(): Boolean {
-        val newFilterState = filterInteractor.getFilter()
-        if (newFilterState != filterState) {
-            filterState = newFilterState
-            return true
+    fun clearLastSearchedValue() {
+        lastSearchedValue = ""
+    }
+
+    fun updateScreenState(state: SearchFragmentState) {
+        screenState.postValue(state)
+    }
+
+    private fun updateFilterStateForSearch() {
+        val isFiltersSaved = filterInteractor.isFiltersSaved()
+        filtersButtonState.postValue(isFiltersSaved)
+        if (isFiltersSaved) {
+            filterState = filterInteractor.getFilter()
         }
-        return false
     }
 
     private fun processNewSearch(text: String) {
         lastLoadedPage = 0
         totalPagesInLastRequest = 0
-        if (!isFiltersSetChanged() && lastSearchedValue == text) {
-            return
-        }
         viewModelScope.launch {
             screenState.postValue(SearchFragmentState.RequestInProgress)
             vacancyList.clear()

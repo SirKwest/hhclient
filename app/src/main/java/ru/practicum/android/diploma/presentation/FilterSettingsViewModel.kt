@@ -40,17 +40,18 @@ class FilterSettingsViewModel(
         } else {
             currentFilter.copy(salary = null)
         }
+        saveFilter()
         salaryValueState.postValue(value)
     }
 
     fun clearSalaryValue() {
         currentFilter = currentFilter.copy(salary = null)
-        screenState.postValue(FilterSettingsFragmentState(currentFilter))
+        updateScreenState(FilterSettingsFragmentState(currentFilter))
     }
 
     fun updateOnlyWithSalaryValue(value: Boolean) {
-        currentFilter = currentFilter.copy(isExistSalary = value.takeIf { it })
-        screenState.postValue(FilterSettingsFragmentState(currentFilter))
+        currentFilter = currentFilter.copy(isExistSalary = value)
+        updateScreenState(FilterSettingsFragmentState(currentFilter))
     }
 
     private fun getFilter() {
@@ -69,12 +70,17 @@ class FilterSettingsViewModel(
     fun resetArea() {
         currentFilter = currentFilter.copy(workPlace = null)
         filterInteractor.saveArea(Area())
-        screenState.postValue(FilterSettingsFragmentState(currentFilter))
+        updateScreenState(FilterSettingsFragmentState(currentFilter))
     }
 
     fun resetIndustry() {
         currentFilter = currentFilter.copy(industry = null)
         filterInteractor.saveIndustry(Industry())
-        screenState.postValue(FilterSettingsFragmentState(currentFilter))
+        updateScreenState(FilterSettingsFragmentState(currentFilter))
+    }
+
+    private fun updateScreenState(state: FilterSettingsFragmentState) {
+        saveFilter()
+        screenState.postValue(state)
     }
 }

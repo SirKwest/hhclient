@@ -24,19 +24,15 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
     }
 
     override fun getFilter(): Filter {
-        val filter = Gson().fromJson(sharedPreferences.getString(FILTER_KEY, null), Filter::class.java) ?: Filter()
-        return filter
+        return Gson().fromJson(sharedPreferences.getString(FILTER_KEY, null), Filter::class.java) ?: Filter()
     }
 
     override fun getArea(): Area {
-        val area = Gson().fromJson(sharedPreferences.getString(AREA_KEY, null), Area::class.java) ?: Area()
-        return area
+        return Gson().fromJson(sharedPreferences.getString(AREA_KEY, null), Area::class.java) ?: Area()
     }
 
     override fun getIndustry(): Industry {
-        val industry =
-            Gson().fromJson(sharedPreferences.getString(INDUSTRY_KEY, null), Industry::class.java) ?: Industry()
-        return industry
+        return Gson().fromJson(sharedPreferences.getString(INDUSTRY_KEY, null), Industry::class.java) ?: Industry()
     }
 
     override fun updateFilter(filter: Filter) {

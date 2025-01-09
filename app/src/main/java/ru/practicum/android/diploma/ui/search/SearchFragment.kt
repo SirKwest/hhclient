@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,11 +44,12 @@ class SearchFragment : Fragment() {
         applyingFunctionsToLayoutItems()
         settingListeners()
         settingRecyclerViewAdapter()
-    }
+        setFragmentResultListener(FILTERS_RESULT_KEY) { _, bundle ->
+            if (bundle.getBoolean(FILTERS_DATA_KEY)) {
+                viewModel.applyFiltersAndSearch()
+            }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.checkFilterValuesExistence()
+        }
     }
 
     override fun onDestroyView() {
@@ -62,12 +64,12 @@ class SearchFragment : Fragment() {
         }
         binding.searchEditText.setOnFocusChangeListener { _, isFocused ->
             if (isFocused && binding.searchEditText.text!!.isNotEmpty()) {
-                viewModel.search(binding.searchEditText.text.toString())
+                viewModel.performSearch(binding.searchEditText.text.toString())
             }
         }
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->
             val drawableEnd: Drawable? = if (text?.isNotBlank() == true) {
-                viewModel.search(text.toString())
+                viewModel.performSearch(text.toString())
                 ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete)
             } else {
                 ContextCompat.getDrawable(requireContext(), R.drawable.icon_search)
@@ -86,7 +88,8 @@ class SearchFragment : Fragment() {
                     binding.searchEditText.paddingEnd - drawableEnd.bounds.width()
                 if (drawableEnd != null && event.rawX >= position) {
                     binding.searchEditText.text?.clear()
-                    processingChangedScreenState(SearchFragmentState.Default)
+                    viewModel.clearLastSearchedValue()
+                    viewModel.updateScreenState(SearchFragmentState.Default)
                     true
                 } else {
                     false
@@ -245,5 +248,10 @@ class SearchFragment : Fragment() {
         binding.infoImageView.isVisible = false
         binding.progressBar.isVisible = false
         binding.progressBarForPageLoading.isVisible = false
+    }
+
+    companion object {
+        const val FILTERS_RESULT_KEY = "FILTERS"
+        const val FILTERS_DATA_KEY = "FILTERS_APPLIED"
     }
 }
