@@ -119,6 +119,7 @@ class WorkLocationFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setRegionEmptyValue() {
         binding.regionEt.setText("")
+        viewModel.setRegionValue(null)
         binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_arrow_forward
@@ -129,6 +130,7 @@ class WorkLocationFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setCountryEmptyValue() {
         binding.countryEt.setText("")
+        viewModel.setCountryValue(null)
         binding.countryTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_arrow_forward

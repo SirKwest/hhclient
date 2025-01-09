@@ -30,28 +30,29 @@ class WorkLocationFragmentViewModel(
                 regionValue = Region(id = area.regionId, name = area.regionName, parentId = null, regions = emptyList())
             }
         }
+        updateApplyButtonState()
     }
 
     fun getArea() = filterInteractor.getArea()
 
-    fun setCountryValue(value: Country) {
-        if (countryValue?.id != value.id) {
+    fun setCountryValue(value: Country?) {
+        if (value != null && countryValue?.id != value.id) {
             isSelectedRegionShouldBeRemoved = true
             regionValue = null
         } else {
             isSelectedRegionShouldBeRemoved = false
         }
         countryValue = value
-        applyButtonState.postValue(true)
+        updateApplyButtonState()
     }
 
     fun getCountryValue(): Country? {
         return countryValue
     }
 
-    fun setRegionValue(value: Region) {
+    fun setRegionValue(value: Region?) {
         regionValue = value
-        applyButtonState.postValue(true)
+        updateApplyButtonState()
     }
 
     fun saveAreaToFilter() {
@@ -63,5 +64,9 @@ class WorkLocationFragmentViewModel(
                 regionName = regionValue?.name,
             )
         )
+    }
+
+    private fun updateApplyButtonState() {
+        applyButtonState.postValue(countryValue != null || regionValue != null)
     }
 }
