@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.ui.location
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.LocationListItemBinding
 import ru.practicum.android.diploma.domain.models.Location
@@ -10,21 +9,8 @@ import ru.practicum.android.diploma.domain.models.Location
 class LocationListAdapter<T : Location> : RecyclerView.Adapter<LocationListViewHolder<T>>() {
     var locations: List<T> = emptyList()
         set(value) {
-            val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-                override fun getOldListSize(): Int = field.size
-
-                override fun getNewListSize(): Int = value.size
-
-                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                    field[oldItemPosition].id == value[newItemPosition].id
-
-                override fun areContentsTheSame(
-                    oldItemPosition: Int,
-                    newItemPosition: Int
-                ): Boolean = field[oldItemPosition] == value[newItemPosition]
-            })
             field = value
-            diffResult.dispatchUpdatesTo(this)
+            notifyDataSetChanged()
         }
 
     var onItemClickListener: OnItemClickListener<T>? = null

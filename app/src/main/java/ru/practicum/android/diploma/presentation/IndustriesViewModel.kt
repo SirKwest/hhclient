@@ -55,7 +55,11 @@ class IndustriesViewModel(
 
     fun filter(query: String) {
         baseIndustries?.let { industries ->
-            val filteredList = industries.filter { industry -> industry.name!!.lowercase().contains(query.lowercase()) }
+            val processedQuery = query.filterNot { it.isWhitespace() }.lowercase()
+            val filteredList = industries.filter { industry ->
+                val processedName = industry.name!!.filterNot { it.isWhitespace() }.lowercase()
+                processedName.contains(processedQuery)
+            }
             if (filteredList.isEmpty()) {
                 screenState.value = IndustriesFragmentState.EmptyResults
             } else {
