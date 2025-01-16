@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FilterInteractor
 import ru.practicum.android.diploma.domain.api.IndustriesInteractor
-import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.IndustriesResource
 import ru.practicum.android.diploma.domain.models.Industry
 import java.net.HttpURLConnection
@@ -56,7 +55,11 @@ class IndustriesViewModel(
 
     fun filter(query: String) {
         baseIndustries?.let { industries ->
-            val filteredList = industries.filter { industry -> industry.name!!.lowercase().contains(query.lowercase()) }
+            val processedQuery = query.filterNot { it.isWhitespace() }.lowercase()
+            val filteredList = industries.filter { industry ->
+                val processedName = industry.name!!.filterNot { it.isWhitespace() }.lowercase()
+                processedName.contains(processedQuery)
+            }
             if (filteredList.isEmpty()) {
                 screenState.value = IndustriesFragmentState.EmptyResults
             } else {
@@ -66,8 +69,10 @@ class IndustriesViewModel(
     }
 
     fun saveValue(item: Industry?) {
-        if (item != null) {
-            filtersInteractor.updateFilter(Filter(industry = item))
-        }
+        filtersInteractor.saveIndustry(item!!)
+    }
+
+    fun getSavedIndustry(): Industry {
+        return filtersInteractor.getIndustry()
     }
 }

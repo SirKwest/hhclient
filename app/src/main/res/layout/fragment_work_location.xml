@@ -50,6 +50,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/region_et"
             style="@style/FilterItemValue"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

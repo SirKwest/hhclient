@@ -2,7 +2,9 @@ package ru.practicum.android.diploma.data.impl
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.AREA_KEY
 import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.FILTER_KEY
+import ru.practicum.android.diploma.data.impl.SharedPreferencesConstant.INDUSTRY_KEY
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
@@ -13,9 +15,24 @@ class FilterRepositoryImpl(private val sharedPreferences: SharedPreferences) : F
         sharedPreferences.edit().putString(FILTER_KEY, Gson().toJson(filter)).apply()
     }
 
+    override fun saveArea(area: Area) {
+        sharedPreferences.edit().putString(AREA_KEY, Gson().toJson(area)).apply()
+    }
+
+    override fun saveIndustry(industry: Industry) {
+        sharedPreferences.edit().putString(INDUSTRY_KEY, Gson().toJson(industry)).apply()
+    }
+
     override fun getFilter(): Filter {
-        val filter = Gson().fromJson(sharedPreferences.getString(FILTER_KEY, null), Filter::class.java) ?: Filter()
-        return filter
+        return Gson().fromJson(sharedPreferences.getString(FILTER_KEY, null), Filter::class.java) ?: Filter()
+    }
+
+    override fun getArea(): Area {
+        return Gson().fromJson(sharedPreferences.getString(AREA_KEY, null), Area::class.java) ?: Area()
+    }
+
+    override fun getIndustry(): Industry {
+        return Gson().fromJson(sharedPreferences.getString(INDUSTRY_KEY, null), Industry::class.java) ?: Industry()
     }
 
     override fun updateFilter(filter: Filter) {

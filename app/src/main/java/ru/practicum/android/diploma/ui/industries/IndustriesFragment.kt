@@ -44,6 +44,13 @@ class IndustriesFragment : Fragment() {
                 binding.selectButton.isVisible = true
                 binding.industriesRecyclerView.updatePadding(bottom = 84.toPx(resources))
             }
+        viewModel.getSavedIndustry().let { industry ->
+            industriesListAdapter.setSelectedIndustry(industry)
+            industry.id?.let {
+                binding.selectButton.isVisible = true
+                binding.industriesRecyclerView.updatePadding(bottom = 84.toPx(resources))
+            }
+        }
         binding.apply {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()

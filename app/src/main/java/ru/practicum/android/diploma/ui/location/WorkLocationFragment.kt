@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.ui.location
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
@@ -10,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentWorkLocationBinding
@@ -37,6 +40,7 @@ class WorkLocationFragment : Fragment() {
         viewModel.observeApplyButtonState().observe(viewLifecycleOwner) { state ->
             binding.selectButton.isVisible = state
         }
+        loadSavedArea()
         binding.apply {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
@@ -55,22 +59,54 @@ class WorkLocationFragment : Fragment() {
                 viewModel.saveAreaToFilter()
                 findNavController().navigateUp()
             }
+        }
+        setFragmentResultListeners()
+    }
 
-            setFragmentResultListener(COUNTRY_RESULT_KEY) { _, bundle ->
-                bundle.getSerializableData<Country>(COUNTRY_DATA_KEY)?.let {
-                    viewModel.setCountryValue(it)
-                    setCountryValue(it)
-                    if (viewModel.isSelectedRegionShouldBeRemoved()) {
-                        setRegionEmptyValue()
-                    }
+    private fun loadSavedArea() {
+        viewModel.getArea().let {
+            if (it.countryName?.isNotBlank() == true) {
+                binding.countryEt.setText(it.countryName)
+                setClearButton(binding.countryTil) { setCountryEmptyValue() }
+            }
+
+            if (it.regionName?.isNotBlank() == true) {
+                binding.regionEt.setText(it.regionName)
+                setClearButton(binding.regionTil) { setRegionEmptyValue() }
+            }
+        }
+    }
+
+    private fun setFragmentResultListeners() {
+        setFragmentResultListener(COUNTRY_RESULT_KEY) { _, bundle ->
+            bundle.getSerializableData<Country>(COUNTRY_DATA_KEY)?.let {
+                viewModel.setCountryValue(it)
+                setCountryValue(it)
+                if (viewModel.isSelectedRegionShouldBeRemoved) {
+                    setRegionEmptyValue()
                 }
             }
 
-            setFragmentResultListener(REGION_RESULT_KEY) { _, bundle ->
-                bundle.getSerializableData<Region>(REGION_DATA_KEY)?.let {
-                    viewModel.setRegionValue(it)
-                    setRegionValue(it)
-                }
+        }
+
+        setFragmentResultListener(REGION_RESULT_KEY) { _, bundle ->
+            bundle.getSerializableData<Region>(REGION_DATA_KEY)?.let {
+                viewModel.setRegionValue(it)
+                setRegionValue(it)
+            }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        binding.apply {
+            if (countryEt.text?.isNotBlank() == true) {
+                setClearButton(binding.countryTil) { setCountryEmptyValue() }
+            }
+
+            if (regionEt.text?.isNotBlank() == true) {
+                setClearButton(binding.regionTil) { setRegionEmptyValue() }
             }
         }
     }
@@ -80,39 +116,60 @@ class WorkLocationFragment : Fragment() {
         _binding = null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setRegionEmptyValue() {
         binding.regionEt.setText("")
+        viewModel.setRegionValue(null)
         binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_arrow_forward
         )
+        binding.regionEt.setOnTouchListener(null)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setCountryEmptyValue() {
         binding.countryEt.setText("")
+        viewModel.setCountryValue(null)
         binding.countryTil.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_arrow_forward
         )
-        binding.countryEt.setOnClickListener { findNavController().navigate(R.id.countries_fragment) }
+        binding.countryEt.setOnTouchListener(null)
     }
 
     private fun setCountryValue(value: Country) {
         binding.countryEt.setText(value.name)
-        binding.countryTil.endIconDrawable = AppCompatResources.getDrawable(
-            requireContext(),
-            R.drawable.icon_delete
-        )
-        binding.countryEt.setOnClickListener { setCountryEmptyValue() }
+        setClearButton(binding.countryTil) { setCountryEmptyValue() }
     }
 
     private fun setRegionValue(value: Region) {
         binding.regionEt.setText(value.name)
-        binding.regionTil.endIconDrawable = AppCompatResources.getDrawable(
+        setClearButton(binding.regionTil) { setRegionEmptyValue() }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setClearButton(til: TextInputLayout, onClear: () -> Unit) {
+        til.endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
             R.drawable.icon_delete
         )
-        binding.regionEt.setOnClickListener { setRegionEmptyValue() }
+        til.editText?.let {
+            it.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    val drawableEnd = it.compoundDrawablesRelative[2]
+                    val position = it.width - it.paddingEnd - drawableEnd.bounds.width()
+                    if (drawableEnd != null && event.rawX >= position) {
+                        onClear()
+                        true
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            }
+        }
     }
 
     companion object {
