@@ -7,7 +7,7 @@
     android:paddingHorizontal="16dp"
     android:paddingVertical="8dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/vacancy_logo_iv"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -15,6 +15,7 @@
         android:src="@drawable/icon_placeholder_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/VacancyLogoStyle"
         app:strokeColor="@color/light_gray"
         app:strokeWidth="1dp"
         tools:ignore="ContentDescription" />
